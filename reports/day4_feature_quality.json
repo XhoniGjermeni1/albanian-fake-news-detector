@@ -1,0 +1,53 @@
+{
+  "rows": 3994,
+  "columns": 37,
+  "label_counts": {
+    "fake": 1996,
+    "real": 1998
+  },
+  "duplicate_article_ids": 0,
+  "duplicate_rows": 0,
+  "missing_values_total": 0,
+  "numeric_missing_values_total": 0,
+  "infinite_values_total": 0,
+  "ratio_values_outside_0_1": {
+    "exclamation_ratio": 0,
+    "question_ratio": 0,
+    "uppercase_word_ratio": 0,
+    "uppercase_char_ratio": 0,
+    "diacritic_ratio": 0,
+    "sensational_ratio": 0,
+    "source_indicator_ratio": 0,
+    "uncertainty_ratio": 0
+  },
+  "negative_count_values": {
+    "word_count": 0,
+    "sentence_count": 0,
+    "character_count": 0,
+    "avg_word_length": 0,
+    "avg_sentence_length": 0,
+    "title_length": 0,
+    "content_length": 0,
+    "exclamation_count": 0,
+    "question_count": 0,
+    "comma_count": 0,
+    "quote_count": 0,
+    "ellipsis_count": 0,
+    "uppercase_word_count": 0,
+    "e_count": 0,
+    "c_count": 0,
+    "diacritic_count": 0,
+    "possible_missing_diacritic_count": 0,
+    "sensational_count": 0,
+    "source_indicator_count": 0,
+    "uncertainty_count": 0
+  },
+  "articles_with_word_count_below_20": 1,
+  "constant_numeric_features": [],
+  "expected_empty_marker_values": {
+    "possible_missing_diacritic_words": 3459,
+    "sensational_found": 3885,
+    "source_indicators_found": 2828,
+    "uncertainty_found": 2831
+  }
+}

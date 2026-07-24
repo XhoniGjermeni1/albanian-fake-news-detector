@@ -1,0 +1,51 @@
+{
+  "model": "LogisticRegression with linguistic numeric features only",
+  "train_rows": 3195,
+  "test_rows": 799,
+  "feature_count": 29,
+  "feature_columns": [
+    "word_count",
+    "sentence_count",
+    "character_count",
+    "avg_word_length",
+    "avg_sentence_length",
+    "title_length",
+    "content_length",
+    "exclamation_count",
+    "question_count",
+    "comma_count",
+    "quote_count",
+    "ellipsis_count",
+    "exclamation_ratio",
+    "question_ratio",
+    "uppercase_word_count",
+    "uppercase_word_ratio",
+    "uppercase_char_ratio",
+    "title_excessive_uppercase",
+    "e_count",
+    "c_count",
+    "diacritic_count",
+    "diacritic_ratio",
+    "possible_missing_diacritic_count",
+    "sensational_count",
+    "sensational_ratio",
+    "source_indicator_count",
+    "source_indicator_ratio",
+    "uncertainty_count",
+    "uncertainty_ratio"
+  ],
+  "accuracy": 0.8273,
+  "precision_fake": 0.8355,
+  "recall_fake": 0.8145,
+  "f1_fake": 0.8249,
+  "confusion_matrix": [
+    [
+      336,
+      64
+    ],
+    [
+      74,
+      325
+    ]
+  ]
+}
