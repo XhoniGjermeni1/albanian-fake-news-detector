@@ -1,0 +1,4 @@
+﻿variant,real_threshold,fake_threshold,likely_real_count,uncertain_count,likely_fake_count,uncertain_real_count,uncertain_fake_count,errors_moved_to_uncertain,strong_decision_errors,strong_false_negatives,strong_false_positives,strong_decision_coverage,strong_decision_accuracy
+35-65,0.35,0.65,368,79,345,47,32,39,54,35,19,0.9003,0.9243
+40-60,0.4,0.6,380,56,356,36,20,32,61,39,22,0.9293,0.9171
+30-70,0.3,0.7,351,110,331,70,40,51,42,32,10,0.8611,0.9384

@@ -1,0 +1,184 @@
+{
+  "data_checks": {
+    "clean_rows": 3994,
+    "original_train_rows": 3195,
+    "original_test_rows": 799,
+    "evaluation_test_rows": 792,
+    "train_test_article_id_overlap": 0,
+    "train_test_pair_id_overlap": 0,
+    "exact_train_texts_excluded_from_test": 7,
+    "excluded_article_ids": [
+      "true_74",
+      "fake_110",
+      "fake_486",
+      "fake_786",
+      "fake_1665",
+      "fake_1853",
+      "fake_1966"
+    ],
+    "linguistic_feature_rows": 3994,
+    "numeric_linguistic_feature_count": 29,
+    "missing_feature_rows": 0,
+    "pair_id_mismatches": 0,
+    "label_mismatches": 0,
+    "empty_train_model_texts": 0,
+    "empty_test_model_texts": 0
+  },
+  "features": {
+    "all_numeric_features": [
+      "word_count",
+      "sentence_count",
+      "character_count",
+      "avg_word_length",
+      "avg_sentence_length",
+      "title_length",
+      "content_length",
+      "exclamation_count",
+      "question_count",
+      "comma_count",
+      "quote_count",
+      "ellipsis_count",
+      "exclamation_ratio",
+      "question_ratio",
+      "uppercase_word_count",
+      "uppercase_word_ratio",
+      "uppercase_char_ratio",
+      "title_excessive_uppercase",
+      "e_count",
+      "c_count",
+      "diacritic_count",
+      "diacritic_ratio",
+      "possible_missing_diacritic_count",
+      "sensational_count",
+      "sensational_ratio",
+      "source_indicator_count",
+      "source_indicator_ratio",
+      "uncertainty_count",
+      "uncertainty_ratio"
+    ],
+    "all_numeric_feature_count": 29,
+    "removed_length_features": [
+      "word_count",
+      "sentence_count",
+      "character_count",
+      "avg_sentence_length",
+      "title_length",
+      "content_length"
+    ],
+    "no_length_feature_count": 23
+  },
+  "metrics": {
+    "tfidf_only": {
+      "accuracy": 0.8977,
+      "precision": 0.9012,
+      "recall": 0.8977,
+      "f1": 0.8975,
+      "precision_fake": 0.9382,
+      "recall_fake": 0.8499,
+      "f1_fake": 0.8919,
+      "confusion_matrix": [
+        [
+          377,
+          22
+        ],
+        [
+          59,
+          334
+        ]
+      ]
+    },
+    "linguistic_only": {
+      "accuracy": 0.827,
+      "precision": 0.8272,
+      "recall": 0.827,
+      "f1": 0.827,
+      "precision_fake": 0.8333,
+      "recall_fake": 0.8142,
+      "f1_fake": 0.8237,
+      "confusion_matrix": [
+        [
+          335,
+          64
+        ],
+        [
+          73,
+          320
+        ]
+      ]
+    },
+    "hybrid": {
+      "accuracy": 0.8902,
+      "precision": 0.8912,
+      "recall": 0.8902,
+      "f1": 0.8901,
+      "precision_fake": 0.9113,
+      "recall_fake": 0.8626,
+      "f1_fake": 0.8863,
+      "confusion_matrix": [
+        [
+          366,
+          33
+        ],
+        [
+          54,
+          339
+        ]
+      ]
+    },
+    "hybrid_no_length": {
+      "accuracy": 0.8914,
+      "precision": 0.892,
+      "recall": 0.8914,
+      "f1": 0.8914,
+      "precision_fake": 0.9072,
+      "recall_fake": 0.8702,
+      "f1_fake": 0.8883,
+      "confusion_matrix": [
+        [
+          364,
+          35
+        ],
+        [
+          51,
+          342
+        ]
+      ]
+    }
+  },
+  "best_model_by_f1_fake": "tfidf_only",
+  "sample_prediction": {
+    "article_id": "true_290",
+    "title": "Përdhunime, aborte… Detaje tronditëse, çfarë ndodh me gratë në burgjet e Koresë së Veriut",
+    "true_label": "real",
+    "prediction": {
+      "label": 0,
+      "label_name": "real",
+      "probability_real": 0.7849,
+      "probability_fake": 0.2151,
+      "linguistic_explanation": {
+        "sensational_words_found": [
+          "tronditëse"
+        ],
+        "source_markers_found": [
+          "sipas",
+          "raporti"
+        ],
+        "exclamation_count": 0,
+        "word_count": 249,
+        "text_length": 1469,
+        "diacritic_ratio": 0.076242,
+        "uppercase_ratio": 0.022071
+      },
+      "notice": "Ky është probabilitet sipas modelit dhe karakteristikave gjuhësore; nuk zëvendëson verifikimin faktik."
+    }
+  },
+  "artifacts": {
+    "baseline_model": "models/baseline_tfidf_logreg.joblib",
+    "linguistic_model": "models/linguistic_features_logreg.joblib",
+    "hybrid_model": "models/hybrid_tfidf_linguistic_logreg.joblib",
+    "hybrid_no_length_model": "models/hybrid_tfidf_linguistic_no_length_logreg.joblib",
+    "comparison_table": "reports/day5_model_comparison.csv",
+    "comparison_figure": "reports/figures/day5_model_comparison.png",
+    "report": "reports/day5_hybrid_model.md"
+  }
+}

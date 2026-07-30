@@ -36,13 +36,15 @@ data/processed/articles_preview.csv
 Struktura mbahet minimale dhe rritet gradualisht me zhvillimin e projektit.
 
 ```text
-Diploma/
+albanian-fake-news-detector/
   data/
     raw/
     interim/
     processed/
   notebooks/
     01_dataset_audit.ipynb
+  app/
+    streamlit_app.py
   reports/
     day1_dataset_audit.md
     day2_baseline_model.md
@@ -53,6 +55,14 @@ Diploma/
     day4_feature_quality.json
     day4_feature_comparison.csv
     day4_linguistic_only_model_metrics.json
+    day5_hybrid_model.md
+    day5_metrics.json
+    day5_model_comparison.csv
+    day6_model_quality.md
+    day6_metrics.json
+    day6_error_analysis.csv
+    day6_threshold_comparison.csv
+    day7_streamlit_app.md
     figures/
   src/
     data/
@@ -63,6 +73,8 @@ Diploma/
       clean_text.py
     models/
       train_model.py
+      train_hybrid_model.py
+      analyze_model_quality.py
       predict.py
     features/
       linguistic_features.py
@@ -71,11 +83,17 @@ Diploma/
   models/
     baseline_tfidf_logreg.joblib
     linguistic_features_logreg.joblib
+    hybrid_tfidf_linguistic_logreg.joblib
+    hybrid_tfidf_linguistic_no_length_logreg.joblib
+    calibrated_tfidf_logreg.joblib
   tests/
     test_load_dataset.py
     test_clean_text.py
     test_linguistic_features.py
     test_feature_analysis.py
+    test_hybrid_model.py
+    test_model_quality.py
+    test_streamlit_app.py
   requirements.txt
   README.md
   .gitignore
@@ -169,6 +187,75 @@ reports/figures/
 models/linguistic_features_logreg.joblib
 ```
 
+## Modeli Hibrid
+
+Ekzekuto:
+
+```powershell
+python src\models\train_hybrid_model.py
+```
+
+Ky script kontrollon përputhjen e tekstit me linguistic features sipas `article_id`, ritrajnon modelet për një krahasim të drejtë dhe vlerëson:
+
+- TF-IDF only
+- linguistic features only
+- TF-IDF + linguistic features
+- modelin hibrid pa feature-t direkte të gjatësisë
+
+Output-et kryesore:
+
+```text
+models/hybrid_tfidf_linguistic_logreg.joblib
+models/hybrid_tfidf_linguistic_no_length_logreg.joblib
+reports/day5_metrics.json
+reports/day5_model_comparison.csv
+reports/figures/day5_model_comparison.png
+```
+
+Detajet dhe interpretimi ruhen te `reports/day5_hybrid_model.md`.
+
+## Kontrolli i Cilësisë dhe Calibration
+
+Ekzekuto:
+
+```powershell
+python src\models\analyze_model_quality.py
+```
+
+Ky script analizon false positives/false negatives të TF-IDF baseline, kontrollon shpërndarjen e probabiliteteve, trajnon sigmoid calibration me fold-e të grupuara dhe krahason pragjet për `likely_real`, `uncertain` dhe `likely_fake`.
+
+Output-et kryesore:
+
+```text
+models/calibrated_tfidf_logreg.joblib
+reports/day6_metrics.json
+reports/day6_error_analysis.csv
+reports/day6_interesting_errors.csv
+reports/day6_probability_summary.csv
+reports/day6_threshold_comparison.csv
+reports/day6_calibration_bins.csv
+reports/figures/day6_probability_calibration.png
+```
+
+Logjika e përgatitur për aplikacionin është funksioni `predict_news_for_app()` te `src/models/predict.py`. Pragjet fillestare janë 30% dhe 70%; zona midis tyre kthehet si `uncertain`.
+
+## Aplikacioni Streamlit
+
+Versioni i parë i aplikacionit përdor modelin e kalibruar `TF-IDF + Logistic Regression`. Përdoruesi mund të vendosë titullin, përmbajtjen ose të dyja dhe të marrë:
+
+- vendimin `likely_real`, `uncertain` ose `likely_fake`;
+- probabilitetin e modelit për klasat real dhe fake;
+- karakteristika të vëzhguara në tekst, si gjatësia, pikëçuditëset, kapitalizimi, diakritikat dhe marker-at gjuhësorë;
+- paralajmërimin se rezultati nuk është verifikim faktik.
+
+Hape aplikacionin nga rrënja e projektit:
+
+```powershell
+streamlit run app\streamlit_app.py
+```
+
+Aplikacioni pranon edhe vetëm titull ose vetëm përmbajtje. Input-i bosh bllokohet, ndërsa titulli pa përmbajtje dhe tekstet me më pak se 20 fjalë shoqërohen me paralajmërim. Modeli analizon vetëm formën gjuhësore të tekstit; nuk kontrollon burime, URL, autorë, data ose fakte reale.
+
 ## Testet
 
 Ekzekuto:
@@ -177,7 +264,7 @@ Ekzekuto:
 python -m pytest
 ```
 
-Testet aktuale kontrollojnë funksionimin bazë të loader-it të datasetit.
+Testet kontrollojnë loader-in, preprocessing-un, linguistic features, modelet hibride, grupet pa leakage, pragjet, strukturën e prediction dhe sjelljen kryesore të aplikacionit Streamlit.
 
 ## Raportet
 
@@ -189,20 +276,14 @@ Raporti aktual:
 - `reports/day2_baseline_model.md`
 - `reports/day3_linguistic_features.md`
 - `reports/day4_linguistic_feature_analysis.md`
+- `reports/day5_hybrid_model.md`
+- `reports/day6_model_quality.md`
+- `reports/day7_streamlit_app.md`
 
 README shërben vetëm si hyrje profesionale dhe udhëzues ekzekutimi. Gjetjet e detajuara, numrat e datasetit dhe problemet e validimit ruhen në raportet përkatëse.
 
 ## Roadmap
 
-Hapat e ardhshëm të projektit:
+Janë përfunduar pipeline-i i datasetit, preprocessing-u bazë, TF-IDF baseline, linguistic features, modeli hibrid, error analysis, probability calibration dhe versioni i parë funksional i aplikacionit Streamlit.
 
-- auditim dhe EDA më i thelluar
-- parapërpunim i tekstit shqip
-- nxjerrje e karakteristikave gjuhësore
-- krijim i TF-IDF features
-- trajnim i modelit bazë Machine Learning
-- kalibrim probabilitetesh
-- shpjegim i parashikimit
-- aplikacion web me Streamlit
-
-Modeli i parë i planifikuar do të jetë i thjeshtë dhe i interpretueshëm: TF-IDF, karakteristika gjuhësore dhe Logistic Regression ose Linear SVM.
+Hapi i ardhshëm është testimi më i gjerë me lajme të reja në shqip, përmirësimi i paraqitjes së rezultateve sipas gjetjeve dhe përgatitja e një vlerësimi përfundimtar pa ngatërruar klasifikimin gjuhësor me fact-checking.

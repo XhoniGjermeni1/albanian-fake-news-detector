@@ -1,0 +1,255 @@
+{
+  "data_checks": {
+    "day5_outputs_available": true,
+    "baseline_model_works": true,
+    "hybrid_model_works": true,
+    "prediction_function_works": true,
+    "train_rows": 3195,
+    "original_test_rows": 799,
+    "evaluation_test_rows": 792,
+    "exact_train_duplicates_excluded": 7,
+    "excluded_article_ids": [
+      "true_74",
+      "fake_110",
+      "fake_486",
+      "fake_786",
+      "fake_1665",
+      "fake_1853",
+      "fake_1966"
+    ],
+    "linguistic_feature_rows": 3994,
+    "missing_linguistic_feature_rows": 0,
+    "empty_model_text_rows": 0
+  },
+  "baseline_error_analysis": {
+    "total_errors": 81,
+    "false_positives": 22,
+    "false_negatives": 59,
+    "high_confidence_errors_90": 2,
+    "near_50_errors_45_55": 20,
+    "uncertain_errors_35_65": 47,
+    "interesting_error_count": 8,
+    "interesting_article_ids": [
+      "fake_1932",
+      "fake_702",
+      "fake_603",
+      "true_232",
+      "true_786",
+      "true_221",
+      "fake_343",
+      "fake_756"
+    ]
+  },
+  "calibration": {
+    "method": "sigmoid",
+    "fold_count": 5,
+    "leakage_group_count": 1586,
+    "ensemble": false,
+    "fold_sizes": [
+      {
+        "fit_rows": 2556,
+        "calibration_rows": 639
+      },
+      {
+        "fit_rows": 2556,
+        "calibration_rows": 639
+      },
+      {
+        "fit_rows": 2556,
+        "calibration_rows": 639
+      },
+      {
+        "fit_rows": 2556,
+        "calibration_rows": 639
+      },
+      {
+        "fit_rows": 2556,
+        "calibration_rows": 639
+      }
+    ]
+  },
+  "probability_metrics": {
+    "uncalibrated": {
+      "accuracy": 0.8977,
+      "precision": 0.9012,
+      "recall": 0.8977,
+      "f1": 0.8975,
+      "precision_fake": 0.9382,
+      "recall_fake": 0.8499,
+      "f1_fake": 0.8919,
+      "brier_score": 0.1008,
+      "log_loss": 0.3512,
+      "expected_calibration_error": 0.1317,
+      "confusion_matrix": [
+        [
+          377,
+          22
+        ],
+        [
+          59,
+          334
+        ]
+      ],
+      "false_positives": 22,
+      "false_negatives": 59,
+      "high_confidence_predictions_90": 129,
+      "high_confidence_errors_90": 2,
+      "high_confidence_error_rate_90": 0.0155,
+      "extreme_probability_predictions_10_90": 129,
+      "near_50_predictions_45_55": 55,
+      "near_50_errors_45_55": 20,
+      "uncertain_predictions_35_65": 172,
+      "uncertain_errors_35_65": 47,
+      "mean_probability_fake": 0.4881,
+      "median_probability_fake": 0.4306,
+      "minimum_probability_fake": 0.0137,
+      "maximum_probability_fake": 0.9942
+    },
+    "calibrated_sigmoid": {
+      "accuracy": 0.8826,
+      "precision": 0.883,
+      "recall": 0.8826,
+      "f1": 0.8825,
+      "precision_fake": 0.8947,
+      "recall_fake": 0.8651,
+      "f1_fake": 0.8797,
+      "brier_score": 0.0819,
+      "log_loss": 0.2868,
+      "expected_calibration_error": 0.048,
+      "confusion_matrix": [
+        [
+          359,
+          40
+        ],
+        [
+          53,
+          340
+        ]
+      ],
+      "false_positives": 40,
+      "false_negatives": 53,
+      "high_confidence_predictions_90": 509,
+      "high_confidence_errors_90": 19,
+      "high_confidence_error_rate_90": 0.0373,
+      "extreme_probability_predictions_10_90": 509,
+      "near_50_predictions_45_55": 26,
+      "near_50_errors_45_55": 16,
+      "uncertain_predictions_35_65": 79,
+      "uncertain_errors_35_65": 39,
+      "mean_probability_fake": 0.4996,
+      "median_probability_fake": 0.4336,
+      "minimum_probability_fake": 0.0001,
+      "maximum_probability_fake": 1.0
+    }
+  },
+  "calibration_changes": {
+    "accuracy": -0.0151,
+    "f1_fake": -0.0122,
+    "brier_score": -0.0189,
+    "log_loss": -0.0644,
+    "expected_calibration_error": -0.0837,
+    "high_confidence_errors_90": 17
+  },
+  "threshold_variants": [
+    {
+      "variant": "35-65",
+      "real_threshold": 0.35,
+      "fake_threshold": 0.65,
+      "likely_real_count": 368,
+      "uncertain_count": 79,
+      "likely_fake_count": 345,
+      "uncertain_real_count": 47,
+      "uncertain_fake_count": 32,
+      "errors_moved_to_uncertain": 39,
+      "strong_decision_errors": 54,
+      "strong_false_negatives": 35,
+      "strong_false_positives": 19,
+      "strong_decision_coverage": 0.9003,
+      "strong_decision_accuracy": 0.9243
+    },
+    {
+      "variant": "40-60",
+      "real_threshold": 0.4,
+      "fake_threshold": 0.6,
+      "likely_real_count": 380,
+      "uncertain_count": 56,
+      "likely_fake_count": 356,
+      "uncertain_real_count": 36,
+      "uncertain_fake_count": 20,
+      "errors_moved_to_uncertain": 32,
+      "strong_decision_errors": 61,
+      "strong_false_negatives": 39,
+      "strong_false_positives": 22,
+      "strong_decision_coverage": 0.9293,
+      "strong_decision_accuracy": 0.9171
+    },
+    {
+      "variant": "30-70",
+      "real_threshold": 0.3,
+      "fake_threshold": 0.7,
+      "likely_real_count": 351,
+      "uncertain_count": 110,
+      "likely_fake_count": 331,
+      "uncertain_real_count": 70,
+      "uncertain_fake_count": 40,
+      "errors_moved_to_uncertain": 51,
+      "strong_decision_errors": 42,
+      "strong_false_negatives": 32,
+      "strong_false_positives": 10,
+      "strong_decision_coverage": 0.8611,
+      "strong_decision_accuracy": 0.9384
+    }
+  ],
+  "recommendation": {
+    "prediction_model": "calibrated_tfidf_logreg",
+    "calibration_method": "sigmoid",
+    "threshold_variant": "30-70",
+    "likely_real_below": 0.3,
+    "likely_fake_above": 0.7,
+    "uncertain_inclusive": [
+      0.3,
+      0.7
+    ],
+    "linguistic_features_role": "explanation_only",
+    "warning": "The model analyzes text patterns and does not verify facts."
+  },
+  "app_output_sample": {
+    "article_id": "true_290",
+    "true_label": "real",
+    "title": "Përdhunime, aborte… Detaje tronditëse, çfarë ndodh me gratë në burgjet e Koresë së Veriut",
+    "output": {
+      "decision": "likely_real",
+      "probability_real": 0.9273,
+      "probability_fake": 0.0727,
+      "thresholds": {
+        "likely_real_below": 0.3,
+        "likely_fake_above": 0.7
+      },
+      "linguistic_explanation": {
+        "sensational_words_found": [
+          "tronditëse"
+        ],
+        "source_markers_found": [
+          "sipas",
+          "raporti"
+        ],
+        "exclamation_count": 0,
+        "word_count": 249,
+        "text_length": 1469,
+        "diacritic_ratio": 0.076242,
+        "uppercase_ratio": 0.022071
+      },
+      "notice": "Rezultati bazohet në modelin statistikor dhe sinjale gjuhësore; nuk është verifikim faktik i lajmit."
+    }
+  },
+  "artifacts": {
+    "calibrated_model": "models/calibrated_tfidf_logreg.joblib",
+    "errors": "reports/day6_error_analysis.csv",
+    "interesting_errors": "reports/day6_interesting_errors.csv",
+    "probability_summary": "reports/day6_probability_summary.csv",
+    "threshold_comparison": "reports/day6_threshold_comparison.csv",
+    "calibration_bins": "reports/day6_calibration_bins.csv",
+    "calibration_figure": "reports/figures/day6_probability_calibration.png",
+    "report": "reports/day6_model_quality.md"
+  }
+}

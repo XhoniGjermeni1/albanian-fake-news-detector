@@ -1,0 +1,5 @@
+﻿model_key,model,accuracy,precision,recall,f1,precision_fake,recall_fake,f1_fake,true_real_pred_real,true_real_pred_fake,true_fake_pred_real,true_fake_pred_fake
+tfidf_only,TF-IDF only,0.8977,0.9012,0.8977,0.8975,0.9382,0.8499,0.8919,377,22,59,334
+linguistic_only,Linguistic features only,0.827,0.8272,0.827,0.827,0.8333,0.8142,0.8237,335,64,73,320
+hybrid,TF-IDF + linguistic features,0.8902,0.8912,0.8902,0.8901,0.9113,0.8626,0.8863,366,33,54,339
+hybrid_no_length,Hybrid without length features,0.8914,0.892,0.8914,0.8914,0.9072,0.8702,0.8883,364,35,51,342
