@@ -1,0 +1,4 @@
+length_group,rows,real_rows,fake_rows,correct,accuracy,precision_fake,recall_fake,f1_fake,false_positives,false_negatives,likely_real,uncertain,likely_fake,strong_coverage,strong_accuracy,mean_probability_fake,mean_word_count,min_word_count,max_word_count
+long_48_51,13,5,8,6,0.4615,0.5455,0.75,0.6316,5,2,1,1,11,0.9231,0.5,0.7678,49.15,48,51
+medium_45_47,15,6,9,10,0.6667,0.6429,1.0,0.7826,5,0,0,3,12,0.8,0.75,0.7786,45.73,45,47
+short_38_44,12,9,3,3,0.25,0.25,1.0,0.4,9,0,0,4,8,0.6667,0.375,0.8017,41.5,38,44

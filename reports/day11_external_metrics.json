@@ -1,0 +1,151 @@
+{
+  "status": "completed",
+  "model": "calibrated_tfidf_logreg.joblib",
+  "model_retrained": false,
+  "prediction_function": "predict_news_for_app",
+  "preprocessing_function": "combine_title_content",
+  "model_sha256_before": "8b496b303cbe23172fbb6e239bc3ca84f0caec4dd78db85d2ccb55fbc7d96118",
+  "model_sha256_after": "8b496b303cbe23172fbb6e239bc3ca84f0caec4dd78db85d2ccb55fbc7d96118",
+  "dataset_sha256_before": "c3fe002be5451985105178a0a2c4250d322ea4c726ff84c0f8e27338b2c97145",
+  "dataset_sha256_after": "c3fe002be5451985105178a0a2c4250d322ea4c726ff84c0f8e27338b2c97145",
+  "probability_checks": {
+    "outside_0_1": 0,
+    "maximum_sum_error": 0.0
+  },
+  "binary_metrics": {
+    "rows": 40,
+    "accuracy": 0.475,
+    "precision": 0.4099,
+    "recall": 0.475,
+    "f1": 0.3593,
+    "averaging": "weighted",
+    "precision_macro": 0.4099,
+    "recall_macro": 0.475,
+    "f1_macro": 0.3593,
+    "class_real": {
+      "precision": 0.3333,
+      "recall": 0.05,
+      "f1": 0.087,
+      "support": 20
+    },
+    "class_fake": {
+      "precision": 0.4865,
+      "recall": 0.9,
+      "f1": 0.6316,
+      "support": 20
+    },
+    "confusion_matrix_labels": [
+      "real",
+      "fake"
+    ],
+    "confusion_matrix": [
+      [
+        1,
+        19
+      ],
+      [
+        2,
+        18
+      ]
+    ],
+    "true_negatives": 1,
+    "false_positives": 19,
+    "false_negatives": 2,
+    "true_positives": 18,
+    "high_confidence_errors_90": 3,
+    "balanced_constant_baseline_accuracy": 0.5
+  },
+  "decision_metrics": {
+    "thresholds": {
+      "likely_real_below": 0.3,
+      "likely_fake_above": 0.7
+    },
+    "likely_real": 1,
+    "uncertain": 8,
+    "likely_fake": 31,
+    "uncertain_real": 7,
+    "uncertain_fake": 1,
+    "strong_decision_count": 32,
+    "strong_decision_coverage": 0.8,
+    "strong_decision_accuracy": 0.5625,
+    "strong_decision_errors": 14,
+    "strong_false_positives": 13,
+    "strong_false_negatives": 1,
+    "binary_errors": 21,
+    "binary_errors_moved_to_uncertain": 7,
+    "binary_error_capture_rate": 0.3333,
+    "uncertain_error_rate": 0.875
+  },
+  "internal_comparison": {
+    "internal": {
+      "rows": 792,
+      "accuracy": 0.8838,
+      "false_positives": 39,
+      "false_negatives": 53,
+      "strong_decision_coverage": 0.8611,
+      "strong_decision_accuracy": 0.9399,
+      "uncertain": 110,
+      "mean_words": 210.46,
+      "median_words": 139.0,
+      "min_words": 44,
+      "max_words": 2376,
+      "words_by_label": {
+        "real": {
+          "rows": 399,
+          "mean_words": 279.49,
+          "median_words": 206.0
+        },
+        "fake": {
+          "rows": 393,
+          "mean_words": 140.37,
+          "median_words": 100.0
+        }
+      },
+      "publication_dates": {
+        "valid_metadata_dates": 3994,
+        "minimum": "2020-04-27",
+        "maximum": "2020-07-29"
+      },
+      "exact_train_duplicates_excluded": 7
+    },
+    "external": {
+      "rows": 40,
+      "accuracy": 0.475,
+      "mean_words": 45.58,
+      "median_words": 46.0,
+      "min_words": 38,
+      "max_words": 51,
+      "words_by_label": {
+        "fake": {
+          "rows": 20,
+          "mean_words": 46.95,
+          "median_words": 46.0
+        },
+        "real": {
+          "rows": 20,
+          "mean_words": 44.2,
+          "median_words": 45.0
+        }
+      },
+      "publication_dates": {
+        "minimum": "2024-07-30",
+        "maximum": "2026-07-31"
+      },
+      "text_format": "manual summaries"
+    },
+    "accuracy_difference_external_minus_internal": -0.4088
+  },
+  "artifacts": {
+    "predictions": "reports\\day11_external_predictions.csv",
+    "metrics": "reports\\day11_external_metrics.json",
+    "by_topic": "reports\\day11_external_by_topic.csv",
+    "by_label": "reports\\day11_external_by_label.csv",
+    "by_length": "reports\\day11_external_by_length.csv",
+    "by_source": "reports\\day11_external_by_source.csv",
+    "errors": "reports\\day11_external_errors.csv",
+    "interesting_cases": "reports\\day11_external_interesting_cases.csv",
+    "confusion_csv": "reports\\day11_external_confusion_matrix.csv",
+    "confusion_figure": "reports\\figures\\day11_external_confusion_matrix.png",
+    "report": "reports\\day11_external_evaluation.md"
+  }
+}

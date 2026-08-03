@@ -41,6 +41,9 @@ albanian-fake-news-detector/
     raw/
     interim/
     processed/
+    external/
+      external_news.csv
+      README.md
   notebooks/
     01_dataset_audit.ipynb
   app/
@@ -63,18 +66,32 @@ albanian-fake-news-detector/
     day6_error_analysis.csv
     day6_threshold_comparison.csv
     day7_streamlit_app.md
+    day8_streamlit_improvements.md
+    day9_system_testing.md
+    day9_system_test_metrics.json
+    day9_system_test_cases.csv
+    day9_demo_examples.csv
+    day10_external_dataset.md
+    day10_external_dataset_audit.json
+    day10_external_similarity_review.csv
+    day11_external_evaluation.md
+    day11_external_metrics.json
+    day11_external_predictions.csv
     figures/
   src/
     data/
       load_dataset.py
       validate_dataset.py
       build_dataset.py
+      validate_external_dataset.py
     preprocessing/
       clean_text.py
     models/
       train_model.py
       train_hybrid_model.py
       analyze_model_quality.py
+      evaluate_app_system.py
+      evaluate_external_dataset.py
       predict.py
     features/
       linguistic_features.py
@@ -93,7 +110,10 @@ albanian-fake-news-detector/
     test_feature_analysis.py
     test_hybrid_model.py
     test_model_quality.py
+    test_app_system.py
     test_streamlit_app.py
+    test_external_dataset.py
+    test_external_evaluation.py
   requirements.txt
   README.md
   .gitignore
@@ -241,12 +261,13 @@ Logjika e përgatitur për aplikacionin është funksioni `predict_news_for_app(
 
 ## Aplikacioni Streamlit
 
-Versioni i parë i aplikacionit përdor modelin e kalibruar `TF-IDF + Logistic Regression`. Përdoruesi mund të vendosë titullin, përmbajtjen ose të dyja dhe të marrë:
+Aplikacioni përdor modelin e kalibruar `TF-IDF + Logistic Regression`. Përdoruesi mund të vendosë titullin, përmbajtjen ose të dyja dhe të marrë:
 
-- vendimin `likely_real`, `uncertain` ose `likely_fake`;
-- probabilitetin e modelit për klasat real dhe fake;
-- karakteristika të vëzhguara në tekst, si gjatësia, pikëçuditëset, kapitalizimi, diakritikat dhe marker-at gjuhësorë;
-- paralajmërimin se rezultati nuk është verifikim faktik.
+- vendimin `likely_real`, `uncertain` ose `likely_fake`, të shpjeguar me formulim të kuptueshëm;
+- probabilitetet Real/Fake si metrics dhe progress bars;
+- shpjegim të posaçëm kur probabiliteti ndodhet në zonën `uncertain` 30%-70%;
+- karakteristika të vëzhguara në tekst dhe interpretim njerëzor të gjatësisë, pikëçuditëseve, kapitalizimit, diakritikave dhe marker-ave gjuhësorë;
+- paralajmërimin pranë rezultatit se aplikacioni nuk bën verifikim faktik.
 
 Hape aplikacionin nga rrënja e projektit:
 
@@ -254,7 +275,86 @@ Hape aplikacionin nga rrënja e projektit:
 streamlit run app\streamlit_app.py
 ```
 
-Aplikacioni pranon edhe vetëm titull ose vetëm përmbajtje. Input-i bosh bllokohet, ndërsa titulli pa përmbajtje dhe tekstet me më pak se 20 fjalë shoqërohen me paralajmërim. Modeli analizon vetëm formën gjuhësore të tekstit; nuk kontrollon burime, URL, autorë, data ose fakte reale.
+Aplikacioni pranon edhe vetëm titull ose vetëm përmbajtje. Input-i bosh ose pa shkronja/numra bllokohet, ndërsa titulli pa përmbajtje, tekstet me më pak se 20 fjalë dhe tekstet mbi 20,000 karaktere shoqërohen me paralajmërim. Për të mbrojtur qëndrueshmërinë, input-i mbi 100,000 karaktere nuk analizohet. Input-i normalizohet në Unicode NFC për të trajtuar në mënyrë të njëjtë shkronjat e kombinuara shqipe. Modeli analizon vetëm formën gjuhësore të tekstit; nuk kontrollon burime, URL, autorë, data ose fakte reale.
+
+## Testimi i Sistemit
+
+Ekzekuto paketën e testimit të Ditës 9:
+
+```powershell
+python src\models\evaluate_app_system.py
+```
+
+Script-i teston input-et ideale dhe joideale, kontrollon probabilitetet dhe pragjet në test set-in pa leakage dhe përzgjedh shembuj demonstrues e gabime reale të modelit.
+
+Output-et kryesore:
+
+```text
+reports/day9_system_test_metrics.json
+reports/day9_system_test_cases.csv
+reports/day9_demo_examples.csv
+reports/day9_system_testing.md
+```
+
+## Dataseti i Jashtëm
+
+Dataseti pilot i Ditës 10 përmban 40 raste të reja në shqip: 20 `real` dhe 20
+`fake`. Pesë temat kanë nga 8 raste secila dhe çdo temë ndahet në 4 `real` dhe
+4 `fake`. Tekstet janë përmbledhje manuale; URL-ja dhe prova e etiketimit ruhen
+në kolona të veçanta.
+
+Dataseti ruhet te:
+
+```text
+data/external/external_news.csv
+```
+
+Ekzekuto vetëm kontrollin e cilësisë dhe të mbivendosjes me train set-in:
+
+```powershell
+python src\data\validate_external_dataset.py
+```
+
+Kjo komandë nuk ngarkon modelin dhe nuk bën prediction. Ajo krijon:
+
+```text
+reports/day10_external_dataset_audit.json
+reports/day10_external_similarity_review.csv
+```
+
+Metoda e mbledhjes dhe kufizimet shpjegohen te `data/external/README.md`, ndërsa
+rezultatet e auditimit te `reports/day10_external_dataset.md`.
+
+## Vlerësimi i Jashtëm
+
+Vlerësimi i Ditës 11 përdor modelin e ruajtur dhe të njëjtin funksion
+`predict_news_for_app()` si aplikacioni. Modeli nuk ritrajnohet dhe pragjet
+`0.30/0.70` nuk ndryshohen.
+
+Ekzekuto:
+
+```powershell
+python src\models\evaluate_external_dataset.py
+```
+
+Output-et kryesore janë:
+
+```text
+reports/day11_external_predictions.csv
+reports/day11_external_metrics.json
+reports/day11_external_by_topic.csv
+reports/day11_external_by_label.csv
+reports/day11_external_by_length.csv
+reports/day11_external_by_source.csv
+reports/day11_external_errors.csv
+reports/day11_external_interesting_cases.csv
+reports/day11_external_confusion_matrix.csv
+reports/figures/day11_external_confusion_matrix.png
+reports/day11_external_evaluation.md
+```
+
+Raporti krahason me kujdes rezultatet e jashtme me test set-in e brendshëm, por
+nuk i trajton si dataset-e drejtpërdrejt të barabarta.
 
 ## Testet
 
@@ -279,11 +379,15 @@ Raporti aktual:
 - `reports/day5_hybrid_model.md`
 - `reports/day6_model_quality.md`
 - `reports/day7_streamlit_app.md`
+- `reports/day8_streamlit_improvements.md`
+- `reports/day9_system_testing.md`
+- `reports/day10_external_dataset.md`
+- `reports/day11_external_evaluation.md`
 
 README shërben vetëm si hyrje profesionale dhe udhëzues ekzekutimi. Gjetjet e detajuara, numrat e datasetit dhe problemet e validimit ruhen në raportet përkatëse.
 
 ## Roadmap
 
-Janë përfunduar pipeline-i i datasetit, preprocessing-u bazë, TF-IDF baseline, linguistic features, modeli hibrid, error analysis, probability calibration dhe versioni i parë funksional i aplikacionit Streamlit.
+Janë përfunduar pipeline-i i datasetit, preprocessing-u bazë, TF-IDF baseline, linguistic features, modeli hibrid, error analysis, probability calibration, aplikacioni Streamlit, testimi end-to-end, përgatitja e datasetit të jashtëm dhe vlerësimi i parë jashtë corpus-it.
 
-Hapi i ardhshëm është testimi më i gjerë me lajme të reja në shqip, përmirësimi i paraqitjes së rezultateve sipas gjetjeve dhe përgatitja e një vlerësimi përfundimtar pa ngatërruar klasifikimin gjuhësor me fact-checking.
+Hapi i ardhshëm është analiza e kontrolluar e domain shift-it dhe e bias-it të gjatësisë, duke ruajtur datasetin e jashtëm si benchmark të pandryshuar.

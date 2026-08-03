@@ -1,0 +1,115 @@
+{
+  "status": "passed",
+  "model": "calibrated_tfidf_logreg.joblib",
+  "model_retrained": false,
+  "fact_check_warning_configured": true,
+  "system_cases": {
+    "total": 16,
+    "passed": 16,
+    "failed": 0,
+    "blocked_as_expected": 3,
+    "predicted_without_crash": 13
+  },
+  "test_set": {
+    "rows": 792,
+    "real_rows": 399,
+    "fake_rows": 393,
+    "invalid_probability_rows": 0,
+    "maximum_probability_sum_error": 0.0,
+    "decision_threshold_mismatches": 0,
+    "minimum_probability_fake": 5.7e-05,
+    "maximum_probability_fake": 0.999997,
+    "likely_real_count": 352,
+    "uncertain_count": 110,
+    "uncertain_real_count": 70,
+    "uncertain_fake_count": 40,
+    "likely_fake_count": 330,
+    "strong_decision_count": 682,
+    "strong_decision_errors": 41,
+    "strong_decision_coverage": 0.8611,
+    "strong_decision_accuracy": 0.9399,
+    "binary_correct": 700,
+    "binary_errors_moved_to_uncertain": 51,
+    "binary_accuracy": 0.8838,
+    "false_positives": 39,
+    "false_negatives": 53,
+    "confusion_matrix": [
+      [
+        360,
+        39
+      ],
+      [
+        53,
+        340
+      ]
+    ],
+    "high_confidence_errors_90": 18,
+    "strong_false_positives": 9,
+    "strong_false_negatives": 32,
+    "exact_train_duplicates_excluded": 7,
+    "excluded_article_ids": [
+      "true_74",
+      "fake_110",
+      "fake_486",
+      "fake_786",
+      "fake_1665",
+      "fake_1853",
+      "fake_1966"
+    ]
+  },
+  "demo_examples": [
+    {
+      "demo_type": "likely_real",
+      "article_id": "true_612",
+      "true_label": "real",
+      "app_decision": "likely_real",
+      "probability_real": 0.8513,
+      "probability_fake": 0.1487
+    },
+    {
+      "demo_type": "likely_fake",
+      "article_id": "fake_1939",
+      "true_label": "fake",
+      "app_decision": "likely_fake",
+      "probability_real": 0.1487,
+      "probability_fake": 0.8513
+    },
+    {
+      "demo_type": "uncertain",
+      "article_id": "true_232",
+      "true_label": "real",
+      "app_decision": "uncertain",
+      "probability_real": 0.5038,
+      "probability_fake": 0.4962
+    },
+    {
+      "demo_type": "false_positive",
+      "article_id": "true_786",
+      "true_label": "real",
+      "app_decision": "likely_fake",
+      "probability_real": 0.1077,
+      "probability_fake": 0.8923
+    },
+    {
+      "demo_type": "false_negative",
+      "article_id": "fake_1932",
+      "true_label": "fake",
+      "app_decision": "likely_real",
+      "probability_real": 0.9999,
+      "probability_fake": 0.0001
+    },
+    {
+      "demo_type": "high_confidence_error",
+      "article_id": "fake_702",
+      "true_label": "fake",
+      "app_decision": "likely_real",
+      "probability_real": 0.998,
+      "probability_fake": 0.002
+    }
+  ],
+  "artifacts": {
+    "case_results": "reports/day9_system_test_cases.csv",
+    "demo_examples": "reports/day9_demo_examples.csv",
+    "metrics": "reports/day9_system_test_metrics.json"
+  }
+}

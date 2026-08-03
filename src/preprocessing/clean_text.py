@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 
 import pandas as pd
 
@@ -10,11 +11,12 @@ SPACE_PATTERN = re.compile(r"\s+")
 
 
 def normalize_spaces(text: str) -> str:
-    """Replace multiple spaces/newlines with one space."""
+    """Normalize Unicode and replace multiple spaces/newlines with one space."""
     if pd.isna(text):
         return ""
 
-    return SPACE_PATTERN.sub(" ", str(text)).strip()
+    normalized_text = unicodedata.normalize("NFC", str(text))
+    return SPACE_PATTERN.sub(" ", normalized_text).strip()
 
 
 def combine_title_content(title: str, content: str) -> str:

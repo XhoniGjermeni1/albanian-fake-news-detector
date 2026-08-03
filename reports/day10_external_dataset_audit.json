@@ -1,0 +1,106 @@
+{
+  "total_articles": 40,
+  "label_counts": {
+    "fake": 20,
+    "real": 20
+  },
+  "topic_counts": {
+    "ekonomi": 8,
+    "politikë": 8,
+    "shëndetësi": 8,
+    "sociale": 8,
+    "teknologji": 8
+  },
+  "topic_label_counts": {
+    "ekonomi": {
+      "fake": 4,
+      "real": 4
+    },
+    "politikë": {
+      "fake": 4,
+      "real": 4
+    },
+    "shëndetësi": {
+      "fake": 4,
+      "real": 4
+    },
+    "sociale": {
+      "fake": 4,
+      "real": 4
+    },
+    "teknologji": {
+      "fake": 4,
+      "real": 4
+    }
+  },
+  "source_counts": {
+    "Këshilli i Ministrave i Shqipërisë": 16,
+    "Krypometër / postim në Facebook": 16,
+    "Banka e Shqipërisë": 2,
+    "INSTAT": 2,
+    "Krypometër / postim në Instagram": 2,
+    "Krypometër / postim në rrjete sociale": 1,
+    "Krypometër / ofertë në Facebook": 1
+  },
+  "missing_values": {},
+  "invalid_labels": [],
+  "invalid_topics": [],
+  "unapproved_ids": [],
+  "invalid_date_ids": [],
+  "invalid_url_ids": [],
+  "invalid_evidence_url_ids": [],
+  "short_content_threshold_words": 25,
+  "short_content_ids": [],
+  "weak_evidence_ids": [],
+  "unicode": {
+    "non_nfc_ids": [],
+    "replacement_character_ids": [],
+    "albanian_diacritic_rows": 40
+  },
+  "duplicates": {
+    "external_id": {
+      "rows": 0,
+      "groups": 0
+    },
+    "url": {
+      "rows": 0,
+      "groups": 0
+    },
+    "title": {
+      "rows": 0,
+      "groups": 0
+    },
+    "content": {
+      "rows": 0,
+      "groups": 0
+    }
+  },
+  "content_word_stats": {
+    "min": 32,
+    "max": 43,
+    "mean": 37.15,
+    "median": 36.5
+  },
+  "training_overlap": {
+    "checked": true,
+    "training_articles": 3994,
+    "similarity_threshold": 0.9,
+    "exact_training_matches": 0,
+    "exact_training_match_ids": [],
+    "high_similarity_to_training": 0,
+    "high_similarity_to_training_ids": [],
+    "high_similarity_within_external": 0,
+    "high_similarity_within_external_ids": [],
+    "max_training_similarity": 0.339944,
+    "mean_max_training_similarity": 0.206203
+  },
+  "training_url_overlap": {
+    "checked": true,
+    "metadata_files_checked": 3994,
+    "unique_training_urls": 7988,
+    "exact_url_matches": 0,
+    "exact_url_match_ids": []
+  },
+  "blocking_problems": [],
+  "ready_for_external_evaluation": true
+}

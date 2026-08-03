@@ -1,0 +1,8 @@
+source,rows,real_rows,fake_rows,correct,accuracy,precision_fake,recall_fake,f1_fake,false_positives,false_negatives,likely_real,uncertain,likely_fake,strong_coverage,strong_accuracy,mean_probability_fake,mean_word_count,min_word_count,max_word_count
+Banka e Shqipërisë,2,2,0,0,0.0,0.0,0.0,0.0,2,0,0,1,1,0.5,0.0,0.7378,43.0,41,45
+INSTAT,2,2,0,1,0.5,0.0,0.0,0.0,1,0,0,1,1,0.5,0.0,0.5572,42.5,38,47
+Krypometër / ofertë në Facebook,1,0,1,1,1.0,1.0,1.0,1.0,0,0,0,0,1,1.0,1.0,0.8049,46.0,46,46
+Krypometër / postim në Facebook,16,0,16,14,0.875,1.0,0.875,0.9333,0,2,1,1,14,0.9375,0.9333,0.8192,47.12,42,51
+Krypometër / postim në Instagram,2,0,2,2,1.0,1.0,1.0,1.0,0,0,0,0,2,1.0,1.0,0.747,47.0,46,48
+Krypometër / postim në rrjete sociale,1,0,1,1,1.0,1.0,1.0,1.0,0,0,0,0,1,1.0,1.0,0.927,45.0,45,45
+Këshilli i Ministrave i Shqipërisë,16,16,0,0,0.0,0.0,0.0,0.0,16,0,0,5,11,0.6875,0.0,0.7724,44.56,40,49

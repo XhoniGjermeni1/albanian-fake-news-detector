@@ -11,6 +11,12 @@ def test_normalize_spaces_keeps_albanian_letters_case_and_punctuation() -> None:
     assert cleaned == "Çfarë ndodhi? Është LAJM!"
 
 
+def test_normalize_spaces_converts_decomposed_unicode_to_nfc() -> None:
+    decomposed_text = "C\u0327fare\u0308 e\u0308shte\u0308"
+
+    assert normalize_spaces(decomposed_text) == "Çfarë është"
+
+
 def test_combine_title_content_handles_empty_values() -> None:
     assert combine_title_content("Titull", "Përmbajtje") == "Titull. Përmbajtje"
     assert combine_title_content("", "Vetëm përmbajtje") == "Vetëm përmbajtje"

@@ -1,0 +1,6 @@
+topic,rows,real_rows,fake_rows,correct,accuracy,precision_fake,recall_fake,f1_fake,false_positives,false_negatives,likely_real,uncertain,likely_fake,strong_coverage,strong_accuracy,mean_probability_fake,mean_word_count,min_word_count,max_word_count
+ekonomi,8,4,4,3,0.375,0.4,0.5,0.4444,3,2,1,3,4,0.625,0.4,0.6182,46.12,38,51
+politikë,8,4,4,4,0.5,0.5,1.0,0.6667,4,0,0,2,6,0.75,0.6667,0.8164,46.0,43,49
+shëndetësi,8,4,4,4,0.5,0.5,1.0,0.6667,4,0,0,0,8,1.0,0.5,0.8497,46.62,40,50
+sociale,8,4,4,4,0.5,0.5,1.0,0.6667,4,0,0,3,5,0.625,0.8,0.7362,45.12,40,50
+teknologji,8,4,4,4,0.5,0.5,1.0,0.6667,4,0,0,0,8,1.0,0.5,0.8895,44.0,41,48

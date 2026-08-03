@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 
 import pandas as pd
 
@@ -18,6 +19,8 @@ SENSATIONAL_PHRASES = [
     "e pabesueshme",
     "nuk do ta besoni",
     "lajm i fundit",
+    "lajmi i fundit",
+    "ekskluzive",
     "bombë",
     "alarm",
     "ja çfarë ndodhi",
@@ -65,7 +68,8 @@ def normalize_spaces(text: str) -> str:
     if pd.isna(text):
         return ""
 
-    return SPACE_PATTERN.sub(" ", str(text)).strip()
+    normalized_text = unicodedata.normalize("NFC", str(text))
+    return SPACE_PATTERN.sub(" ", normalized_text).strip()
 
 
 def get_words(text: str) -> list[str]:

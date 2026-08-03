@@ -29,14 +29,25 @@ def test_extract_linguistic_features_keeps_albanian_signals() -> None:
     assert features["diacritic_count"] == features["e_count"] + features["c_count"]
 
 
+def test_extract_linguistic_features_normalizes_decomposed_diacritics() -> None:
+    features = extract_linguistic_features(
+        title="C\u0327fare\u0308 e\u0308shte\u0308 kjo?",
+        content="Nje\u0308 pe\u0308rmbajtje me shkronja shqipe.",
+    )
+
+    assert features["c_count"] >= 1
+    assert features["e_count"] >= 3
+
+
 def test_extract_linguistic_features_detects_phrase_groups() -> None:
     features = extract_linguistic_features(
-        title="Lajm i fundit",
+        title="Lajmi i fundit - Ekskluzive",
         content="Ja çfarë ndodhi. Sipas policia, thuhet se ka gjasa të ketë zhvillime.",
     )
 
-    assert features["sensational_count"] >= 2
-    assert "lajm i fundit" in features["sensational_found"]
+    assert features["sensational_count"] >= 3
+    assert "lajmi i fundit" in features["sensational_found"]
+    assert "ekskluzive" in features["sensational_found"]
     assert "ja çfarë ndodhi" in features["sensational_found"]
     assert features["source_indicator_count"] >= 2
     assert "sipas" in features["source_indicators_found"]
