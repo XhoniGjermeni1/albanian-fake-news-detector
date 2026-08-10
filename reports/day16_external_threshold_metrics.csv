@@ -1,0 +1,3 @@
+model,lower_threshold,upper_threshold,likely_real,uncertain,likely_fake,strong_coverage,strong_accuracy,binary_errors,errors_in_uncertain,errors_captured_fraction,strong_false_positives,strong_false_negatives
+new_calibrated_svm,0.3,0.7,8,19,13,0.525,0.7142857142857143,16,10,0.625,2,4
+current_app_model,0.3,0.7,1,8,31,0.8,0.5625,21,7,0.3333333333333333,13,1

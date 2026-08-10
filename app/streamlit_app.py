@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import logging
 import sys
 from pathlib import Path
@@ -12,13 +13,17 @@ if str(PROJECT_ROOT) not in sys.path:
 
 import streamlit as st
 
-from src.models.predict import (
-    DEFAULT_CALIBRATED_MODEL_PATH,
-    load_model,
-    predict_news_for_app,
+from src.models.predict_final import (
+    FINAL_MANIFEST_PATH,
+    FINAL_MODEL_ID,
+    FINAL_MODEL_PATH,
+    FINAL_MODEL_VERSION,
+    load_final_model,
+    predict_final_news,
 )
 
-MODEL_PATH = PROJECT_ROOT / DEFAULT_CALIBRATED_MODEL_PATH
+MODEL_PATH = FINAL_MODEL_PATH
+MANIFEST_PATH = FINAL_MANIFEST_PATH
 MIN_CONTENT_WORDS = 20
 LONG_TEXT_CHARACTERS = 20_000
 MAX_INPUT_CHARACTERS = 100_000
@@ -118,7 +123,49 @@ def validate_news_input(
 @st.cache_resource(show_spinner=False)
 def get_cached_model(model_path: str):
     """Load the model once for the lifetime of the Streamlit process."""
-    return load_model(model_path)
+    return load_final_model(model_path)
+
+
+def inspect_model_assets(
+    model_path: str | Path = MODEL_PATH,
+    manifest_path: str | Path = MANIFEST_PATH,
+) -> tuple[dict | None, list[str]]:
+    """Return final model metadata and clear blocking asset errors."""
+    model_file = Path(model_path)
+    manifest_file = Path(manifest_path)
+    errors: list[str] = []
+    if not model_file.exists():
+        errors.append(
+            f"Artefakti final i modelit mungon: {model_file}. "
+            "Ekzekuto python src\\models\\finalize_model.py."
+        )
+    if not manifest_file.exists():
+        errors.append(
+            f"Manifesti i modelit final mungon: {manifest_file}. "
+            "Ekzekuto python src\\models\\finalize_model.py."
+        )
+    if errors:
+        return None, errors
+
+    try:
+        manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        return None, [f"Manifesti i modelit final nuk mund të lexohet: {error}"]
+
+    if manifest.get("model_id") != FINAL_MODEL_ID:
+        errors.append("Manifesti nuk përputhet me ID-në e modelit final.")
+    if manifest.get("model_version") != FINAL_MODEL_VERSION:
+        errors.append("Manifesti nuk përputhet me versionin final 1.0.0.")
+    manifest_artifact = str(manifest.get("artifact", {}).get("final_path", ""))
+    manifest_name = Path(manifest_artifact.replace("\\", "/")).name
+    if manifest_name != model_file.name:
+        errors.append("Manifesti referon një artefakt tjetër nga modeli final.")
+    return (manifest if not errors else None), errors
+
+
+def predict_with_final_model(title: str, content: str, model) -> dict:
+    """Use the single frozen prediction path shared with evaluation."""
+    return predict_final_news(title, content, model=model)
 
 
 def apply_page_style() -> None:
@@ -198,7 +245,7 @@ def initialize_state() -> None:
     st.session_state.setdefault("analysis_warnings", [])
 
 
-def render_sidebar() -> None:
+def render_sidebar(manifest: dict | None) -> None:
     with st.sidebar:
         st.subheader("Shembuj testimi")
         selected_example = st.selectbox(
@@ -221,19 +268,24 @@ def render_sidebar() -> None:
 
         st.divider()
         st.subheader("Rreth modelit")
+        model_version = (
+            manifest.get("model_version", FINAL_MODEL_VERSION)
+            if manifest
+            else FINAL_MODEL_VERSION
+        )
         st.markdown(
-            """
-            Modeli është trajnuar mbi një dataset shqiptar me lajme real/fake.
+            f"""
+            Modeli final është trajnuar mbi një korpus shqiptar me etiketa real/fake.
 
-            - TF-IDF + Logistic Regression
-            - probabilitete me sigmoid calibration
-            - linguistic features vetëm për shpjegim
-            - `uncertain` për probabilitete mes 30% dhe 70%
+            - Word + Character TF-IDF
+            - Linear SVM
+            - Kalibrim sigmoid
+            - versioni `{model_version}`
             """
         )
         st.caption(
-            "Karakteristikat gjuhësore shpjegojnë çfarë u vëzhgua në tekst. "
-            "Modeli nuk kontrollon burimet ose faktet."
+            "Zona `uncertain` është 30%-70%. Karakteristikat gjuhësore përdoren "
+            "vetëm për shpjegim; modeli nuk kontrollon burimet ose faktet."
         )
 
 
@@ -354,6 +406,9 @@ def render_result(result: dict, warnings: list[str]) -> None:
 
     st.divider()
     st.subheader("Rezultati")
+    st.caption(
+        f"Modeli `{result['model_id']}` · versioni `{result['model_version']}`"
+    )
     render_decision(result)
 
     st.subheader("Probabilitetet")
@@ -396,13 +451,16 @@ def main() -> None:
     )
     apply_page_style()
     initialize_state()
-    render_sidebar()
+    manifest, asset_errors = inspect_model_assets()
+    render_sidebar(manifest)
 
     st.title("Detektuesi i lajmeve në shqip")
     st.write(
         "Vendos titullin dhe përmbajtjen për të marrë një vlerësim gjuhësor nga modeli."
     )
     st.warning(FACT_CHECK_WARNING)
+    for asset_error in asset_errors:
+        st.error(asset_error)
 
     with st.form("news_analysis_form"):
         title = st.text_input(
@@ -420,6 +478,7 @@ def main() -> None:
             "Analizo lajmin",
             type="primary",
             use_container_width=True,
+            disabled=bool(asset_errors),
         )
 
     if submitted:
@@ -434,16 +493,16 @@ def main() -> None:
             try:
                 with st.spinner("Po analizohet teksti..."):
                     model = get_cached_model(str(MODEL_PATH))
-                    st.session_state["analysis_result"] = predict_news_for_app(
+                    st.session_state["analysis_result"] = predict_with_final_model(
                         title,
                         content,
-                        model_path=MODEL_PATH,
-                        model=model,
+                        model,
                     )
             except FileNotFoundError:
-                LOGGER.exception("Calibrated model file was not found")
+                LOGGER.exception("Final model file was not found")
                 st.error(
-                    "Modeli i kalibruar mungon. Ekzekuto fillimisht analizën e Ditës 6."
+                    "Modeli final mungon. Ekzekuto python "
+                    "src\\models\\finalize_model.py."
                 )
             except Exception:
                 LOGGER.exception("Prediction failed")

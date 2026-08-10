@@ -1,0 +1,10 @@
+case_id,probability_real,probability_fake,probability_sum_error,decision,expected_decision,matches_expected_anchor,decision_matches_thresholds,source_final_max_difference,reload_max_difference,model_text_is_nfc
+official_style,0.1392582554277635,0.8607417445722365,0.0,likely_fake,not_fixed,True,True,0.0,0.0,True
+clickbait_style,0.00038221173073382797,0.9996177882692662,0.0,likely_fake,not_fixed,True,True,0.0,0.0,True
+title_only,0.29969956941000053,0.7003004305899995,0.0,likely_fake,not_fixed,True,True,0.0,0.0,True
+content_only,0.012398448480315905,0.9876015515196841,0.0,likely_fake,not_fixed,True,True,0.0,0.0,True
+unicode_nfc,0.016894641655903264,0.9831053583440967,0.0,likely_fake,not_fixed,True,True,0.0,0.0,True
+unicode_nfd,0.016894641655903264,0.9831053583440967,0.0,likely_fake,not_fixed,True,True,0.0,0.0,True
+known_likely_real,0.9998998558475991,0.0001001441524008815,0.0,likely_real,likely_real,True,True,0.0,0.0,True
+known_uncertain,0.5028133475971859,0.4971866524028142,0.0,uncertain,uncertain,True,True,0.0,0.0,True
+known_likely_fake,2.926701381245067e-07,0.9999997073298619,0.0,likely_fake,likely_fake,True,True,0.0,0.0,True

@@ -5,6 +5,9 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
 
 # Virtual environments
 .venv/
@@ -29,6 +32,9 @@ dist/
 *.log
 *.tmp
 *.temp
+*.bak
+*.swp
+*~
 tmp/
 temp/
 
@@ -37,6 +43,9 @@ models/*.joblib
 models/*.pkl
 models/*.pickle
 models/*.onnx
+
+# Keep only the frozen runtime model in version control.
+!models/final_word_char_linear_svm_calibrated_v1.joblib
 
 # Raw dataset archives, if downloaded manually
 data/raw/*.zip

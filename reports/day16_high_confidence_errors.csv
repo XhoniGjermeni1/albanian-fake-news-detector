@@ -1,0 +1,87 @@
+dataset,model,case_id,label,title,probability_fake,confidence,binary_prediction
+oof_train,new_svm_sigmoid,true_12,0,Këto janë shenjat që tregojnë se e keni kaluar Koronavirusin,0.9875471973248557,0.9875471973248557,1
+oof_train,new_svm_sigmoid,true_172,0,Edhe një zyrtar i LDK-së shërohet nga Koronavirusi,0.9107133351695395,0.9107133351695395,1
+oof_train,new_svm_sigmoid,true_222,0,Ky është personi nga Ferizaj që vdiq nga Koronavirusi,0.9445060085923328,0.9445060085923328,1
+oof_train,new_svm_sigmoid,true_260,0,Analisti i tregon arsyet përse nuk bënë të ndërtohet Xhamia në Prishtinë,0.9398569364502748,0.9398569364502748,1
+oof_train,new_svm_sigmoid,true_284,0,Gani Geci: Shpresoj që aktakuza të ketë ndodhur me dijeninë e amerikanëve,0.9034597239491393,0.9034597239491393,1
+oof_train,new_svm_sigmoid,true_537,0,Dalin fotot nga ditëlindja e djalit të Edi Rames,0.9114164739344696,0.9114164739344696,1
+oof_train,new_svm_sigmoid,true_607,0,Vjosa Osmani: Unë jam sherifi ktu,0.9212140630664402,0.9212140630664402,1
+oof_train,new_svm_sigmoid,true_609,0,"Punëtorët e Telekomit: Më mirë me vdek prej koronavirusit, se nga Blerim Devolli",0.9208327337272486,0.9208327337272486,1
+oof_train,new_svm_sigmoid,true_693,0,Ramush Haradinaj: Un do te behem President se shpejti,0.9100779380507023,0.9100779380507023,1
+oof_train,new_svm_sigmoid,true_782,0,Zeka e quan lajm historik thirrjen nga Washingtoni: E mbështes Thaçin në dialog,0.9743632109924958,0.9743632109924958,1
+oof_train,new_svm_sigmoid,true_832,0,UNDP: Vjosa Osmani liderja më e pëlqyer në Kosovë,0.9656739105150057,0.9656739105150057,1
+oof_train,new_svm_sigmoid,true_1640,0,Udha e shkronjave të Kur’anit – Mësimi i 6 (Video),0.9913934818209476,0.9913934818209476,1
+oof_train,new_svm_sigmoid,fake_230,1,"Dasmë në shtetrrethim! Nusen e morën për 60′, çifti nga Tirana rrëfejnë pengun e martesës në kohën e COVID-19: Postblloku na repektoi me nderim ushtrie",0.059650131078224186,0.9403498689217759,0
+oof_train,new_svm_sigmoid,fake_334,1,"Dobia që i sjell organizmit, per të gjithë ju që keni konsumuar deri më sot djathë në mengjes",0.05953862828468211,0.9404613717153179,0
+oof_train,new_svm_sigmoid,fake_356,1,"Emisari i BE-së flet se kush duhet të udhëheq dialogun me Serbinë, Thaçi apo Hoti?",0.023733278199388644,0.9762667218006114,0
+oof_train,new_svm_sigmoid,fake_476,1,9 Këshilla Praktike të Milionerëve që Duhet t’i Vëmë në Punë sa më Shpejt,0.019614267653311517,0.9803857323466885,0
+oof_train,new_svm_sigmoid,fake_489,1,"Shkencëtari britanik, Shattock: Do të duhet të jetojmë për shumë dekada me coronavirusin",0.053924715315255334,0.9460752846847447,0
+oof_train,new_svm_sigmoid,fake_513,1,"Lajm i keq për punëtorët shëndetësor, ky është vendimi i fundit i Qeverisë për ta..",0.042555317956867206,0.9574446820431328,0
+oof_train,new_svm_sigmoid,fake_554,1,Dasmorët kërkojnë koparen që dhanë për sallat e dasmave,0.005623945870955357,0.9943760541290446,0
+oof_train,new_svm_sigmoid,fake_560,1,Lajm i mirë: Vaksina amerikane rezulton e suksesshme dhe pa efekte anësore në 45 vullnetarë,0.03535969957620064,0.9646403004237993,0
+oof_train,new_svm_sigmoid,fake_563,1,Dikush po bën fushatë të frikshme për ta vendosur maskën.,0.0719434950639696,0.9280565049360304,0
+oof_train,new_svm_sigmoid,fake_579,1,Kështu ndikon coronavirusi në të gjithë trupin e njeriut,0.018350241841565484,0.9816497581584345,0
+oof_train,new_svm_sigmoid,fake_622,1,A dini se si ta dalloni Koronavirusin nga virusi i stomakut?,0.06589873188721655,0.9341012681127835,0
+oof_train,new_svm_sigmoid,fake_633,1,Nuk po zgjidhni dot shalqirin e duhur : Të gjithë po i’u dalin “kungull”? Ja se cili detaj u ndihmon juve të zgjidhni shalqirin më të mirë të dyqanit,0.03922181471329134,0.9607781852867087,0
+oof_train,new_svm_sigmoid,fake_644,1,"Kosovën e pret krizë e jashtëzakonshme ekonomike, sipas BQK-së",0.08626121535540991,0.9137387846445901,0
+oof_train,new_svm_sigmoid,fake_648,1,"Plaku 182 vjeç tregon sekretin e jatëgjatësisë, ai ka ngrënë diçka që kurrë nuk do e hanim",0.04341772611481013,0.9565822738851899,0
+oof_train,new_svm_sigmoid,fake_656,1,Njihuni me 5 ushqimet që gratë duhet të hanë çdo ditë,0.023215598529994667,0.9767844014700053,0
+oof_train,new_svm_sigmoid,fake_681,1,"Djali më tha: “Ik nga shtëpia!”, nuk dija cfarë të bëja dhe u…",0.06343231202410965,0.9365676879758904,0
+oof_train,new_svm_sigmoid,fake_699,1,Ministria e Shendetsis merr kete vendim : Do te rikthehemi ne Karantine !,0.03631643724652295,0.963683562753477,0
+oof_train,new_svm_sigmoid,fake_711,1,Pirja e duhanit dhe shishat rrisin rrezikun për t’u prekur nga Covidi-19,0.0338864404121019,0.9661135595878981,0
+oof_train,new_svm_sigmoid,fake_813,1,Arbenita E Feros: Pasqyrë Moj Pasqyrë Kush Më E Bukur Se Unë?,0.04333781718043129,0.9566621828195687,0
+oof_train,new_svm_sigmoid,fake_972,1,“Çartet“ Vjosa Osmani! Ulu aty o Kujtim “Unë jam sherifi këtu”,0.06468095687920919,0.9353190431207908,0
+oof_train,new_svm_sigmoid,fake_1022,1,Përhajr na koft! Zvicra nga 6 korriku pranon puntorë nga vendet jashtë BE-së,0.09287113821494196,0.907128861785058,0
+oof_train,new_svm_sigmoid,fake_1027,1,"Ai i cili e quajti Thaçin “Washingtoni i Kosovës” po prinë bindshëm, para Trumpit",0.05296706762205355,0.9470329323779465,0
+oof_train,new_svm_sigmoid,fake_1033,1,Kujdes o Popull: Nuk do ta besoni sa është rritur numri i rasteve me Covid19 në Kosovë,0.08822993899866494,0.9117700610013351,0
+oof_train,new_svm_sigmoid,fake_1049,1,"Zbulohet tradhëtia: Qeveria vend të lobojë për njohje, lobon për ndarjen e Kosovës",0.007513802658728558,0.9924861973412714,0
+oof_train,new_svm_sigmoid,fake_1126,1,"Mediat serbe: Qeveria e Kosovës prap në duar të Serbisë, shqiptarët në gjunjë. Serbia e Amerika fjalën kryesore",0.057096581540223554,0.9429034184597764,0
+oof_train,new_svm_sigmoid,fake_1252,1,Presidenti Thaçi: Sonte dua të përsëris se për mua Kosova është gjithnjë e para,0.006798775855506427,0.9932012241444935,0
+oof_train,new_svm_sigmoid,fake_1449,1,Oficeri i UÇK-së nga Shqipëria: Kurr Kosova ska pas komandant  përveç ushtarëve shumë të thjeshtë,0.042117092017633875,0.9578829079823661,0
+oof_train,new_svm_sigmoid,fake_1657,1,"Kete lajm duhet ta lexoni te gjithe,Çfarë ndodh kur Covid-19 i bashkëngjitet edhe gripi sezonal",0.09935345688282943,0.9006465431171706,0
+oof_train,new_svm_sigmoid,fake_1683,1,Ramush Haradinaj: Un do te behem President se shpejti,0.0382319916935969,0.9617680083064031,0
+oof_train,new_svm_sigmoid,fake_1856,1,Lajmi i Fundit: Ndahet LDK-ja ky eshte lajmi i Fundit!,0.05091061727124514,0.9490893827287549,0
+oof_train,new_svm_sigmoid,fake_1866,1,Ju del gjumi çdo natë në të njëjtën orë? Ja cilat sëmundje mund t’i keni,0.06886125303415105,0.931138746965849,0
+oof_train,new_svm_sigmoid,fake_1867,1,10 këshilla për të hequr dorë nga ngrënja e thonjëve,0.08834777038870865,0.9116522296112913,0
+oof_train,new_svm_sigmoid,fake_1869,1,Parashikimi tronditës i shkencëtarve: Sa mund të zgjasë dhe sa përqind e popullsisë do infektohet!,0.043977221028330675,0.9560227789716693,0
+oof_train,new_svm_sigmoid,fake_1871,1,Flet njeriu që e provoi i pari në trup vaksinën kundër COVID-19,0.008100009814682636,0.9918999901853174,0
+oof_train,new_svm_sigmoid,fake_1892,1,"Opaa! Ministria Balluku si Ivanka Trump, shkon në Dibër pa…recipeta, shoqëron Ramën pa komplekse",0.09806385643426771,0.9019361435657323,0
+oof_train,new_svm_sigmoid,fake_1919,1,Një grup mjekësh bëjnë disa deklarata ‘bombë’ për covid-19 dhe kundërshtojnë ekspertin e Shtëpisë së Bardhë,0.06460008222249142,0.9353999177775085,0
+oof_train,new_svm_sigmoid,fake_1950,1,A jeni infektuar me koronavirus? Shenjat që ju tregojnë nëse e keni kaluar Covid-19,0.03363849604516553,0.9663615039548344,0
+internal_test,new_calibrated_svm,true_786,0,Ekskluzive: Alfred Cako zbulon vaksinën e Covid19 që shkakton vdekje dhe ndalon lindjet,0.9417690493504598,0.9417690493504598,1
+internal_test,new_calibrated_svm,fake_508,1,Shikoni  reagimin e Leonora Jakupit për ndërtimin e xhamisë në Prishtinë,0.061146826747614326,0.9388531732523857,0
+internal_test,new_calibrated_svm,fake_515,1,"Bac Qikat e Kosoves po na zbardhin ftyren, Kjo qe beri tash Rita Ora eshte e madhe!",0.07805730571802917,0.9219426942819708,0
+internal_test,new_calibrated_svm,fake_544,1,Kur pritet t’u mundësohet qytetarëve tërheqja e parave nga Trusti?,0.07641121464856779,0.9235887853514322,0
+internal_test,new_calibrated_svm,fake_555,1,Kosova zë vendin e parë në Evropë si vendi me numrin më të madh të infektuarve,0.03670609318844731,0.9632939068115527,0
+internal_test,new_calibrated_svm,fake_603,1,Neurologët: Njerëzit me simptoma të butë të koronavirusit po pësojnë çrregullime serioze të trurit,0.0434767027060904,0.9565232972939096,0
+internal_test,new_calibrated_svm,fake_638,1,Lajmi më i ri sa i përket pagesave prej 170 eurosh për punëtorët që mbetën pa punë gjatë pandemisë!,0.021102026344967235,0.9788979736550327,0
+internal_test,new_calibrated_svm,fake_702,1,LAJMI I FUNDIT – Thaçi: Nëse nuk arrihet marrëveshja me 27 qershor kjo do të ndodhë…,0.02863194592705286,0.9713680540729471,0
+internal_test,new_calibrated_svm,fake_1055,1,SHBA vjen me Super Lajm Për Kosovën,0.0846181515747003,0.9153818484252997,0
+internal_test,new_calibrated_svm,fake_1085,1,Glauk Konjufca: Bëhuni gati…Nesër është vetëm nxemje!,0.08890405073201149,0.9110959492679885,0
+internal_test,new_calibrated_svm,fake_1732,1,Haki Abazi dridhe skenen politike ne Kosove me kete qe tha!,0.08628603649108511,0.9137139635089149,0
+internal_test,new_calibrated_svm,fake_1848,1,Me këtë imazh Edona po e dëshmon që vajza po bëhet më e bukur se nëna,0.0393278558407665,0.9606721441592335,0
+internal_test,new_calibrated_svm,fake_1873,1,Zbulim i ri: Kjo simptomë e re e koronavirusit po shfaqet tek të moshuarit,0.0767531005792299,0.9232468994207701,0
+internal_test,new_calibrated_svm,fake_1906,1,Befason profesori italian: Ka një kurë që e Zhduk Koronavirusin brenda 48 orëve,0.06186616160771832,0.9381338383922817,0
+internal_test,new_calibrated_svm,fake_1932,1,Flet mjekja shqiptare në Kanada: Si të trajtoni virusin në kushtet e shtëpisë,0.0008277290671881119,0.9991722709328119,0
+internal_test,current_app_model,fake_515,1,"Bac Qikat e Kosoves po na zbardhin ftyren, Kjo qe beri tash Rita Ora eshte e madhe!",0.05950121928010061,0.9404987807198993,0
+internal_test,current_app_model,fake_544,1,Kur pritet t’u mundësohet qytetarëve tërheqja e parave nga Trusti?,0.06453928805462582,0.9354607119453742,0
+internal_test,current_app_model,fake_555,1,Kosova zë vendin e parë në Evropë si vendi me numrin më të madh të infektuarve,0.030732130233359255,0.9692678697666407,0
+internal_test,current_app_model,fake_603,1,Neurologët: Njerëzit me simptoma të butë të koronavirusit po pësojnë çrregullime serioze të trurit,0.009975475267937026,0.9900245247320629,0
+internal_test,current_app_model,fake_621,1,"Pasi u martuan, gruaja mëson pse burri nuk “e prek”. Kur ai bënte dush ajo e pa hapur…",0.08474325448047688,0.9152567455195231,0
+internal_test,current_app_model,fake_638,1,Lajmi më i ri sa i përket pagesave prej 170 eurosh për punëtorët që mbetën pa punë gjatë pandemisë!,0.0634690786736198,0.9365309213263802,0
+internal_test,current_app_model,fake_702,1,LAJMI I FUNDIT – Thaçi: Nëse nuk arrihet marrëveshja me 27 qershor kjo do të ndodhë…,0.0020296475692271917,0.9979703524307728,0
+internal_test,current_app_model,fake_1028,1,"BE i’a palon Grenellit: Bën veprimin e papritur për Kosovën, hiqen vizat për Kosovën??",0.06368265870778315,0.9363173412922169,0
+internal_test,current_app_model,fake_1037,1,"Daçiq: Na jepni Veriun e Kosovës, pastaj fillojmë me bisedime!",0.046135224286055466,0.9538647757139446,0
+internal_test,current_app_model,fake_1055,1,SHBA vjen me Super Lajm Për Kosovën,0.05141963283486904,0.9485803671651309,0
+internal_test,current_app_model,fake_1085,1,Glauk Konjufca: Bëhuni gati…Nesër është vetëm nxemje!,0.04861763696481151,0.9513823630351885,0
+internal_test,current_app_model,fake_1104,1,"Nuk hapen xhamitë as në ditët e fundit të Ramazanit, edhe ne Hoxhallarët duam pushim",0.014353847029258812,0.9856461529707412,0
+internal_test,current_app_model,fake_1653,1,Mjeku shqiptar trondit botën: Ja çfarë i pret të gjithë njerëzit e prekur nga COVID-19,0.093248887817023,0.906751112182977,0
+internal_test,current_app_model,fake_1873,1,Zbulim i ri: Kjo simptomë e re e koronavirusit po shfaqet tek të moshuarit,0.047289019705874326,0.9527109802941257,0
+internal_test,current_app_model,fake_1906,1,Befason profesori italian: Ka një kurë që e Zhduk Koronavirusin brenda 48 orëve,0.012311812356199141,0.9876881876438008,0
+internal_test,current_app_model,fake_1917,1,Hëna që ju zgjidhni tregon tipin e personit me të cilin do të dashuroheni,0.047018337622574874,0.9529816623774251,0
+internal_test,current_app_model,fake_1932,1,Flet mjekja shqiptare në Kanada: Si të trajtoni virusin në kushtet e shtëpisë,5.741675893534633e-05,0.9999425832410647,0
+internal_test,current_app_model,fake_1938,1,"Nobelisti japonez shokon botën: Koronavirusi u prodhua nga Kina, asnjë prej miqve të mi në Wuhan s’ma hap telefonin",0.05831064704533723,0.9416893529546628,0
+external,new_calibrated_svm,EXT-R-010,0,Fondi i Ndërhyrjes së Jashtëzakonshme arrin 8.22 miliardë lekë,0.9066114076124789,0.9066114076124789,1
+external,current_app_model,EXT-R-004,0,Qeveria diskuton kalendarin e negociatave me Bashkimin Europian,0.9047049867914355,0.9047049867914355,1
+external,current_app_model,EXT-R-010,0,Fondi i Ndërhyrjes së Jashtëzakonshme arrin 8.22 miliardë lekë,0.9409970591759508,0.9409970591759508,1
+external,current_app_model,EXT-R-019,0,Prezantohet shoqëria publike Albanian Digital Solutions,0.9280102997964229,0.9280102997964229,1

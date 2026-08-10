@@ -1,0 +1,2 @@
+spearman_all,spearman_all_p,spearman_real,spearman_real_p,spearman_fake,spearman_fake_p,mean_absolute_within_label_spearman
+-0.6121839668485495,1.2622294353620182e-82,-0.30445814138315186,5.281123378514051e-10,-0.43505615358662814,1.4038440782735236e-19,0.36975714748488997

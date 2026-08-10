@@ -1,0 +1,49 @@
+{
+  "day": 18,
+  "status": "completed",
+  "date": "2026-08-10",
+  "model": {
+    "model_id": "albanian_fake_news_word_char_svm_sigmoid_v1",
+    "version": "1.0.0",
+    "artifact": "models/final_word_char_linear_svm_calibrated_v1.joblib",
+    "manifest": "models/final_model_v1_manifest.json",
+    "sha256": "52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5",
+    "unchanged_from_day16_candidate": true,
+    "retrained": false,
+    "configuration_changed": false
+  },
+  "runtime": {
+    "streamlit_app": "app/streamlit_app.py",
+    "prediction_function": "src.models.predict_final.predict_final_news",
+    "model_loader": "src.models.predict_final.load_final_model",
+    "cache": "streamlit.cache_resource",
+    "likely_real_below": 0.3,
+    "uncertain_inclusive": [
+      0.3,
+      0.7
+    ],
+    "likely_fake_above": 0.7,
+    "linguistic_features_role": "explanation_only",
+    "old_model_used_by_streamlit": false
+  },
+  "verification": {
+    "frozen_day17_cases_checked": 6,
+    "frozen_day17_cases_matched": 6,
+    "exact_probability_and_decision_match": true,
+    "input_categories_checked": 8,
+    "input_categories_passed": 8,
+    "full_test_suite_passed": 109,
+    "full_test_suite_failed": 0,
+    "health_endpoint_status": 200,
+    "visual_check_passed": true,
+    "desktop_screenshot": "reports/figures/day18_streamlit_final.png",
+    "mobile_screenshot": "reports/figures/day18_streamlit_final_mobile.png",
+    "mobile_viewport_width": 390,
+    "mobile_document_scroll_width": 390,
+    "horizontal_overflow": false
+  },
+  "server": {
+    "local_url": "http://127.0.0.1:8502",
+    "health": "ok"
+  }
+}

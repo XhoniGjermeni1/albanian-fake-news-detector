@@ -1,0 +1,63 @@
+{
+  "day": 20,
+  "status": "completed",
+  "date": "2026-08-10",
+  "release_version": "v1.0.0",
+  "model": {
+    "model_id": "albanian_fake_news_word_char_svm_sigmoid_v1",
+    "model_version": "1.0.0",
+    "artifact": "models/final_word_char_linear_svm_calibrated_v1.joblib",
+    "manifest": "models/final_model_v1_manifest.json",
+    "sha256": "52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5",
+    "matches_day16_candidate": true,
+    "matches_manifest": true,
+    "configuration_changed": false,
+    "thresholds_changed": false
+  },
+  "repository": {
+    "dataset_submodule_declared": true,
+    "dataset_submodule_commit": "e6ee2695f7bba964a1d23abc515791bbb18e65d0",
+    "final_model_included_by_gitignore": true,
+    "experimental_models_ignored": true,
+    "runtime_uses_legacy_model": false,
+    "readme_lines": 227
+  },
+  "clean_environment": {
+    "path": ".venv",
+    "created_from_scratch": true,
+    "python": "3.11.9",
+    "requirements_install_succeeded": true,
+    "pip_check_succeeded": true,
+    "packages": {
+      "numpy": "2.4.3",
+      "pandas": "3.0.1",
+      "pyarrow": "23.0.1",
+      "scikit_learn": "1.8.0",
+      "scipy": "1.17.1",
+      "joblib": "1.5.3",
+      "streamlit": "1.60.0",
+      "pytest": "9.1.1",
+      "jupyterlab": "4.6.2",
+      "ipykernel": "7.2.0"
+    }
+  },
+  "verification": {
+    "compileall_succeeded": true,
+    "tests_passed": 115,
+    "tests_failed": 0,
+    "day17_regression_cases": 6,
+    "day17_decision_matches": 6,
+    "max_probability_difference": 1.1102230246251565e-16,
+    "notebook_code_cells": 10,
+    "notebook_executed_cells": 10,
+    "notebook_error_outputs": 0,
+    "streamlit_health_status": 200,
+    "streamlit_clean_environment_url": "http://127.0.0.1:8503"
+  },
+  "optional_future_extensions": [
+    "XLM-RoBERTa comparison",
+    "SHAP explanations",
+    "larger external benchmark",
+    "online deployment"
+  ]
+}

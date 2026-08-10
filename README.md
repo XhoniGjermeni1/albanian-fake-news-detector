@@ -1,552 +1,227 @@
 # Albanian Fake News Detector
 
-Projekt diplome bachelor për analizimin dhe detektimin e lajmeve të rreme në gjuhën shqipe.
+Aplikacion dhe projekt diplome bachelor për klasifikimin gjuhësor të lajmeve
+në gjuhën shqipe. Përdoruesi vendos titullin dhe përmbajtjen e një lajmi;
+sistemi kthen probabilitetet `real/fake` dhe një nga vendimet:
 
-Qëllimi final është ndërtimi i një aplikacioni në Python ku përdoruesi vendos titullin dhe përmbajtjen e një lajmi, ndërsa sistemi kthen një parashikim të bazuar në model:
+- `likely_real` kur `P(fake) < 0.30`;
+- `uncertain` kur `0.30 <= P(fake) <= 0.70`;
+- `likely_fake` kur `P(fake) > 0.70`.
 
-- `real`
-- `fake`
-- `i pasigurt`
+> **Kujdes:** modeli analizon ngjashmëri dhe karakteristika gjuhësore. Ai nuk
+> kontrollon burime ose fakte dhe nuk zëvendëson fact-checking-un.
 
-Rezultati do të paraqitet si probabilitet sipas modelit, jo si e vërtetë absolute.
+## Modeli Final
 
-## Dataset
+Versioni klasik final është `v1.0.0`:
 
-Projekti përdor Albanian Fake News Corpus:
+- Word TF-IDF me n-grams `(1, 2)`;
+- Character TF-IDF `char_wb` me n-grams `(3, 5)`;
+- Linear SVM (`LinearSVC`, `C=1.0`, class weights të balancuara);
+- sigmoid probability calibration me fold-e group-safe;
+- preprocessing Unicode NFC pa hequr pikësimin, kapitalizimin ose `ë/ç`;
+- linguistic features vetëm për shpjegim, jo si input i modelit final.
 
-- Repository: `https://github.com/rexshijaku/alb-fake-news-corpus`
-- Artikulli ACM: `https://dl.acm.org/doi/10.1145/3487288`
-
-Dataseti origjinal ruhet i pandryshuar te:
+Artefaktet runtime janë:
 
 ```text
-data/raw/alb-fake-news-corpus/
+models/final_word_char_linear_svm_calibrated_v1.joblib
+models/final_model_v1_manifest.json
 ```
 
-Dataseti i përpunuar krijohet te:
+## Pipeline-i
 
 ```text
-data/processed/articles.csv
-data/processed/articles.parquet
-data/processed/articles_preview.csv
+Albanian Fake News Corpus
+        ↓
+ngarkim dhe validim
+        ↓
+preprocessing bazë + Unicode NFC
+        ↓
+Word TF-IDF + Character TF-IDF
+        ↓
+Linear SVM + sigmoid calibration
+        ↓
+probabilitete + pragjet 0.30/0.70
+        ↓
+Streamlit + shpjegim i sinjaleve gjuhësore
 ```
 
-## Struktura Aktuale
+## Dataset-i
 
-Struktura mbahet minimale dhe rritet gradualisht me zhvillimin e projektit.
+Projekti përdor **Albanian Fake News Corpus**:
+
+- repository: <https://github.com/rexshijaku/alb-fake-news-corpus>;
+- artikulli ACM: <https://dl.acm.org/doi/10.1145/3487288>.
+
+Dataset-i raw ruhet i pandryshuar te
+`data/raw/alb-fake-news-corpus/`. Dataset-et e përpunuara dhe ndarjet e ngrira
+ruhen te `data/processed/` dhe `data/interim/`. Dataset-i pilot i jashtëm ruhet
+te `data/external/external_news.csv`.
+
+## Rezultatet Kryesore
+
+Test set-i i brendshëm ka 792 artikuj dhe nuk është përdorur për tuning.
+
+| Metrika | Rezultati |
+|---|---:|
+| Accuracy | 91.16% |
+| F1 weighted | 91.16% |
+| F1 fake | 90.98% |
+| Recall real | 92.48% |
+| Recall fake | 89.82% |
+| Brier score | 0.0658 |
+| Log loss | 0.2192 |
+| Strong-decision coverage | 91.04% |
+| Strong-decision accuracy | 94.31% |
+
+Në dataset-in e jashtëm pilot me 40 përmbledhje të shkurtra, accuracy ishte
+60%. Ky rezultat dokumenton domain shift-in dhe nuk është përdorur për tuning
+ose ndryshim të modelit. Detajet finale janë te
+`reports/day17_final_model.md`.
+
+## Struktura Kryesore
 
 ```text
 albanian-fake-news-detector/
-  data/
-    raw/
-    interim/
-    processed/
-    external/
-      external_news.csv
-      README.md
-  notebooks/
-    01_dataset_audit.ipynb
-  app/
-    streamlit_app.py
-  reports/
-    day1_dataset_audit.md
-    day2_baseline_model.md
-    day2_metrics.json
-    day3_linguistic_features.md
-    day3_feature_summary.csv
-    day4_linguistic_feature_analysis.md
-    day4_feature_quality.json
-    day4_feature_comparison.csv
-    day4_linguistic_only_model_metrics.json
-    day5_hybrid_model.md
-    day5_metrics.json
-    day5_model_comparison.csv
-    day6_model_quality.md
-    day6_metrics.json
-    day6_error_analysis.csv
-    day6_threshold_comparison.csv
-    day7_streamlit_app.md
-    day8_streamlit_improvements.md
-    day9_system_testing.md
-    day9_system_test_metrics.json
-    day9_system_test_cases.csv
-    day9_demo_examples.csv
-    day10_external_dataset.md
-    day10_external_dataset_audit.json
-    day10_external_similarity_review.csv
-    day11_external_evaluation.md
-    day11_external_metrics.json
-    day11_external_predictions.csv
-    day12_length_domain_shift.md
-    day12_metrics.json
-    day13_tfidf_representation_comparison.md
-    day13_metrics.json
-    day13_internal_selection.json
-    day14_classifier_comparison.md
-    day14_metrics.json
-    day14_selection.json
-    day15_svm_tuning.md
-    day15_metrics.json
-    day15_selection.json
-    figures/
-  src/
-    data/
-      load_dataset.py
-      validate_dataset.py
-      build_dataset.py
-      validate_external_dataset.py
-    preprocessing/
-      clean_text.py
-    models/
-      train_model.py
-      train_hybrid_model.py
-      analyze_model_quality.py
-      evaluate_app_system.py
-      evaluate_external_dataset.py
-      analyze_length_domain_shift.py
-      compare_tfidf_representations.py
-      compare_classifiers.py
-      tune_linear_svm.py
-      predict.py
-    features/
-      linguistic_features.py
-      build_linguistic_features.py
-      analyze_linguistic_features.py
-  models/
-    baseline_tfidf_logreg.joblib
-    linguistic_features_logreg.joblib
-    hybrid_tfidf_linguistic_logreg.joblib
-    hybrid_tfidf_linguistic_no_length_logreg.joblib
-    calibrated_tfidf_logreg.joblib
-    day13_word_tfidf_logreg_calibrated.joblib
-    day13_char_tfidf_logreg_calibrated.joblib
-    day13_word_char_tfidf_logreg_calibrated.joblib
-    day14_word_char_logistic_regression.joblib
-    day14_word_char_linear_svm.joblib
-    day14_word_char_complement_nb.joblib
-    day15_word_char_linear_svm_c_*.joblib
-  tests/
-    test_load_dataset.py
-    test_clean_text.py
-    test_linguistic_features.py
-    test_feature_analysis.py
-    test_hybrid_model.py
-    test_model_quality.py
-    test_app_system.py
-    test_streamlit_app.py
-    test_external_dataset.py
-    test_external_evaluation.py
-    test_length_domain_shift.py
-    test_tfidf_representations.py
-    test_classifier_comparison.py
-    test_svm_tuning.py
-  requirements.txt
-  README.md
-  .gitignore
+├── app/                  # ndërfaqja Streamlit
+├── data/
+│   ├── raw/              # corpus-i origjinal, i pandryshuar
+│   ├── interim/          # train/test i ngrirë dhe teksti i pastruar
+│   ├── processed/        # dataset-i dhe linguistic features
+│   └── external/         # benchmark-u pilot i jashtëm
+├── models/               # modeli final, manifesti dhe modele lokale historike
+├── notebooks/            # auditimi dhe walkthrough-u final
+├── reports/              # raportet, tabelat dhe figurat e eksperimenteve
+├── src/
+│   ├── data/             # loader, validation dhe dataset build
+│   ├── preprocessing/    # pastrimi bazë dhe Unicode NFC
+│   ├── features/         # linguistic features
+│   └── models/           # prediction final dhe analiza historike
+├── tests/                # regression, data, model dhe Streamlit tests
+├── requirements.txt
+└── README.md
 ```
+
+Skriptet e Ditëve 2–16 dhe modelet e tyre janë ruajtur për riprodhueshmëri
+akademike. Ato nuk përdoren nga runtime-i final.
 
 ## Instalimi
 
-Krijo dhe aktivizo një virtual environment:
+Kërkohet Git dhe Python 3.11. Klono projektin bashkë me corpus-in:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+git clone --recurse-submodules https://github.com/XhoniGjermeni1/albanian-fake-news-detector.git
+cd albanian-fake-news-detector
 ```
 
-Instalo dependencies:
+Nëse projekti është klonuar pa submodule, ekzekuto:
 
 ```powershell
+git submodule update --init --recursive
+```
+
+Pastaj, në Windows PowerShell:
+
+```powershell
+py -3.11 -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-## Ndërtimi i Datasetit
+Në macOS/Linux, aktivizimi bëhet me:
 
-Nëse dataseti nuk është shkarkuar ende, klonoje manualisht:
+```bash
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
+Versionet në `requirements.txt` përputhen me environment-in ku u ngrirë dhe u
+testua modeli final.
+
+## Nisja e Aplikacionit
 
 ```powershell
-git clone https://github.com/rexshijaku/alb-fake-news-corpus.git data\raw\alb-fake-news-corpus
+python -m streamlit run app\streamlit_app.py
 ```
 
-Pastaj ekzekuto pipeline-in e Ditës 1:
+Streamlit ngarkon vetëm artefaktin final me cache. Nëse modeli ose manifesti
+mungon, aplikacioni shfaq një gabim të qartë dhe nuk tenton prediction.
+
+Prediction-i mund të përdoret edhe drejtpërdrejt nga Python:
+
+```python
+from src.models.predict_final import predict_final_news
+
+result = predict_final_news(
+    title="Titulli i lajmit",
+    content="Përmbajtja e lajmit në gjuhën shqipe.",
+)
+print(result["decision"], result["probability_fake"])
+```
+
+## Notebook-u Walkthrough
 
 ```powershell
-python src\data\build_dataset.py
+python -m jupyter lab notebooks\02_final_walkthrough.ipynb
 ```
 
-Ky script lexon artikujt raw, krijon kolonat bazë, validon datasetin dhe ruan versionet e përpunuara.
-
-## Trajnimi i Baseline Modelit
-
-Ekzekuto:
-
-```powershell
-python src\models\train_model.py
-```
-
-Ky script bën preprocessing bazë, ndarje train/test, trajnon modelin e parë `TF-IDF + Logistic Regression`, ruan modelin dhe gjeneron metrikat.
-
-Output-et kryesore:
-
-```text
-data/interim/articles_clean.csv
-data/interim/train.csv
-data/interim/test.csv
-models/baseline_tfidf_logreg.joblib
-reports/day2_metrics.json
-```
-
-## Nxjerrja e Karakteristikave Gjuhësore
-
-Ekzekuto:
-
-```powershell
-python src\features\build_linguistic_features.py
-```
-
-Ky script nxjerr karakteristika strukturore, pikësimi, kapitalizimi, diakritika shqipe, shprehje sensacionale, tregues burimi dhe shprehje pasigurie.
-
-Output-et kryesore:
-
-```text
-data/processed/linguistic_features.csv
-reports/day3_feature_summary.csv
-```
-
-## Analiza e Karakteristikave Gjuhësore
-
-Ekzekuto:
-
-```powershell
-python src\features\analyze_linguistic_features.py
-```
-
-Ky script kontrollon cilësinë e feature-ve, krahason real/fake, krijon grafikë dhe provon një model të vogël vetëm me karakteristika gjuhësore.
-
-Output-et kryesore:
-
-```text
-reports/day4_feature_quality.json
-reports/day4_feature_comparison.csv
-reports/day4_linguistic_only_model_metrics.json
-reports/figures/
-models/linguistic_features_logreg.joblib
-```
-
-## Modeli Hibrid
-
-Ekzekuto:
-
-```powershell
-python src\models\train_hybrid_model.py
-```
-
-Ky script kontrollon përputhjen e tekstit me linguistic features sipas `article_id`, ritrajnon modelet për një krahasim të drejtë dhe vlerëson:
-
-- TF-IDF only
-- linguistic features only
-- TF-IDF + linguistic features
-- modelin hibrid pa feature-t direkte të gjatësisë
-
-Output-et kryesore:
-
-```text
-models/hybrid_tfidf_linguistic_logreg.joblib
-models/hybrid_tfidf_linguistic_no_length_logreg.joblib
-reports/day5_metrics.json
-reports/day5_model_comparison.csv
-reports/figures/day5_model_comparison.png
-```
-
-Detajet dhe interpretimi ruhen te `reports/day5_hybrid_model.md`.
-
-## Kontrolli i Cilësisë dhe Calibration
-
-Ekzekuto:
-
-```powershell
-python src\models\analyze_model_quality.py
-```
-
-Ky script analizon false positives/false negatives të TF-IDF baseline, kontrollon shpërndarjen e probabiliteteve, trajnon sigmoid calibration me fold-e të grupuara dhe krahason pragjet për `likely_real`, `uncertain` dhe `likely_fake`.
-
-Output-et kryesore:
-
-```text
-models/calibrated_tfidf_logreg.joblib
-reports/day6_metrics.json
-reports/day6_error_analysis.csv
-reports/day6_interesting_errors.csv
-reports/day6_probability_summary.csv
-reports/day6_threshold_comparison.csv
-reports/day6_calibration_bins.csv
-reports/figures/day6_probability_calibration.png
-```
-
-Logjika e përgatitur për aplikacionin është funksioni `predict_news_for_app()` te `src/models/predict.py`. Pragjet fillestare janë 30% dhe 70%; zona midis tyre kthehet si `uncertain`.
-
-## Aplikacioni Streamlit
-
-Aplikacioni përdor modelin e kalibruar `TF-IDF + Logistic Regression`. Përdoruesi mund të vendosë titullin, përmbajtjen ose të dyja dhe të marrë:
-
-- vendimin `likely_real`, `uncertain` ose `likely_fake`, të shpjeguar me formulim të kuptueshëm;
-- probabilitetet Real/Fake si metrics dhe progress bars;
-- shpjegim të posaçëm kur probabiliteti ndodhet në zonën `uncertain` 30%-70%;
-- karakteristika të vëzhguara në tekst dhe interpretim njerëzor të gjatësisë, pikëçuditëseve, kapitalizimit, diakritikave dhe marker-ave gjuhësorë;
-- paralajmërimin pranë rezultatit se aplikacioni nuk bën verifikim faktik.
-
-Hape aplikacionin nga rrënja e projektit:
-
-```powershell
-streamlit run app\streamlit_app.py
-```
-
-Aplikacioni pranon edhe vetëm titull ose vetëm përmbajtje. Input-i bosh ose pa shkronja/numra bllokohet, ndërsa titulli pa përmbajtje, tekstet me më pak se 20 fjalë dhe tekstet mbi 20,000 karaktere shoqërohen me paralajmërim. Për të mbrojtur qëndrueshmërinë, input-i mbi 100,000 karaktere nuk analizohet. Input-i normalizohet në Unicode NFC për të trajtuar në mënyrë të njëjtë shkronjat e kombinuara shqipe. Modeli analizon vetëm formën gjuhësore të tekstit; nuk kontrollon burime, URL, autorë, data ose fakte reale.
-
-## Testimi i Sistemit
-
-Ekzekuto paketën e testimit të Ditës 9:
-
-```powershell
-python src\models\evaluate_app_system.py
-```
-
-Script-i teston input-et ideale dhe joideale, kontrollon probabilitetet dhe pragjet në test set-in pa leakage dhe përzgjedh shembuj demonstrues e gabime reale të modelit.
-
-Output-et kryesore:
-
-```text
-reports/day9_system_test_metrics.json
-reports/day9_system_test_cases.csv
-reports/day9_demo_examples.csv
-reports/day9_system_testing.md
-```
-
-## Dataseti i Jashtëm
-
-Dataseti pilot i Ditës 10 përmban 40 raste të reja në shqip: 20 `real` dhe 20
-`fake`. Pesë temat kanë nga 8 raste secila dhe çdo temë ndahet në 4 `real` dhe
-4 `fake`. Tekstet janë përmbledhje manuale; URL-ja dhe prova e etiketimit ruhen
-në kolona të veçanta.
-
-Dataseti ruhet te:
-
-```text
-data/external/external_news.csv
-```
-
-Ekzekuto vetëm kontrollin e cilësisë dhe të mbivendosjes me train set-in:
-
-```powershell
-python src\data\validate_external_dataset.py
-```
-
-Kjo komandë nuk ngarkon modelin dhe nuk bën prediction. Ajo krijon:
-
-```text
-reports/day10_external_dataset_audit.json
-reports/day10_external_similarity_review.csv
-```
-
-Metoda e mbledhjes dhe kufizimet shpjegohen te `data/external/README.md`, ndërsa
-rezultatet e auditimit te `reports/day10_external_dataset.md`.
-
-## Vlerësimi i Jashtëm
-
-Vlerësimi i Ditës 11 përdor modelin e ruajtur dhe të njëjtin funksion
-`predict_news_for_app()` si aplikacioni. Modeli nuk ritrajnohet dhe pragjet
-`0.30/0.70` nuk ndryshohen.
-
-Ekzekuto:
-
-```powershell
-python src\models\evaluate_external_dataset.py
-```
-
-Output-et kryesore janë:
-
-```text
-reports/day11_external_predictions.csv
-reports/day11_external_metrics.json
-reports/day11_external_by_topic.csv
-reports/day11_external_by_label.csv
-reports/day11_external_by_length.csv
-reports/day11_external_by_source.csv
-reports/day11_external_errors.csv
-reports/day11_external_interesting_cases.csv
-reports/day11_external_confusion_matrix.csv
-reports/figures/day11_external_confusion_matrix.png
-reports/day11_external_evaluation.md
-```
-
-Raporti krahason me kujdes rezultatet e jashtme me test set-in e brendshëm, por
-nuk i trajton si dataset-e drejtpërdrejt të barabarta.
-
-## Analiza e Gjatësisë dhe Domain Shift-it
-
-Analiza e Ditës 12 kontrollon lidhjen mes gjatësisë dhe probability fake në
-test set-in e brendshëm, cohort-in 30-60 fjalë, variante të shkurtuara të të
-njëjtit tekst dhe pesë zgjerime diagnostike të rasteve të jashtme.
-
-Ekzekuto:
-
-```powershell
-python src\models\analyze_length_domain_shift.py
-```
-
-Script-i nuk ritrajnon modelin, nuk ndryshon pragjet dhe kontrollon me SHA-256
-që modeli, dataset-i i jashtëm dhe output-et e Ditës 11 mbeten të pandryshuara.
-Output-et kryesore janë:
-
-```text
-reports/day12_internal_predictions.csv
-reports/day12_internal_length_groups.csv
-reports/day12_matched_length_comparison.csv
-reports/day12_length_correlations.csv
-reports/day12_internal_stability_experiment.csv
-reports/day12_external_expansion_experiment.csv
-reports/day12_domain_shift_summary.csv
-reports/day12_metrics.json
-reports/day12_length_domain_shift.md
-reports/figures/day12_*.png
-```
-
-## Krahasimi i Përfaqësimeve TF-IDF
-
-Eksperimenti i Ditës 13 përdor të njëjtën ndarje train/test dhe të njëjtin
-preprocessing bazë për të krahasuar `Word TF-IDF`, `Character TF-IDF` dhe
-`Word + Character TF-IDF`, të tre me Logistic Regression dhe calibration.
-Konfigurimi i character n-grams zgjidhet vetëm me cross-validation të grupuar
-mbi train set-in. Zgjedhja e brendshme ruhet përpara se të ngarkohet dataset-i
-i jashtëm; rezultatet e jashtme përdoren vetëm si diagnostikë përfundimtare.
-
-Ekzekuto:
-
-```powershell
-python src\models\compare_tfidf_representations.py
-```
-
-Modelet eksperimentale ruhen me emra të veçantë dhe nuk zëvendësojnë modelin
-që përdor aplikacioni. Output-et kryesore janë:
-
-```text
-models/day13_*_calibrated.joblib
-reports/day13_char_config_screen.csv
-reports/day13_internal_model_comparison.csv
-reports/day13_internal_cohort_metrics.csv
-reports/day13_length_bias_comparison.csv
-reports/day13_stability_experiment.csv
-reports/day13_internal_selection.json
-reports/day13_external_comparison.csv
-reports/day13_metrics.json
-reports/day13_tfidf_representation_comparison.md
-reports/figures/day13_*.png
-```
-
-## Krahasimi i Classifier-ëve
-
-Eksperimenti i Ditës 14 mban të pandryshuar përfaqësimin e zgjedhur
-`Word + Character TF-IDF` dhe krahason Logistic Regression, Linear SVM dhe
-Complement Naive Bayes. Konfigurimet zgjidhen me 5-fold group-safe CV vetëm
-mbi train set-in. Zgjedhja ruhet përpara se të ngarkohen test set-i i brendshëm
-dhe dataset-i i jashtëm.
-
-Ekzekuto:
-
-```powershell
-python src\models\compare_classifiers.py
-```
-
-Modelet e Ditës 14 janë të pakalibruara. Decision score i Linear SVM nuk
-paraqitet si probabilitet dhe pragjet e aplikacionit nuk aplikohen. Modelet
-eksperimentale ruhen veçmas dhe nuk zëvendësojnë modelin e Streamlit.
-
-Output-et kryesore janë:
-
-```text
-models/day14_word_char_*.joblib
-reports/day14_cv_fold_results.csv
-reports/day14_cv_summary.csv
-reports/day14_selection.json
-reports/day14_internal_comparison.csv
-reports/day14_length_group_metrics.csv
-reports/day14_length_bias_comparison.csv
-reports/day14_external_comparison.csv
-reports/day14_metrics.json
-reports/day14_classifier_comparison.md
-reports/figures/day14_*.png
-```
-
-## Tuning i Linear SVM
-
-Dita 15 mban të pandryshuar Word + Character TF-IDF dhe provon vetëm
-`C = 0.25, 0.5, 1.0, 2.0, 4.0` për Linear SVM. Përzgjedhja përdor 5-fold
-group-safe CV vetëm mbi train dhe merr parasysh F1 weighted, stabilitetin,
-balancën recall real/fake dhe train-validation gap. Vendimi ruhet përpara se të
-ngarkohen test set-i dhe dataset-i i jashtëm.
-
-Ekzekuto:
-
-```powershell
-python src\models\tune_linear_svm.py
-```
-
-Tuning-u konfirmoi `C=1.0` si kandidatin për calibration. Modelet e Ditës 15
-janë ende të pakalibruara; decision score nuk është probabilitet dhe modeli i
-aplikacionit nuk zëvendësohet.
-
-Output-et kryesore janë:
-
-```text
-models/day15_word_char_linear_svm_c_*.joblib
-reports/day15_cv_fold_results.csv
-reports/day15_cv_summary.csv
-reports/day15_selection.json
-reports/day15_internal_candidate_comparison.csv
-reports/day15_length_group_metrics.csv
-reports/day15_length_bias_comparison.csv
-reports/day15_external_metrics.csv
-reports/day15_metrics.json
-reports/day15_svm_tuning.md
-reports/figures/day15_*.png
-```
+Notebook-u ndjek rrjedhën nga dataset-i te prediction-i, lexon output-et e
+ngrira dhe nuk ritrajnon modelin. Rastet e demonstrimit ruhen te
+`reports/day19_demo_cases.csv`, ndërsa skenari te
+`reports/day19_demo_guide.md`.
 
 ## Testet
 
-Ekzekuto:
-
 ```powershell
-python -m pytest
+python -m pytest -q
 ```
 
-Testet kontrollojnë loader-in, preprocessing-un, linguistic features, modelet hibride, grupet pa leakage, pragjet, strukturën e prediction, analizën e domain shift-it, krahasimin e përfaqësimeve TF-IDF, classifier-ët, tuning-un e Linear SVM dhe sjelljen kryesore të aplikacionit Streamlit.
+Testet mbulojnë loader-in, preprocessing-un, linguistic features, leakage
+checks, modelet historike, konfigurimin/hash-in e modelit final, probabilitetet,
+pragjet, Unicode NFC/NFD, Streamlit dhe walkthrough-un.
 
-## Raportet
+## Rindërtimi i Dataset-it
 
-Detajet e punës ditore ruhen te `reports/`.
+Nëse corpus-i raw mungon:
 
-Raporti aktual:
+```powershell
+git submodule update --init --recursive
+python src\data\build_dataset.py
+```
 
-- `reports/day1_dataset_audit.md`
-- `reports/day2_baseline_model.md`
-- `reports/day3_linguistic_features.md`
-- `reports/day4_linguistic_feature_analysis.md`
-- `reports/day5_hybrid_model.md`
-- `reports/day6_model_quality.md`
-- `reports/day7_streamlit_app.md`
-- `reports/day8_streamlit_improvements.md`
-- `reports/day9_system_testing.md`
-- `reports/day10_external_dataset.md`
-- `reports/day11_external_evaluation.md`
-- `reports/day12_length_domain_shift.md`
-- `reports/day13_tfidf_representation_comparison.md`
-- `reports/day14_classifier_comparison.md`
-- `reports/day15_svm_tuning.md`
+Kjo krijon `data/processed/articles.parquet` dhe preview-t përkatëse pa
+ndryshuar skedarët raw.
 
-README shërben vetëm si hyrje profesionale dhe udhëzues ekzekutimi. Gjetjet e detajuara, numrat e datasetit dhe problemet e validimit ruhen në raportet përkatëse.
+## Kufizimet
 
-## Roadmap
+- modeli klasifikon stilin gjuhësor, jo vërtetësinë faktike;
+- ekziston bias i lidhur me gjatësinë e tekstit;
+- tekste shumë të shkurtra mund të japin prediction-e të paqëndrueshme;
+- performanca bie kur periudha, burimi, tema ose stili ndryshojnë nga corpus-i;
+- linguistic features janë për interpretim dhe nuk janë prova;
+- benchmark-u i jashtëm është pilot i vogël me përmbledhje manuale.
 
-Janë përfunduar pipeline-i i datasetit, preprocessing-u bazë, TF-IDF baseline, linguistic features, modeli hibrid, error analysis, probability calibration, aplikacioni Streamlit, testimi end-to-end, përgatitja dhe vlerësimi i datasetit të jashtëm, analiza e gjatësisë dhe domain shift-it, krahasimi i përfaqësimeve TF-IDF, krahasimi i classifier-ëve dhe tuning-u i kufizuar i Linear SVM.
+## Skedarët Kryesorë për Mbrojtje
 
-Hapi i ardhshëm është probability calibration i `Word + Character TF-IDF + Linear SVM, C=1.0` në Ditën 16. Dataset-i i jashtëm nuk do të përdoret për calibration ose tuning.
+| Roli | Skedari |
+|---|---|
+| Ngarkimi i dataset-it | `src/data/load_dataset.py` |
+| Preprocessing | `src/preprocessing/clean_text.py` |
+| Linguistic features | `src/features/linguistic_features.py` |
+| Vendimet dhe shpjegimi | `src/models/prediction_utils.py` |
+| Prediction final | `src/models/predict_final.py` |
+| Aplikacioni | `app/streamlit_app.py` |
+| Regression tests | `tests/test_final_model.py`, `tests/test_streamlit_app.py` |
+| Walkthrough | `notebooks/02_final_walkthrough.ipynb` |
+
+## Versioni
+
+`v1.0.0` përfaqëson modelin klasik final. BERT/XLM-RoBERTa, SHAP dhe deploy
+online mbeten zgjerime opsionale dhe nuk janë pjesë e këtij versioni.
+
+Raporti i mbylljes teknike ruhet te `reports/day20_final_closure.md`, ndërsa
+ndryshimet e release-it te `CHANGELOG.md`.

@@ -1,0 +1,82 @@
+{
+  "all_checks_passed": true,
+  "model_load_passed": true,
+  "configuration": {
+    "sklearn_object": "CalibratedClassifierCV",
+    "calibration_method": "sigmoid",
+    "calibration_ensemble": false,
+    "calibration_folds": 5,
+    "fitted_calibrators": [
+      "_SigmoidCalibration"
+    ],
+    "feature_union_branches": [
+      "word",
+      "character"
+    ],
+    "word_tfidf": {
+      "analyzer": "word",
+      "lowercase": false,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "min_df": 2,
+      "max_features": 30000
+    },
+    "character_tfidf": {
+      "analyzer": "char_wb",
+      "lowercase": false,
+      "ngram_range": [
+        3,
+        5
+      ],
+      "min_df": 2,
+      "max_features": 50000
+    },
+    "classifier": {
+      "name": "LinearSVC",
+      "C": 1.0,
+      "class_weight": "balanced",
+      "max_iter": 5000,
+      "random_state": 42
+    },
+    "classes": [
+      0,
+      1
+    ]
+  },
+  "preprocessing": {
+    "function": "src.preprocessing.clean_text.combine_title_content",
+    "unicode_normalization": "NFC",
+    "whitespace": "collapsed",
+    "title_content_separator": ". ",
+    "lowercase_removed": false,
+    "punctuation_removed": false,
+    "nfc_nfd_equivalence_passed": true,
+    "application_thresholds_match": true
+  },
+  "probabilities_valid": true,
+  "threshold_logic_valid": true,
+  "reload_is_deterministic": true,
+  "evaluation_prediction_preprocessing_identical": true,
+  "day16_internal_prediction_max_difference": 1.1102230246251565e-16,
+  "day16_external_prediction_max_difference": 1.1102230246251565e-16,
+  "calibration_group_overlap": 0,
+  "retraining_performed": false,
+  "tuning_performed": false,
+  "streamlit_modified": false,
+  "protected_hashes_before": {
+    "day16_candidate": "52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5",
+    "baseline_model": "8b496b303cbe23172fbb6e239bc3ca84f0caec4dd78db85d2ccb55fbc7d96118",
+    "day16_selection": "0229e85e42a49eed7b47d642f7c4a3bb69494df706a9e8603a09dd668dfd0746",
+    "external_dataset": "c3fe002be5451985105178a0a2c4250d322ea4c726ff84c0f8e27338b2c97145",
+    "streamlit_app": "41a1559863936dad7e9dba9a48b5cd158b2a0ee6de00abe7519f3e6d13725a00"
+  },
+  "protected_hashes_after": {
+    "day16_candidate": "52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5",
+    "baseline_model": "8b496b303cbe23172fbb6e239bc3ca84f0caec4dd78db85d2ccb55fbc7d96118",
+    "day16_selection": "0229e85e42a49eed7b47d642f7c4a3bb69494df706a9e8603a09dd668dfd0746",
+    "external_dataset": "c3fe002be5451985105178a0a2c4250d322ea4c726ff84c0f8e27338b2c97145",
+    "streamlit_app": "41a1559863936dad7e9dba9a48b5cd158b2a0ee6de00abe7519f3e6d13725a00"
+  }
+}

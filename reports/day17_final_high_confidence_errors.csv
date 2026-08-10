@@ -1,0 +1,38 @@
+dataset,model,case_id,label,title,probability_fake,confidence,binary_prediction
+internal_test,baseline_word_logreg,fake_515,1,"Bac Qikat e Kosoves po na zbardhin ftyren, Kjo qe beri tash Rita Ora eshte e madhe!",0.05950121928010061,0.9404987807198993,0
+internal_test,baseline_word_logreg,fake_544,1,Kur pritet t’u mundësohet qytetarëve tërheqja e parave nga Trusti?,0.06453928805462582,0.9354607119453742,0
+internal_test,baseline_word_logreg,fake_555,1,Kosova zë vendin e parë në Evropë si vendi me numrin më të madh të infektuarve,0.030732130233359255,0.9692678697666407,0
+internal_test,baseline_word_logreg,fake_603,1,Neurologët: Njerëzit me simptoma të butë të koronavirusit po pësojnë çrregullime serioze të trurit,0.009975475267937026,0.9900245247320629,0
+internal_test,baseline_word_logreg,fake_621,1,"Pasi u martuan, gruaja mëson pse burri nuk “e prek”. Kur ai bënte dush ajo e pa hapur…",0.08474325448047688,0.9152567455195231,0
+internal_test,baseline_word_logreg,fake_638,1,Lajmi më i ri sa i përket pagesave prej 170 eurosh për punëtorët që mbetën pa punë gjatë pandemisë!,0.0634690786736198,0.9365309213263802,0
+internal_test,baseline_word_logreg,fake_702,1,LAJMI I FUNDIT – Thaçi: Nëse nuk arrihet marrëveshja me 27 qershor kjo do të ndodhë…,0.0020296475692271917,0.9979703524307728,0
+internal_test,baseline_word_logreg,fake_1028,1,"BE i’a palon Grenellit: Bën veprimin e papritur për Kosovën, hiqen vizat për Kosovën??",0.06368265870778315,0.9363173412922169,0
+internal_test,baseline_word_logreg,fake_1037,1,"Daçiq: Na jepni Veriun e Kosovës, pastaj fillojmë me bisedime!",0.046135224286055466,0.9538647757139446,0
+internal_test,baseline_word_logreg,fake_1055,1,SHBA vjen me Super Lajm Për Kosovën,0.05141963283486904,0.9485803671651309,0
+internal_test,baseline_word_logreg,fake_1085,1,Glauk Konjufca: Bëhuni gati…Nesër është vetëm nxemje!,0.04861763696481151,0.9513823630351885,0
+internal_test,baseline_word_logreg,fake_1104,1,"Nuk hapen xhamitë as në ditët e fundit të Ramazanit, edhe ne Hoxhallarët duam pushim",0.014353847029258812,0.9856461529707412,0
+internal_test,baseline_word_logreg,fake_1653,1,Mjeku shqiptar trondit botën: Ja çfarë i pret të gjithë njerëzit e prekur nga COVID-19,0.093248887817023,0.906751112182977,0
+internal_test,baseline_word_logreg,fake_1873,1,Zbulim i ri: Kjo simptomë e re e koronavirusit po shfaqet tek të moshuarit,0.047289019705874326,0.9527109802941257,0
+internal_test,baseline_word_logreg,fake_1906,1,Befason profesori italian: Ka një kurë që e Zhduk Koronavirusin brenda 48 orëve,0.012311812356199141,0.9876881876438008,0
+internal_test,baseline_word_logreg,fake_1917,1,Hëna që ju zgjidhni tregon tipin e personit me të cilin do të dashuroheni,0.047018337622574874,0.9529816623774251,0
+internal_test,baseline_word_logreg,fake_1932,1,Flet mjekja shqiptare në Kanada: Si të trajtoni virusin në kushtet e shtëpisë,5.741675893534633e-05,0.9999425832410647,0
+internal_test,baseline_word_logreg,fake_1938,1,"Nobelisti japonez shokon botën: Koronavirusi u prodhua nga Kina, asnjë prej miqve të mi në Wuhan s’ma hap telefonin",0.05831064704533723,0.9416893529546628,0
+internal_test,final_word_char_svm,true_786,0,Ekskluzive: Alfred Cako zbulon vaksinën e Covid19 që shkakton vdekje dhe ndalon lindjet,0.9417690493504598,0.9417690493504598,1
+internal_test,final_word_char_svm,fake_508,1,Shikoni  reagimin e Leonora Jakupit për ndërtimin e xhamisë në Prishtinë,0.061146826747614326,0.9388531732523857,0
+internal_test,final_word_char_svm,fake_515,1,"Bac Qikat e Kosoves po na zbardhin ftyren, Kjo qe beri tash Rita Ora eshte e madhe!",0.07805730571802917,0.9219426942819708,0
+internal_test,final_word_char_svm,fake_544,1,Kur pritet t’u mundësohet qytetarëve tërheqja e parave nga Trusti?,0.07641121464856779,0.9235887853514322,0
+internal_test,final_word_char_svm,fake_555,1,Kosova zë vendin e parë në Evropë si vendi me numrin më të madh të infektuarve,0.03670609318844731,0.9632939068115527,0
+internal_test,final_word_char_svm,fake_603,1,Neurologët: Njerëzit me simptoma të butë të koronavirusit po pësojnë çrregullime serioze të trurit,0.0434767027060904,0.9565232972939096,0
+internal_test,final_word_char_svm,fake_638,1,Lajmi më i ri sa i përket pagesave prej 170 eurosh për punëtorët që mbetën pa punë gjatë pandemisë!,0.021102026344967235,0.9788979736550327,0
+internal_test,final_word_char_svm,fake_702,1,LAJMI I FUNDIT – Thaçi: Nëse nuk arrihet marrëveshja me 27 qershor kjo do të ndodhë…,0.02863194592705286,0.9713680540729471,0
+internal_test,final_word_char_svm,fake_1055,1,SHBA vjen me Super Lajm Për Kosovën,0.0846181515747003,0.9153818484252997,0
+internal_test,final_word_char_svm,fake_1085,1,Glauk Konjufca: Bëhuni gati…Nesër është vetëm nxemje!,0.08890405073201149,0.9110959492679885,0
+internal_test,final_word_char_svm,fake_1732,1,Haki Abazi dridhe skenen politike ne Kosove me kete qe tha!,0.08628603649108511,0.9137139635089149,0
+internal_test,final_word_char_svm,fake_1848,1,Me këtë imazh Edona po e dëshmon që vajza po bëhet më e bukur se nëna,0.0393278558407665,0.9606721441592335,0
+internal_test,final_word_char_svm,fake_1873,1,Zbulim i ri: Kjo simptomë e re e koronavirusit po shfaqet tek të moshuarit,0.0767531005792299,0.9232468994207701,0
+internal_test,final_word_char_svm,fake_1906,1,Befason profesori italian: Ka një kurë që e Zhduk Koronavirusin brenda 48 orëve,0.06186616160771832,0.9381338383922817,0
+internal_test,final_word_char_svm,fake_1932,1,Flet mjekja shqiptare në Kanada: Si të trajtoni virusin në kushtet e shtëpisë,0.0008277290671881119,0.9991722709328119,0
+external_pilot,baseline_word_logreg,EXT-R-004,0,Qeveria diskuton kalendarin e negociatave me Bashkimin Europian,0.9047049867914355,0.9047049867914355,1
+external_pilot,baseline_word_logreg,EXT-R-010,0,Fondi i Ndërhyrjes së Jashtëzakonshme arrin 8.22 miliardë lekë,0.9409970591759508,0.9409970591759508,1
+external_pilot,baseline_word_logreg,EXT-R-019,0,Prezantohet shoqëria publike Albanian Digital Solutions,0.9280102997964229,0.9280102997964229,1
+external_pilot,final_word_char_svm,EXT-R-010,0,Fondi i Ndërhyrjes së Jashtëzakonshme arrin 8.22 miliardë lekë,0.9066114076124789,0.9066114076124789,1

@@ -1,0 +1,7 @@
+demo_type,article_id,true_label,probability_real,probability_fake,decision,predict_final_news_match,streamlit_match
+likely_real_correct,true_1594,real,0.9998998558475991,0.0001001441524008815,likely_real,true,true
+likely_fake_correct,fake_531,fake,0.0000002926701381245067,0.9999997073298619,likely_fake,true,true
+uncertain,true_585,real,0.5028133475971859,0.4971866524028142,uncertain,true,true
+false_positive,true_586,real,0.1036349025562524,0.8963650974437476,likely_fake,true,true
+false_negative,fake_1104,fake,0.8940620339254887,0.10593796607451131,likely_real,true,true
+high_confidence_error,fake_1932,fake,0.9991722709328119,0.0008277290671881119,likely_real,true,true

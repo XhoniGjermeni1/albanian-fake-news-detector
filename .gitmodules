@@ -1,0 +1,3 @@
+[submodule "data/raw/alb-fake-news-corpus"]
+	path = data/raw/alb-fake-news-corpus
+	url = https://github.com/rexshijaku/alb-fake-news-corpus.git

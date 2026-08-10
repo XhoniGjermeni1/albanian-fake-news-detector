@@ -1,4 +1,4 @@
-"""Basic text preprocessing for the first baseline model."""
+"""Shared basic text preprocessing for the Albanian news models."""
 
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ def combine_title_content(title: str, content: str) -> str:
 
 
 def prepare_text_dataframe(dataframe: pd.DataFrame) -> pd.DataFrame:
-    """Create clean text columns used by the baseline model."""
+    """Create the clean text columns used by the model pipelines."""
     clean_dataframe = dataframe.copy()
 
     clean_dataframe["title_clean"] = clean_dataframe["title"].apply(normalize_spaces)

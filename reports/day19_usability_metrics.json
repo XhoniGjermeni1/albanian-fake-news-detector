@@ -1,0 +1,52 @@
+{
+  "day": 19,
+  "status": "completed",
+  "date": "2026-08-10",
+  "model": {
+    "model_id": "albanian_fake_news_word_char_svm_sigmoid_v1",
+    "version": "1.0.0",
+    "sha256": "52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5",
+    "matches_frozen_day16_candidate": true,
+    "retrained": false,
+    "configuration_changed": false,
+    "thresholds_changed": false
+  },
+  "ui_audit": {
+    "desktop_viewport": "1440x1100",
+    "mobile_viewport": "390x844",
+    "mobile_document_scroll_width": 390,
+    "horizontal_overflow": false,
+    "input_validation_checked": true,
+    "all_three_decisions_checked": true,
+    "probabilities_checked": true,
+    "linguistic_explanation_checked": true,
+    "fact_check_warning_visible": true,
+    "about_model_checked": true,
+    "short_and_long_text_checked": true,
+    "streamlit_health_status": 200
+  },
+  "demo": {
+    "main_cases": 3,
+    "limitation_cases": 2,
+    "total_cases": 5,
+    "cases_csv": "reports/day19_demo_cases.csv",
+    "guide": "reports/day19_demo_guide.md"
+  },
+  "walkthrough": {
+    "path": "notebooks/02_final_walkthrough.ipynb",
+    "cells": 21,
+    "code_cells": 10,
+    "execution_seconds": 3.98,
+    "all_code_cells_passed": true,
+    "trains_model": false
+  },
+  "verification": {
+    "focused_tests_passed": 38,
+    "full_tests_passed": 112,
+    "full_tests_failed": 0,
+    "requirements_dry_run_resolved": true,
+    "old_model_used_by_streamlit": false,
+    "desktop_screenshot": "reports/figures/day19_streamlit_desktop.png",
+    "mobile_screenshot": "reports/figures/day19_streamlit_mobile.png"
+  }
+}
