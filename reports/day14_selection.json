@@ -1,0 +1,111 @@
+{
+  "selection_scope": "train_only_5_fold_group_safe_cv",
+  "fixed_representation": {
+    "name": "word_char_tfidf",
+    "word": {
+      "ngram_range": [
+        1,
+        2
+      ],
+      "lowercase": false,
+      "min_df": 2,
+      "max_features": 30000
+    },
+    "character": {
+      "config_name": "char_wb_3_5",
+      "analyzer": "char_wb",
+      "ngram_min": 3,
+      "ngram_max": 5,
+      "min_df": 2,
+      "max_features": 50000
+    }
+  },
+  "candidate_count": 6,
+  "selection_tolerance_f1": 0.002,
+  "selection_rule": "Highest mean F1 weighted; candidates within 0.002 are ordered by lower F1 standard deviation, then F1 fake and deployment suitability.",
+  "best_config_by_classifier": {
+    "logistic_regression": {
+      "candidate_id": "logistic_regression_c_1_0",
+      "parameter_name": "C",
+      "parameter_value": 1.0,
+      "mean_f1_weighted": 0.8952030058401663,
+      "std_f1_weighted": 0.004122221373016032
+    },
+    "linear_svm": {
+      "candidate_id": "linear_svm_c_1_0",
+      "parameter_name": "C",
+      "parameter_value": 1.0,
+      "mean_f1_weighted": 0.9109796268173949,
+      "std_f1_weighted": 0.0020694421646861414
+    },
+    "complement_nb": {
+      "candidate_id": "complement_nb_alpha_0_5",
+      "parameter_name": "alpha",
+      "parameter_value": 0.5,
+      "mean_f1_weighted": 0.8810131108235819,
+      "std_f1_weighted": 0.010602385373160876
+    }
+  },
+  "winner_classifier": "linear_svm",
+  "winner_candidate_id": "linear_svm_c_1_0",
+  "winner_mean_f1_weighted": 0.9109796268173949,
+  "winner_std_f1_weighted": 0.0020694421646861414,
+  "most_stable_classifier": "linear_svm",
+  "best_recall_balance_classifier": "linear_svm",
+  "internal_test_used": false,
+  "external_results_used": false,
+  "calibration_applied": false,
+  "cv_fold_audit": [
+    {
+      "fold": 1,
+      "fit_rows": 2556,
+      "validation_rows": 639,
+      "fit_groups": 1267,
+      "validation_groups": 319,
+      "overlapping_groups": 0,
+      "validation_real": 320,
+      "validation_fake": 319
+    },
+    {
+      "fold": 2,
+      "fit_rows": 2556,
+      "validation_rows": 639,
+      "fit_groups": 1272,
+      "validation_groups": 314,
+      "overlapping_groups": 0,
+      "validation_real": 319,
+      "validation_fake": 320
+    },
+    {
+      "fold": 3,
+      "fit_rows": 2556,
+      "validation_rows": 639,
+      "fit_groups": 1267,
+      "validation_groups": 319,
+      "overlapping_groups": 0,
+      "validation_real": 320,
+      "validation_fake": 319
+    },
+    {
+      "fold": 4,
+      "fit_rows": 2556,
+      "validation_rows": 639,
+      "fit_groups": 1270,
+      "validation_groups": 316,
+      "overlapping_groups": 0,
+      "validation_real": 319,
+      "validation_fake": 320
+    },
+    {
+      "fold": 5,
+      "fit_rows": 2556,
+      "validation_rows": 639,
+      "fit_groups": 1268,
+      "validation_groups": 318,
+      "overlapping_groups": 0,
+      "validation_real": 320,
+      "validation_fake": 319
+    }
+  ],
+  "group_count": 1586
+}

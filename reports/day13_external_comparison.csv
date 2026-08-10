@@ -1,0 +1,4 @@
+model,model_display,rows,real_rows,fake_rows,accuracy,precision_weighted,recall_weighted,f1_weighted,precision_real,recall_real,f1_real,precision_fake,recall_fake,f1_fake,brier_score,log_loss,confusion_matrix,false_positives,false_negatives,likely_real,uncertain,likely_fake,strong_coverage,strong_accuracy,mean_probability_fake_real,mean_probability_fake_fake
+word_tfidf,Word TF-IDF,40,20,20,0.475,0.4099,0.475,0.3593,0.3333,0.05,0.087,0.4865,0.9,0.6316,0.321824,0.892334,"[[1, 19], [2, 18]]",19,2,1,8,31,0.8,0.5625,0.7474,0.8167
+char_tfidf,Character TF-IDF,40,20,20,0.65,0.7,0.65,0.6267,0.8,0.4,0.5333,0.6,0.9,0.72,0.206153,0.584396,"[[8, 12], [2, 18]]",12,2,2,18,20,0.55,0.7727,0.5525,0.7953
+word_char_tfidf,Word + Character TF-IDF,40,20,20,0.525,0.5433,0.525,0.4689,0.5714,0.2,0.2963,0.5152,0.85,0.6415,0.249447,0.68026,"[[4, 16], [3, 17]]",16,3,1,17,22,0.575,0.7391,0.6263,0.7892

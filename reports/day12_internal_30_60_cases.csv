@@ -1,0 +1,10 @@
+article_id,pair_id,label,label_name,title,word_count,sentence_count,avg_sentence_length,diacritic_ratio,uppercase_char_ratio,source_indicator_count,sensational_count,exclamation_count,probability_real,probability_fake,binary_prediction,decision,prediction_correct,error_type,length_group
+true_531,531,0,real,"Ndërron jetë edhe një person i infektuar me Covid-19, nga Peja",57,4,14.25,0.059829,0.065934,0,0,0,0.7063643680498316,0.2936356319501684,0,likely_real,True,correct,very_short_le_60
+true_675,675,0,real,A është Fifi në lidhje? Përgjigjet këngëtarja,55,4,13.75,0.101307,0.03252,0,0,0,0.5831754449814359,0.41682455501856414,0,uncertain,True,correct,very_short_le_60
+true_765,765,0,real,"Sasa e “O sa mirë” plotë jetë, vitet thjeshtë numra janë për të",57,4,14.25,0.08125,0.031496,0,0,0,0.34365639829874983,0.6563436017012502,1,uncertain,False,false_positive,very_short_le_60
+true_786,786,0,real,Ekskluzive: Alfred Cako zbulon vaksinën e Covid19 që shkakton vdekje dhe ndalon lindjet,46,5,9.2,0.045902,0.044898,0,1,0,0.1077410576054636,0.8922589423945364,1,likely_fake,False,false_positive,very_short_le_60
+true_856,856,0,real,​ Nesër në Bruksel mbahet takimi i ekspertëve,60,4,15.0,0.070352,0.051672,0,0,0,0.7230600024672273,0.2769399975327727,0,likely_real,True,correct,very_short_le_60
+true_1610,1610,0,real,Kuvendi votoi Qeverinë Hoti,44,3,14.67,0.085821,0.083721,0,0,0,0.567779437216282,0.432220562783718,0,uncertain,True,correct,very_short_le_60
+fake_433,433,1,fake,Pasi u infektua me Covid-19 vdes Mustafa,57,3,19.0,0.0,0.053846,0,0,0,0.054836669420030626,0.9451633305799694,1,likely_fake,True,correct,very_short_le_60
+fake_1108,1108,1,fake,Vjosa po vjen me parti të re politike me 9 deputet!,44,3,14.67,0.040984,0.145833,0,0,1,0.0668395026981109,0.9331604973018891,1,likely_fake,True,correct,very_short_le_60
+fake_1594,1594,1,fake,"Pamje shokuese , gruaja hidhet nga ballkoni i PALLATIT ! (Video)",55,4,13.75,0.073826,0.059322,0,1,1,0.018725188443085683,0.9812748115569143,1,likely_fake,True,correct,very_short_le_60

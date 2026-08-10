@@ -1,0 +1,121 @@
+model,external_id,label,title,topic,source,word_count,probability_real,probability_fake,binary_prediction,decision,prediction_correct,error_type
+word_tfidf,EXT-R-001,0,Prezantohet programi EU4Municipalities II për bashkitë shqiptare,politikë,Këshilli i Ministrave i Shqipërisë,48,0.16627431484168942,0.8337256851583106,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-002,0,Shqipëria merr pjesë në Konferencën e tetë Ndërqeveritare me BE-në,politikë,Këshilli i Ministrave i Shqipërisë,43,0.40862579126103526,0.5913742087389647,1,uncertain,False,false_positive
+word_tfidf,EXT-R-003,0,Shqipëria mbyll provizorisht tre kapituj negociatash me BE-në,politikë,Këshilli i Ministrave i Shqipërisë,43,0.3304640112088866,0.6695359887911134,1,uncertain,False,false_positive
+word_tfidf,EXT-R-004,0,Qeveria diskuton kalendarin e negociatave me Bashkimin Europian,politikë,Këshilli i Ministrave i Shqipërisë,49,0.09529501320856448,0.9047049867914355,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-005,0,Spitali Rajonal i Lezhës zgjeron shërbimet e specializuara,shëndetësi,Këshilli i Ministrave i Shqipërisë,48,0.2568530895494121,0.7431469104505879,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-006,0,Prezantohet projekti për qendrën spitalore Health Hub Hospital në Tiranë,shëndetësi,Këshilli i Ministrave i Shqipërisë,49,0.16480179477007617,0.8351982052299238,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-007,0,Tetë spitale rajonale ofrojnë njësi kimioterapie,shëndetësi,Këshilli i Ministrave i Shqipërisë,45,0.19022215257004127,0.8097778474299587,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-008,0,Buxhetit të shëndetësisë i shtohen fonde për barnat onkologjike,shëndetësi,Këshilli i Ministrave i Shqipërisë,40,0.171670027574637,0.828329972425363,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-009,0,Banka e Shqipërisë mban të pandryshuar normën bazë të interesit,ekonomi,Banka e Shqipërisë,45,0.46536399529151296,0.534636004708487,1,uncertain,False,false_positive
+word_tfidf,EXT-R-010,0,Fondi i Ndërhyrjes së Jashtëzakonshme arrin 8.22 miliardë lekë,ekonomi,Banka e Shqipërisë,41,0.05900294082404922,0.9409970591759508,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-011,0,INSTAT raporton rritje të PBB-së në tremujorin e parë të vitit 2026,ekonomi,INSTAT,47,0.6434749091140719,0.3565250908859281,0,uncertain,True,correct
+word_tfidf,EXT-R-012,0,Eksportet dhe importet e mallrave rriten në qershor 2026,ekonomi,INSTAT,38,0.24224969689435671,0.7577503031056433,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-013,0,Fondi Social 2026 financon katërmbëdhjetë shërbime të reja,sociale,Këshilli i Ministrave i Shqipërisë,45,0.3460669644765695,0.6539330355234305,1,uncertain,False,false_positive
+word_tfidf,EXT-R-014,0,Mbahet finalja e Festivalit Kombëtar të Shkencës,sociale,Këshilli i Ministrave i Shqipërisë,41,0.32676246508725104,0.673237534912749,1,uncertain,False,false_positive
+word_tfidf,EXT-R-015,0,Shkolla 22 Tetori në Berat rikonstruktohet për rreth 500 nxënës,sociale,Këshilli i Ministrave i Shqipërisë,40,0.38015945569928145,0.6198405443007186,1,uncertain,False,false_positive
+word_tfidf,EXT-R-016,0,Dyfishohet mbështetja për fëmijët dhe të rinjtë me aftësi të kufizuara,sociale,Këshilli i Ministrave i Shqipërisë,46,0.264436475091095,0.735563524908905,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-017,0,Nis faza e parë e projektit Smart City në njëzet shkolla të Tiranës,teknologji,Këshilli i Ministrave i Shqipërisë,48,0.21067320017536761,0.7893267998246324,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-018,0,Samiti Shqipëri-Izrael mbledh kompani të teknologjisë dhe sigurisë kibernetike,teknologji,Këshilli i Ministrave i Shqipërisë,41,0.13002619008853888,0.8699738099114611,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-019,0,Prezantohet shoqëria publike Albanian Digital Solutions,teknologji,Këshilli i Ministrave i Shqipërisë,41,0.07198970020357709,0.9280102997964229,1,likely_fake,False,false_positive
+word_tfidf,EXT-R-020,0,Administrata publike përdor mjete të inteligjencës artificiale në procesin e integrimit,teknologji,Këshilli i Ministrave i Shqipërisë,46,0.12782429390113126,0.8721757060988687,1,likely_fake,False,false_positive
+word_tfidf,EXT-F-001,1,Ramush Haradinaj dhe bashkëshortja bashkëpunojnë me Vuçiqin për Expo 27,politikë,Krypometër / postim në Facebook,45,0.09971333744664357,0.9002866625533564,1,likely_fake,True,correct
+word_tfidf,EXT-F-002,1,Albin Kurti paraqitet me një librezë anëtarësie të UDB-së,politikë,Krypometër / postim në rrjete sociale,45,0.07303474553958711,0.9269652544604129,1,likely_fake,True,correct
+word_tfidf,EXT-F-003,1,Vjosa Osmani i puth dorën Albin Kurtit gjatë bisedimeve politike,politikë,Krypometër / postim në Facebook,49,0.025008145360059242,0.9749918546399408,1,likely_fake,True,correct
+word_tfidf,EXT-F-004,1,Erdogan kërcënon Greqinë pas protestave në Shqipëri,politikë,Krypometër / postim në Facebook,46,0.2700672870468358,0.7299327129531642,1,likely_fake,True,correct
+word_tfidf,EXT-F-005,1,Një recetë e mjekut largon parazitët nga organizmi,shëndetësi,Krypometër / postim në Facebook,47,0.07718183607472973,0.9228181639252703,1,likely_fake,True,correct
+word_tfidf,EXT-F-006,1,Urologu Ajet Xhafa zbulon një ilaç të ri kundër prostatitit,shëndetësi,Krypometër / postim në Facebook,48,0.12691225753645607,0.8730877424635439,1,likely_fake,True,correct
+word_tfidf,EXT-F-007,1,Një lugë para gjumit largon të gjithë parazitët brenda natës,shëndetësi,Krypometër / postim në Facebook,46,0.02231566835686638,0.9776843316431336,1,likely_fake,True,correct
+word_tfidf,EXT-F-008,1,Një metodë e re rikthen dëgjimin dhe largon zhurmën në vesh,shëndetësi,Krypometër / postim në Facebook,50,0.1922824750479164,0.8077175249520836,1,likely_fake,True,correct
+word_tfidf,EXT-F-009,1,Kurti njofton investim 500 milionë euro në energji të rinovueshme,ekonomi,Krypometër / postim në Facebook,51,0.15362657477378405,0.846373425226216,1,likely_fake,True,correct
+word_tfidf,EXT-F-010,1,Arben Gashi është ndër pesë personat më të pasur në Gjermani,ekonomi,Krypometër / postim në Facebook,51,0.7062539281310971,0.2937460718689029,0,likely_real,False,false_negative
+word_tfidf,EXT-F-011,1,Kredi me interes një për qind miratohet brenda 48 orëve,ekonomi,Krypometër / ofertë në Facebook,46,0.1950517522641535,0.8049482477358465,1,likely_fake,True,correct
+word_tfidf,EXT-F-012,1,Mega Mall dhuron qindra soba dhe enë gatimi për ndjekësit,ekonomi,Krypometër / postim në Facebook,50,0.5888725672582289,0.4111274327417711,0,uncertain,False,false_negative
+word_tfidf,EXT-F-013,1,Albin Kurti dhe Agim Bahtiri kanë vdekur nga temperaturat e larta,sociale,Krypometër / postim në Facebook,50,0.05528477837842205,0.944715221621578,1,likely_fake,True,correct
+word_tfidf,EXT-F-014,1,Njësia Speciale ndërhyn gjatë rrënimit të objekteve pranë Ujmanit,sociale,Krypometër / postim në Facebook,45,0.23166158588109964,0.7683384141189004,1,likely_fake,True,correct
+word_tfidf,EXT-F-015,1,Adriatik Kelmendi zhvillonte takime me një të dënuar për spiunazh,sociale,Krypometër / postim në Instagram,46,0.22986446798186033,0.7701355320181397,1,likely_fake,True,correct
+word_tfidf,EXT-F-016,1,Qeveria e Kosovës ndryshon pesë rregulla të skemave pensionale,sociale,Krypometër / postim në Instagram,48,0.2759737962090171,0.7240262037909829,1,likely_fake,True,correct
+word_tfidf,EXT-F-017,1,Albin Kurti fotografohet pranë Sllobodan Millosheviqit,teknologji,Krypometër / postim në Facebook,42,0.047669262841657845,0.9523307371583422,1,likely_fake,True,correct
+word_tfidf,EXT-F-018,1,"Thaçi, Mustafa dhe Rama mbajnë kapela me simbole nacionaliste serbe",teknologji,Krypometër / postim në Facebook,46,0.08475316596312699,0.915246834036873,1,likely_fake,True,correct
+word_tfidf,EXT-F-019,1,Politikanë shqiptarë shfaqen duke u përqafuar dhe puthur,teknologji,Krypometër / postim në Facebook,44,0.015598153218619792,0.9844018467813802,1,likely_fake,True,correct
+word_tfidf,EXT-F-020,1,Dejona Mihali u mëson greqisht deputetëve të Vetëvendosjes,teknologji,Krypometër / postim në Facebook,44,0.19526732258730617,0.8047326774126938,1,likely_fake,True,correct
+char_tfidf,EXT-R-001,0,Prezantohet programi EU4Municipalities II për bashkitë shqiptare,politikë,Këshilli i Ministrave i Shqipërisë,48,0.48010902660579935,0.5198909733942007,1,uncertain,False,false_positive
+char_tfidf,EXT-R-002,0,Shqipëria merr pjesë në Konferencën e tetë Ndërqeveritare me BE-në,politikë,Këshilli i Ministrave i Shqipërisë,43,0.5341887828211929,0.46581121717880714,0,uncertain,True,correct
+char_tfidf,EXT-R-003,0,Shqipëria mbyll provizorisht tre kapituj negociatash me BE-në,politikë,Këshilli i Ministrave i Shqipërisë,43,0.21074378813010664,0.7892562118698934,1,likely_fake,False,false_positive
+char_tfidf,EXT-R-004,0,Qeveria diskuton kalendarin e negociatave me Bashkimin Europian,politikë,Këshilli i Ministrave i Shqipërisë,49,0.25162429311130075,0.7483757068886993,1,likely_fake,False,false_positive
+char_tfidf,EXT-R-005,0,Spitali Rajonal i Lezhës zgjeron shërbimet e specializuara,shëndetësi,Këshilli i Ministrave i Shqipërisë,48,0.4229259884829427,0.5770740115170573,1,uncertain,False,false_positive
+char_tfidf,EXT-R-006,0,Prezantohet projekti për qendrën spitalore Health Hub Hospital në Tiranë,shëndetësi,Këshilli i Ministrave i Shqipërisë,49,0.5726152309346925,0.42738476906530753,0,uncertain,True,correct
+char_tfidf,EXT-R-007,0,Tetë spitale rajonale ofrojnë njësi kimioterapie,shëndetësi,Këshilli i Ministrave i Shqipërisë,45,0.5543235802112627,0.4456764197887373,0,uncertain,True,correct
+char_tfidf,EXT-R-008,0,Buxhetit të shëndetësisë i shtohen fonde për barnat onkologjike,shëndetësi,Këshilli i Ministrave i Shqipërisë,40,0.4599938017167988,0.5400061982832012,1,uncertain,False,false_positive
+char_tfidf,EXT-R-009,0,Banka e Shqipërisë mban të pandryshuar normën bazë të interesit,ekonomi,Banka e Shqipërisë,45,0.6265908990680359,0.3734091009319641,0,uncertain,True,correct
+char_tfidf,EXT-R-010,0,Fondi i Ndërhyrjes së Jashtëzakonshme arrin 8.22 miliardë lekë,ekonomi,Banka e Shqipërisë,41,0.10739957713975479,0.8926004228602452,1,likely_fake,False,false_positive
+char_tfidf,EXT-R-011,0,INSTAT raporton rritje të PBB-së në tremujorin e parë të vitit 2026,ekonomi,INSTAT,47,0.8216466750066479,0.1783533249933521,0,likely_real,True,correct
+char_tfidf,EXT-R-012,0,Eksportet dhe importet e mallrave rriten në qershor 2026,ekonomi,INSTAT,38,0.21547903400012813,0.7845209659998719,1,likely_fake,False,false_positive
+char_tfidf,EXT-R-013,0,Fondi Social 2026 financon katërmbëdhjetë shërbime të reja,sociale,Këshilli i Ministrave i Shqipërisë,45,0.3382056457021979,0.6617943542978021,1,uncertain,False,false_positive
+char_tfidf,EXT-R-014,0,Mbahet finalja e Festivalit Kombëtar të Shkencës,sociale,Këshilli i Ministrave i Shqipërisë,41,0.36382389540570415,0.6361761045942959,1,uncertain,False,false_positive
+char_tfidf,EXT-R-015,0,Shkolla 22 Tetori në Berat rikonstruktohet për rreth 500 nxënës,sociale,Këshilli i Ministrave i Shqipërisë,40,0.48745706568438507,0.5125429343156149,1,uncertain,False,false_positive
+char_tfidf,EXT-R-016,0,Dyfishohet mbështetja për fëmijët dhe të rinjtë me aftësi të kufizuara,sociale,Këshilli i Ministrave i Shqipërisë,46,0.5377009024319495,0.46229909756805054,0,uncertain,True,correct
+char_tfidf,EXT-R-017,0,Nis faza e parë e projektit Smart City në njëzet shkolla të Tiranës,teknologji,Këshilli i Ministrave i Shqipërisë,48,0.6069541669372274,0.3930458330627727,0,uncertain,True,correct
+char_tfidf,EXT-R-018,0,Samiti Shqipëri-Izrael mbledh kompani të teknologjisë dhe sigurisë kibernetike,teknologji,Këshilli i Ministrave i Shqipërisë,41,0.3288065509291539,0.6711934490708461,1,uncertain,False,false_positive
+char_tfidf,EXT-R-019,0,Prezantohet shoqëria publike Albanian Digital Solutions,teknologji,Këshilli i Ministrave i Shqipërisë,41,0.46948778330001384,0.5305122166999862,1,uncertain,False,false_positive
+char_tfidf,EXT-R-020,0,Administrata publike përdor mjete të inteligjencës artificiale në procesin e integrimit,teknologji,Këshilli i Ministrave i Shqipërisë,46,0.5595247914001336,0.4404752085998664,0,uncertain,True,correct
+char_tfidf,EXT-F-001,1,Ramush Haradinaj dhe bashkëshortja bashkëpunojnë me Vuçiqin për Expo 27,politikë,Krypometër / postim në Facebook,45,0.0758929333942231,0.9241070666057769,1,likely_fake,True,correct
+char_tfidf,EXT-F-002,1,Albin Kurti paraqitet me një librezë anëtarësie të UDB-së,politikë,Krypometër / postim në rrjete sociale,45,0.07950899075918383,0.9204910092408162,1,likely_fake,True,correct
+char_tfidf,EXT-F-003,1,Vjosa Osmani i puth dorën Albin Kurtit gjatë bisedimeve politike,politikë,Krypometër / postim në Facebook,49,0.01585936519790565,0.9841406348020943,1,likely_fake,True,correct
+char_tfidf,EXT-F-004,1,Erdogan kërcënon Greqinë pas protestave në Shqipëri,politikë,Krypometër / postim në Facebook,46,0.2681652840932439,0.7318347159067561,1,likely_fake,True,correct
+char_tfidf,EXT-F-005,1,Një recetë e mjekut largon parazitët nga organizmi,shëndetësi,Krypometër / postim në Facebook,47,0.06461236271627546,0.9353876372837245,1,likely_fake,True,correct
+char_tfidf,EXT-F-006,1,Urologu Ajet Xhafa zbulon një ilaç të ri kundër prostatitit,shëndetësi,Krypometër / postim në Facebook,48,0.05070733472198685,0.9492926652780131,1,likely_fake,True,correct
+char_tfidf,EXT-F-007,1,Një lugë para gjumit largon të gjithë parazitët brenda natës,shëndetësi,Krypometër / postim në Facebook,46,0.02755052089766652,0.9724494791023335,1,likely_fake,True,correct
+char_tfidf,EXT-F-008,1,Një metodë e re rikthen dëgjimin dhe largon zhurmën në vesh,shëndetësi,Krypometër / postim në Facebook,50,0.1352724300233058,0.8647275699766942,1,likely_fake,True,correct
+char_tfidf,EXT-F-009,1,Kurti njofton investim 500 milionë euro në energji të rinovueshme,ekonomi,Krypometër / postim në Facebook,51,0.14936196753938202,0.850638032460618,1,likely_fake,True,correct
+char_tfidf,EXT-F-010,1,Arben Gashi është ndër pesë personat më të pasur në Gjermani,ekonomi,Krypometër / postim në Facebook,51,0.5175907084850888,0.4824092915149112,0,uncertain,False,false_negative
+char_tfidf,EXT-F-011,1,Kredi me interes një për qind miratohet brenda 48 orëve,ekonomi,Krypometër / ofertë në Facebook,46,0.33735726910311514,0.6626427308968849,1,uncertain,True,correct
+char_tfidf,EXT-F-012,1,Mega Mall dhuron qindra soba dhe enë gatimi për ndjekësit,ekonomi,Krypometër / postim në Facebook,50,0.45803191451724246,0.5419680854827575,1,uncertain,True,correct
+char_tfidf,EXT-F-013,1,Albin Kurti dhe Agim Bahtiri kanë vdekur nga temperaturat e larta,sociale,Krypometër / postim në Facebook,50,0.05641136040760564,0.9435886395923944,1,likely_fake,True,correct
+char_tfidf,EXT-F-014,1,Njësia Speciale ndërhyn gjatë rrënimit të objekteve pranë Ujmanit,sociale,Krypometër / postim në Facebook,45,0.2869765360386026,0.7130234639613974,1,likely_fake,True,correct
+char_tfidf,EXT-F-015,1,Adriatik Kelmendi zhvillonte takime me një të dënuar për spiunazh,sociale,Krypometër / postim në Instagram,46,0.2882987232623514,0.7117012767376486,1,likely_fake,True,correct
+char_tfidf,EXT-F-016,1,Qeveria e Kosovës ndryshon pesë rregulla të skemave pensionale,sociale,Krypometër / postim në Instagram,48,0.7721047222901545,0.22789527770984552,0,likely_real,False,false_negative
+char_tfidf,EXT-F-017,1,Albin Kurti fotografohet pranë Sllobodan Millosheviqit,teknologji,Krypometër / postim në Facebook,42,0.09250169114049145,0.9074983088595086,1,likely_fake,True,correct
+char_tfidf,EXT-F-018,1,"Thaçi, Mustafa dhe Rama mbajnë kapela me simbole nacionaliste serbe",teknologji,Krypometër / postim në Facebook,46,0.14480459424947845,0.8551954057505216,1,likely_fake,True,correct
+char_tfidf,EXT-F-019,1,Politikanë shqiptarë shfaqen duke u përqafuar dhe puthur,teknologji,Krypometër / postim në Facebook,44,0.011516668877822989,0.988483331122177,1,likely_fake,True,correct
+char_tfidf,EXT-F-020,1,Dejona Mihali u mëson greqisht deputetëve të Vetëvendosjes,teknologji,Krypometër / postim në Facebook,44,0.2619465936932831,0.7380534063067169,1,likely_fake,True,correct
+word_char_tfidf,EXT-R-001,0,Prezantohet programi EU4Municipalities II për bashkitë shqiptare,politikë,Këshilli i Ministrave i Shqipërisë,48,0.34330874925935007,0.6566912507406499,1,uncertain,False,false_positive
+word_char_tfidf,EXT-R-002,0,Shqipëria merr pjesë në Konferencën e tetë Ndërqeveritare me BE-në,politikë,Këshilli i Ministrave i Shqipërisë,43,0.5672568044872113,0.4327431955127888,0,uncertain,True,correct
+word_char_tfidf,EXT-R-003,0,Shqipëria mbyll provizorisht tre kapituj negociatash me BE-në,politikë,Këshilli i Ministrave i Shqipërisë,43,0.28400133312552034,0.7159986668744797,1,likely_fake,False,false_positive
+word_char_tfidf,EXT-R-004,0,Qeveria diskuton kalendarin e negociatave me Bashkimin Europian,politikë,Këshilli i Ministrave i Shqipërisë,49,0.16771040792346836,0.8322895920765316,1,likely_fake,False,false_positive
+word_char_tfidf,EXT-R-005,0,Spitali Rajonal i Lezhës zgjeron shërbimet e specializuara,shëndetësi,Këshilli i Ministrave i Shqipërisë,48,0.33601378695524453,0.6639862130447555,1,uncertain,False,false_positive
+word_char_tfidf,EXT-R-006,0,Prezantohet projekti për qendrën spitalore Health Hub Hospital në Tiranë,shëndetësi,Këshilli i Ministrave i Shqipërisë,49,0.40874034233738366,0.5912596576626163,1,uncertain,False,false_positive
+word_char_tfidf,EXT-R-007,0,Tetë spitale rajonale ofrojnë njësi kimioterapie,shëndetësi,Këshilli i Ministrave i Shqipërisë,45,0.414492644047187,0.585507355952813,1,uncertain,False,false_positive
+word_char_tfidf,EXT-R-008,0,Buxhetit të shëndetësisë i shtohen fonde për barnat onkologjike,shëndetësi,Këshilli i Ministrave i Shqipërisë,40,0.3002211845971078,0.6997788154028922,1,uncertain,False,false_positive
+word_char_tfidf,EXT-R-009,0,Banka e Shqipërisë mban të pandryshuar normën bazë të interesit,ekonomi,Banka e Shqipërisë,45,0.6247502457020186,0.3752497542979813,0,uncertain,True,correct
+word_char_tfidf,EXT-R-010,0,Fondi i Ndërhyrjes së Jashtëzakonshme arrin 8.22 miliardë lekë,ekonomi,Banka e Shqipërisë,41,0.07674295274846343,0.9232570472515366,1,likely_fake,False,false_positive
+word_char_tfidf,EXT-R-011,0,INSTAT raporton rritje të PBB-së në tremujorin e parë të vitit 2026,ekonomi,INSTAT,47,0.7593816061380274,0.24061839386197253,0,likely_real,True,correct
+word_char_tfidf,EXT-R-012,0,Eksportet dhe importet e mallrave rriten në qershor 2026,ekonomi,INSTAT,38,0.27293005095636247,0.7270699490436375,1,likely_fake,False,false_positive
+word_char_tfidf,EXT-R-013,0,Fondi Social 2026 financon katërmbëdhjetë shërbime të reja,sociale,Këshilli i Ministrave i Shqipërisë,45,0.3430247381657815,0.6569752618342185,1,uncertain,False,false_positive
+word_char_tfidf,EXT-R-014,0,Mbahet finalja e Festivalit Kombëtar të Shkencës,sociale,Këshilli i Ministrave i Shqipërisë,41,0.3683771892321288,0.6316228107678712,1,uncertain,False,false_positive
+word_char_tfidf,EXT-R-015,0,Shkolla 22 Tetori në Berat rikonstruktohet për rreth 500 nxënës,sociale,Këshilli i Ministrave i Shqipërisë,40,0.5138121499634736,0.4861878500365265,0,uncertain,True,correct
+word_char_tfidf,EXT-R-016,0,Dyfishohet mbështetja për fëmijët dhe të rinjtë me aftësi të kufizuara,sociale,Këshilli i Ministrave i Shqipërisë,46,0.4170655559497902,0.5829344440502098,1,uncertain,False,false_positive
+word_char_tfidf,EXT-R-017,0,Nis faza e parë e projektit Smart City në njëzet shkolla të Tiranës,teknologji,Këshilli i Ministrave i Shqipërisë,48,0.4343373600148679,0.5656626399851321,1,uncertain,False,false_positive
+word_char_tfidf,EXT-R-018,0,Samiti Shqipëri-Izrael mbledh kompani të teknologjisë dhe sigurisë kibernetike,teknologji,Këshilli i Ministrave i Shqipërisë,41,0.2567749471578491,0.7432250528421509,1,likely_fake,False,false_positive
+word_char_tfidf,EXT-R-019,0,Prezantohet shoqëria publike Albanian Digital Solutions,teknologji,Këshilli i Ministrave i Shqipërisë,41,0.24911603704688945,0.7508839629531106,1,likely_fake,False,false_positive
+word_char_tfidf,EXT-R-020,0,Administrata publike përdor mjete të inteligjencës artificiale në procesin e integrimit,teknologji,Këshilli i Ministrave i Shqipërisë,46,0.3356350004165334,0.6643649995834666,1,uncertain,False,false_positive
+word_char_tfidf,EXT-F-001,1,Ramush Haradinaj dhe bashkëshortja bashkëpunojnë me Vuçiqin për Expo 27,politikë,Krypometër / postim në Facebook,45,0.09031720440933388,0.9096827955906661,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-002,1,Albin Kurti paraqitet me një librezë anëtarësie të UDB-së,politikë,Krypometër / postim në rrjete sociale,45,0.06876597085952685,0.9312340291404732,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-003,1,Vjosa Osmani i puth dorën Albin Kurtit gjatë bisedimeve politike,politikë,Krypometër / postim në Facebook,49,0.022696879383709123,0.9773031206162909,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-004,1,Erdogan kërcënon Greqinë pas protestave në Shqipëri,politikë,Krypometër / postim në Facebook,46,0.3647755573959255,0.6352244426040745,1,uncertain,True,correct
+word_char_tfidf,EXT-F-005,1,Një recetë e mjekut largon parazitët nga organizmi,shëndetësi,Krypometër / postim në Facebook,47,0.05578697383827946,0.9442130261617205,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-006,1,Urologu Ajet Xhafa zbulon një ilaç të ri kundër prostatitit,shëndetësi,Krypometër / postim në Facebook,48,0.05580195815475608,0.9441980418452439,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-007,1,Një lugë para gjumit largon të gjithë parazitët brenda natës,shëndetësi,Krypometër / postim në Facebook,46,0.015325920284239958,0.98467407971576,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-008,1,Një metodë e re rikthen dëgjimin dhe largon zhurmën në vesh,shëndetësi,Krypometër / postim në Facebook,50,0.1518633815978443,0.8481366184021557,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-009,1,Kurti njofton investim 500 milionë euro në energji të rinovueshme,ekonomi,Krypometër / postim në Facebook,51,0.14823908838238842,0.8517609116176116,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-010,1,Arben Gashi është ndër pesë personat më të pasur në Gjermani,ekonomi,Krypometër / postim në Facebook,51,0.6716788096833719,0.3283211903166281,0,uncertain,False,false_negative
+word_char_tfidf,EXT-F-011,1,Kredi me interes një për qind miratohet brenda 48 orëve,ekonomi,Krypometër / ofertë në Facebook,46,0.28816137271650877,0.7118386272834912,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-012,1,Mega Mall dhuron qindra soba dhe enë gatimi për ndjekësit,ekonomi,Krypometër / postim në Facebook,50,0.5584074153506426,0.44159258464935736,0,uncertain,False,false_negative
+word_char_tfidf,EXT-F-013,1,Albin Kurti dhe Agim Bahtiri kanë vdekur nga temperaturat e larta,sociale,Krypometër / postim në Facebook,50,0.04976640145800015,0.9502335985419998,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-014,1,Njësia Speciale ndërhyn gjatë rrënimit të objekteve pranë Ujmanit,sociale,Krypometër / postim në Facebook,45,0.2943559574993603,0.7056440425006397,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-015,1,Adriatik Kelmendi zhvillonte takime me një të dënuar për spiunazh,sociale,Krypometër / postim në Instagram,46,0.2927810711286769,0.7072189288713231,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-016,1,Qeveria e Kosovës ndryshon pesë rregulla të skemave pensionale,sociale,Krypometër / postim në Instagram,48,0.5924311294236373,0.4075688705763627,0,uncertain,False,false_negative
+word_char_tfidf,EXT-F-017,1,Albin Kurti fotografohet pranë Sllobodan Millosheviqit,teknologji,Krypometër / postim në Facebook,42,0.07389750157074071,0.9261024984292593,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-018,1,"Thaçi, Mustafa dhe Rama mbajnë kapela me simbole nacionaliste serbe",teknologji,Krypometër / postim në Facebook,46,0.14475738258431503,0.855242617415685,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-019,1,Politikanë shqiptarë shfaqen duke u përqafuar dhe puthur,teknologji,Krypometër / postim në Facebook,44,0.010326409684901283,0.9896735903150987,1,likely_fake,True,correct
+word_char_tfidf,EXT-F-020,1,Dejona Mihali u mëson greqisht deputetëve të Vetëvendosjes,teknologji,Krypometër / postim në Facebook,44,0.2658028763527174,0.7341971236472826,1,likely_fake,True,correct

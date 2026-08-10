@@ -1,0 +1,16 @@
+model,model_display,variant,variant_description,rows,mean_word_count,mean_probability_fake,mean_absolute_delta_from_full,max_absolute_delta_from_full,binary_accuracy,binary_changes_from_full,decision_changes_from_full
+word_tfidf,Word TF-IDF,full,Teksti i plotë,8,767.25,0.3403,0.0,0.0,0.625,0,0
+char_tfidf,Character TF-IDF,full,Teksti i plotë,8,767.25,0.2394,0.0,0.0,0.625,0,0
+word_char_tfidf,Word + Character TF-IDF,full,Teksti i plotë,8,767.25,0.2711,0.0,0.0,0.75,0,0
+word_tfidf,Word TF-IDF,short_46_words,Rreth 46 fjalë,8,46.12,0.795,0.470063,0.892653,0.5,5,5
+char_tfidf,Character TF-IDF,short_46_words,Rreth 46 fjalë,8,46.12,0.7403,0.511031,0.724661,0.5,7,7
+word_char_tfidf,Word + Character TF-IDF,short_46_words,Rreth 46 fjalë,8,46.12,0.7768,0.514077,0.827388,0.5,6,7
+word_tfidf,Word TF-IDF,title_only,Vetëm titulli,8,13.38,0.9186,0.589534,0.991237,0.5,5,5
+char_tfidf,Character TF-IDF,title_only,Vetëm titulli,8,13.38,0.9219,0.690055,0.981457,0.5,7,7
+word_char_tfidf,Word + Character TF-IDF,title_only,Vetëm titulli,8,13.38,0.9286,0.665788,0.985185,0.5,6,7
+word_tfidf,Word TF-IDF,without_albanian_diacritics,Pa ë/ç,8,767.25,0.9892,0.648881,0.997748,0.5,5,5
+char_tfidf,Character TF-IDF,without_albanian_diacritics,Pa ë/ç,8,767.25,0.909,0.669593,0.956973,0.5,7,7
+word_char_tfidf,Word + Character TF-IDF,without_albanian_diacritics,Pa ë/ç,8,767.25,0.9731,0.702065,0.993615,0.5,6,7
+word_tfidf,Word TF-IDF,unicode_nfc_from_nfd,Unicode i normalizuar,8,767.25,0.3403,0.0,0.0,0.625,0,0
+char_tfidf,Character TF-IDF,unicode_nfc_from_nfd,Unicode i normalizuar,8,767.25,0.2394,0.0,0.0,0.625,0,0
+word_char_tfidf,Word + Character TF-IDF,unicode_nfc_from_nfd,Unicode i normalizuar,8,767.25,0.2711,0.0,0.0,0.75,0,0

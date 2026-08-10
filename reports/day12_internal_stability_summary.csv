@@ -1,0 +1,9 @@
+variant,variant_description,true_label,rows,mean_word_count,mean_probability_fake,mean_delta_probability_fake_from_full,binary_accuracy,predicted_fake_rate,binary_changes_from_full,decision_changes_from_full
+full,Teksti i plotë,fake,4,764.25,0.4691,0.0,0.5,0.5,0,0
+title_plus_first_paragraph_proxy,Titull + 120 fjalët e para,fake,4,120.0,0.6088,0.1397,0.75,0.75,1,1
+short_46_words,Versioni rreth 46 fjalë,fake,4,46.25,0.8021,0.3329,1.0,1.0,2,2
+title_only,Vetëm titulli,fake,4,15.5,0.8979,0.4287,1.0,1.0,2,2
+full,Teksti i plotë,real,4,770.25,0.2115,0.0,0.75,0.25,0,0
+title_plus_first_paragraph_proxy,Titull + 120 fjalët e para,real,4,120.5,0.3443,0.1327,0.75,0.25,0,0
+short_46_words,Versioni rreth 46 fjalë,real,4,46.0,0.7879,0.5764,0.0,1.0,3,3
+title_only,Vetëm titulli,real,4,11.25,0.9393,0.7278,0.0,1.0,3,3

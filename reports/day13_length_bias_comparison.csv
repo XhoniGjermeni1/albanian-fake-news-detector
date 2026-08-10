@@ -1,0 +1,4 @@
+model,model_display,spearman_all,spearman_real,spearman_fake,spearman_all_p,real_short_mean_probability_fake,real_long_mean_probability_fake,real_probability_gap_short_minus_long,fake_short_mean_probability_fake,fake_long_mean_probability_fake,fake_probability_gap_short_minus_long,short_real_accuracy,long_fake_accuracy
+word_tfidf,Word TF-IDF,-0.7132,-0.5883,-0.4971,5.175659248838138e-124,0.4947,0.0627,0.432,0.9532,0.2495,0.7037,0.6667,0.1379
+char_tfidf,Character TF-IDF,-0.6887,-0.4701,-0.5424,2.0961804862723855e-112,0.3916,0.0721,0.3195,0.9733,0.2692,0.7041,0.8333,0.1379
+word_char_tfidf,Word + Character TF-IDF,-0.6816,-0.482,-0.5067,2.9490085770981816e-109,0.3956,0.064,0.3315,0.973,0.3038,0.6692,0.6667,0.1724

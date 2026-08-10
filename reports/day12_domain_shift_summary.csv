@@ -1,0 +1,7 @@
+dataset,scope,rows,mean_word_count,median_word_count,mean_sentence_count,mean_avg_sentence_length,mean_diacritic_ratio,mean_uppercase_ratio,mean_source_marker_count,source_marker_prevalence,mean_sensational_marker_count,sensational_marker_prevalence,mean_exclamation_count,exclamation_prevalence
+internal_test,all,792,210.4583,139.0,10.5518,22.4499,0.067771,0.043283,0.5492,0.2727,0.0972,0.0821,0.3561,0.1894
+internal_test,real,399,279.4887,206.0,13.7769,21.5161,0.072999,0.03907,0.787,0.3684,0.0251,0.0226,0.3634,0.1353
+internal_test,fake,393,140.374,100.0,7.2774,23.398,0.062462,0.047559,0.3079,0.1756,0.1705,0.1425,0.3486,0.2443
+external_day10,all,40,45.575,46.0,2.3,21.4632,0.059645,0.034913,0.175,0.175,0.0,0.0,0.0,0.0
+external_day10,real,20,44.2,45.0,2.6,19.4515,0.060917,0.037729,0.2,0.2,0.0,0.0,0.0,0.0
+external_day10,fake,20,46.95,46.0,2.0,23.475,0.058372,0.032096,0.15,0.15,0.0,0.0,0.0,0.0

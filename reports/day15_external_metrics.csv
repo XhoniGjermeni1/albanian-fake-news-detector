@@ -1,0 +1,2 @@
+candidate_id,candidate_display,c_value,rows,real_rows,fake_rows,accuracy,precision_weighted,recall_weighted,f1_weighted,precision_real,recall_real,f1_real,precision_fake,recall_fake,f1_fake,false_positives,false_negatives,confusion_matrix
+linear_svm_c_1_0,Linear SVM (C=1.0),1.0,40,20,20,0.575,0.5751879699248119,0.575,0.5747342088805503,0.5714285714285714,0.6,0.5853658536585366,0.5789473684210527,0.55,0.5641025641025641,8,9,"[[12, 8], [9, 11]]"

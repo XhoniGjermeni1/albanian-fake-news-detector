@@ -77,6 +77,17 @@ albanian-fake-news-detector/
     day11_external_evaluation.md
     day11_external_metrics.json
     day11_external_predictions.csv
+    day12_length_domain_shift.md
+    day12_metrics.json
+    day13_tfidf_representation_comparison.md
+    day13_metrics.json
+    day13_internal_selection.json
+    day14_classifier_comparison.md
+    day14_metrics.json
+    day14_selection.json
+    day15_svm_tuning.md
+    day15_metrics.json
+    day15_selection.json
     figures/
   src/
     data/
@@ -92,6 +103,10 @@ albanian-fake-news-detector/
       analyze_model_quality.py
       evaluate_app_system.py
       evaluate_external_dataset.py
+      analyze_length_domain_shift.py
+      compare_tfidf_representations.py
+      compare_classifiers.py
+      tune_linear_svm.py
       predict.py
     features/
       linguistic_features.py
@@ -103,6 +118,13 @@ albanian-fake-news-detector/
     hybrid_tfidf_linguistic_logreg.joblib
     hybrid_tfidf_linguistic_no_length_logreg.joblib
     calibrated_tfidf_logreg.joblib
+    day13_word_tfidf_logreg_calibrated.joblib
+    day13_char_tfidf_logreg_calibrated.joblib
+    day13_word_char_tfidf_logreg_calibrated.joblib
+    day14_word_char_logistic_regression.joblib
+    day14_word_char_linear_svm.joblib
+    day14_word_char_complement_nb.joblib
+    day15_word_char_linear_svm_c_*.joblib
   tests/
     test_load_dataset.py
     test_clean_text.py
@@ -114,6 +136,10 @@ albanian-fake-news-detector/
     test_streamlit_app.py
     test_external_dataset.py
     test_external_evaluation.py
+    test_length_domain_shift.py
+    test_tfidf_representations.py
+    test_classifier_comparison.py
+    test_svm_tuning.py
   requirements.txt
   README.md
   .gitignore
@@ -356,6 +382,135 @@ reports/day11_external_evaluation.md
 Raporti krahason me kujdes rezultatet e jashtme me test set-in e brendshëm, por
 nuk i trajton si dataset-e drejtpërdrejt të barabarta.
 
+## Analiza e Gjatësisë dhe Domain Shift-it
+
+Analiza e Ditës 12 kontrollon lidhjen mes gjatësisë dhe probability fake në
+test set-in e brendshëm, cohort-in 30-60 fjalë, variante të shkurtuara të të
+njëjtit tekst dhe pesë zgjerime diagnostike të rasteve të jashtme.
+
+Ekzekuto:
+
+```powershell
+python src\models\analyze_length_domain_shift.py
+```
+
+Script-i nuk ritrajnon modelin, nuk ndryshon pragjet dhe kontrollon me SHA-256
+që modeli, dataset-i i jashtëm dhe output-et e Ditës 11 mbeten të pandryshuara.
+Output-et kryesore janë:
+
+```text
+reports/day12_internal_predictions.csv
+reports/day12_internal_length_groups.csv
+reports/day12_matched_length_comparison.csv
+reports/day12_length_correlations.csv
+reports/day12_internal_stability_experiment.csv
+reports/day12_external_expansion_experiment.csv
+reports/day12_domain_shift_summary.csv
+reports/day12_metrics.json
+reports/day12_length_domain_shift.md
+reports/figures/day12_*.png
+```
+
+## Krahasimi i Përfaqësimeve TF-IDF
+
+Eksperimenti i Ditës 13 përdor të njëjtën ndarje train/test dhe të njëjtin
+preprocessing bazë për të krahasuar `Word TF-IDF`, `Character TF-IDF` dhe
+`Word + Character TF-IDF`, të tre me Logistic Regression dhe calibration.
+Konfigurimi i character n-grams zgjidhet vetëm me cross-validation të grupuar
+mbi train set-in. Zgjedhja e brendshme ruhet përpara se të ngarkohet dataset-i
+i jashtëm; rezultatet e jashtme përdoren vetëm si diagnostikë përfundimtare.
+
+Ekzekuto:
+
+```powershell
+python src\models\compare_tfidf_representations.py
+```
+
+Modelet eksperimentale ruhen me emra të veçantë dhe nuk zëvendësojnë modelin
+që përdor aplikacioni. Output-et kryesore janë:
+
+```text
+models/day13_*_calibrated.joblib
+reports/day13_char_config_screen.csv
+reports/day13_internal_model_comparison.csv
+reports/day13_internal_cohort_metrics.csv
+reports/day13_length_bias_comparison.csv
+reports/day13_stability_experiment.csv
+reports/day13_internal_selection.json
+reports/day13_external_comparison.csv
+reports/day13_metrics.json
+reports/day13_tfidf_representation_comparison.md
+reports/figures/day13_*.png
+```
+
+## Krahasimi i Classifier-ëve
+
+Eksperimenti i Ditës 14 mban të pandryshuar përfaqësimin e zgjedhur
+`Word + Character TF-IDF` dhe krahason Logistic Regression, Linear SVM dhe
+Complement Naive Bayes. Konfigurimet zgjidhen me 5-fold group-safe CV vetëm
+mbi train set-in. Zgjedhja ruhet përpara se të ngarkohen test set-i i brendshëm
+dhe dataset-i i jashtëm.
+
+Ekzekuto:
+
+```powershell
+python src\models\compare_classifiers.py
+```
+
+Modelet e Ditës 14 janë të pakalibruara. Decision score i Linear SVM nuk
+paraqitet si probabilitet dhe pragjet e aplikacionit nuk aplikohen. Modelet
+eksperimentale ruhen veçmas dhe nuk zëvendësojnë modelin e Streamlit.
+
+Output-et kryesore janë:
+
+```text
+models/day14_word_char_*.joblib
+reports/day14_cv_fold_results.csv
+reports/day14_cv_summary.csv
+reports/day14_selection.json
+reports/day14_internal_comparison.csv
+reports/day14_length_group_metrics.csv
+reports/day14_length_bias_comparison.csv
+reports/day14_external_comparison.csv
+reports/day14_metrics.json
+reports/day14_classifier_comparison.md
+reports/figures/day14_*.png
+```
+
+## Tuning i Linear SVM
+
+Dita 15 mban të pandryshuar Word + Character TF-IDF dhe provon vetëm
+`C = 0.25, 0.5, 1.0, 2.0, 4.0` për Linear SVM. Përzgjedhja përdor 5-fold
+group-safe CV vetëm mbi train dhe merr parasysh F1 weighted, stabilitetin,
+balancën recall real/fake dhe train-validation gap. Vendimi ruhet përpara se të
+ngarkohen test set-i dhe dataset-i i jashtëm.
+
+Ekzekuto:
+
+```powershell
+python src\models\tune_linear_svm.py
+```
+
+Tuning-u konfirmoi `C=1.0` si kandidatin për calibration. Modelet e Ditës 15
+janë ende të pakalibruara; decision score nuk është probabilitet dhe modeli i
+aplikacionit nuk zëvendësohet.
+
+Output-et kryesore janë:
+
+```text
+models/day15_word_char_linear_svm_c_*.joblib
+reports/day15_cv_fold_results.csv
+reports/day15_cv_summary.csv
+reports/day15_selection.json
+reports/day15_internal_candidate_comparison.csv
+reports/day15_length_group_metrics.csv
+reports/day15_length_bias_comparison.csv
+reports/day15_external_metrics.csv
+reports/day15_metrics.json
+reports/day15_svm_tuning.md
+reports/figures/day15_*.png
+```
+
 ## Testet
 
 Ekzekuto:
@@ -364,7 +519,7 @@ Ekzekuto:
 python -m pytest
 ```
 
-Testet kontrollojnë loader-in, preprocessing-un, linguistic features, modelet hibride, grupet pa leakage, pragjet, strukturën e prediction dhe sjelljen kryesore të aplikacionit Streamlit.
+Testet kontrollojnë loader-in, preprocessing-un, linguistic features, modelet hibride, grupet pa leakage, pragjet, strukturën e prediction, analizën e domain shift-it, krahasimin e përfaqësimeve TF-IDF, classifier-ët, tuning-un e Linear SVM dhe sjelljen kryesore të aplikacionit Streamlit.
 
 ## Raportet
 
@@ -383,11 +538,15 @@ Raporti aktual:
 - `reports/day9_system_testing.md`
 - `reports/day10_external_dataset.md`
 - `reports/day11_external_evaluation.md`
+- `reports/day12_length_domain_shift.md`
+- `reports/day13_tfidf_representation_comparison.md`
+- `reports/day14_classifier_comparison.md`
+- `reports/day15_svm_tuning.md`
 
 README shërben vetëm si hyrje profesionale dhe udhëzues ekzekutimi. Gjetjet e detajuara, numrat e datasetit dhe problemet e validimit ruhen në raportet përkatëse.
 
 ## Roadmap
 
-Janë përfunduar pipeline-i i datasetit, preprocessing-u bazë, TF-IDF baseline, linguistic features, modeli hibrid, error analysis, probability calibration, aplikacioni Streamlit, testimi end-to-end, përgatitja e datasetit të jashtëm dhe vlerësimi i parë jashtë corpus-it.
+Janë përfunduar pipeline-i i datasetit, preprocessing-u bazë, TF-IDF baseline, linguistic features, modeli hibrid, error analysis, probability calibration, aplikacioni Streamlit, testimi end-to-end, përgatitja dhe vlerësimi i datasetit të jashtëm, analiza e gjatësisë dhe domain shift-it, krahasimi i përfaqësimeve TF-IDF, krahasimi i classifier-ëve dhe tuning-u i kufizuar i Linear SVM.
 
-Hapi i ardhshëm është analiza e kontrolluar e domain shift-it dhe e bias-it të gjatësisë, duke ruajtur datasetin e jashtëm si benchmark të pandryshuar.
+Hapi i ardhshëm është probability calibration i `Word + Character TF-IDF + Linear SVM, C=1.0` në Ditën 16. Dataset-i i jashtëm nuk do të përdoret për calibration ose tuning.

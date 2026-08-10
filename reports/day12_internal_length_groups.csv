@@ -1,0 +1,5 @@
+cohort,rows,real_rows,fake_rows,accuracy,false_positives,false_negatives,mean_probability_fake,mean_probability_fake_real,mean_probability_fake_fake,predicted_fake_rate,likely_real,uncertain,likely_fake,mean_word_count,median_word_count,min_word_count,max_word_count,length_description
+very_short_le_60,9,6,3,0.7778,2,0,0.6475,0.4947,0.9532,0.5556,2,3,4,52.78,55.0,44,60,Shumë të shkurtër (<=60)
+short_61_120,341,75,266,0.9267,18,7,0.7965,0.3,0.9365,0.8123,47,39,255,93.17,93.0,62,120,Të shkurtër (61-120)
+medium_121_250,269,174,95,0.8587,17,21,0.3769,0.1776,0.742,0.3383,147,54,68,175.2,170.0,121,249,Mesatarë (121-250)
+long_gt_250,173,144,29,0.8439,2,25,0.094,0.0627,0.2495,0.0347,156,14,3,504.66,382.0,251,2376,Të gjatë (>250)

@@ -1,0 +1,3 @@
+config_name,analyzer,ngram_min,ngram_max,min_df,max_features,screen_scope,mean_accuracy,std_accuracy,mean_f1_weighted,std_f1_weighted,mean_f1_fake,training_seconds
+char_wb_3_5,char_wb,3,5,2,50000,train_only_3_fold_group_safe_cv,0.8836,0.0041,0.8833,0.0042,0.8783,30.107
+char_wb_3_6,char_wb,3,6,2,60000,train_only_3_fold_group_safe_cv,0.8817,0.0051,0.8814,0.0052,0.8757,38.437

@@ -1,0 +1,9 @@
+label,length_group,length_description,rows,accuracy,mean_probability_fake,predicted_fake_rate,false_positives,false_negatives,likely_real,uncertain,likely_fake
+real,very_short_le_60,Shumë të shkurtër (<=60),6,0.6667,0.4947,0.3333,2,0,2,3,1
+real,short_61_120,Të shkurtër (61-120),75,0.76,0.3,0.24,18,0,45,25,5
+real,medium_121_250,Mesatarë (121-250),174,0.9023,0.1776,0.0977,17,0,136,36,2
+real,long_gt_250,Të gjatë (>250),144,0.9861,0.0627,0.0139,2,0,137,6,1
+fake,very_short_le_60,Shumë të shkurtër (<=60),3,1.0,0.9532,1.0,0,0,0,0,3
+fake,short_61_120,Të shkurtër (61-120),266,0.9737,0.9365,0.9737,0,7,2,14,250
+fake,medium_121_250,Mesatarë (121-250),95,0.7789,0.742,0.7789,0,21,11,18,66
+fake,long_gt_250,Të gjatë (>250),29,0.1379,0.2495,0.1379,0,25,19,8,2

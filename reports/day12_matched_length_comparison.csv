@@ -1,0 +1,4 @@
+cohort,rows,real_rows,fake_rows,accuracy,false_positives,false_negatives,mean_probability_fake,mean_probability_fake_real,mean_probability_fake_fake,predicted_fake_rate,likely_real,uncertain,likely_fake,mean_word_count,median_word_count,min_word_count,max_word_count
+internal_30_60,9,6,3,0.7778,2,0,0.6475,0.4947,0.9532,0.5556,2,3,4,52.78,55.0,44,60
+internal_external_range_38_51,3,2,1,0.6667,1,0,0.7525,0.6622,0.9332,0.6667,0,1,2,44.67,44.0,44,46
+external_day11_38_51,40,20,20,0.475,19,2,0.782,0.7474,0.8167,0.925,1,8,31,45.58,46.0,38,51
