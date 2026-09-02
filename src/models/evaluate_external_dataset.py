@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
 import sys
@@ -25,6 +24,12 @@ from sklearn.metrics import (
     precision_recall_fscore_support,
 )
 
+from src.evaluation.data_utils import exclude_train_duplicates_from_test
+from src.evaluation.experiment_utils import (
+    dataframe_to_markdown,
+    file_sha256,
+    format_percent as _percent,
+)
 from src.features.linguistic_features import extract_linguistic_features
 from src.models.predict import (
     DEFAULT_FAKE_THRESHOLD,
@@ -33,7 +38,6 @@ from src.models.predict import (
     load_model,
     predict_news_for_app,
 )
-from src.models.train_hybrid_model import exclude_train_duplicates_from_test
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -72,15 +76,6 @@ REQUIRED_EXTERNAL_COLUMNS = {
     "topic",
     "published_date",
 }
-
-
-def file_sha256(path: Path) -> str:
-    """Return the SHA-256 fingerprint of a file."""
-    digest = hashlib.sha256()
-    with path.open("rb") as file_handle:
-        for chunk in iter(lambda: file_handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def source_group(source: str) -> str:
@@ -574,29 +569,6 @@ def plot_confusion(matrix: list[list[int]]) -> None:
     fig.tight_layout()
     fig.savefig(CONFUSION_FIGURE_PATH, dpi=180)
     plt.close(fig)
-
-
-def _percent(value: float) -> str:
-    return f"{100 * value:.2f}%"
-
-
-def _markdown_value(value: object) -> str:
-    if pd.isna(value):
-        return "n/a"
-    if isinstance(value, (float, np.floating)):
-        return f"{float(value):.4f}"
-    return str(value).replace("|", "/").replace("\n", " ")
-
-
-def dataframe_to_markdown(dataframe: pd.DataFrame, columns: list[str]) -> str:
-    """Render a small DataFrame without requiring the optional tabulate package."""
-    header = "| " + " | ".join(columns) + " |"
-    separator = "| " + " | ".join("---" for _ in columns) + " |"
-    rows = [
-        "| " + " | ".join(_markdown_value(row[column]) for column in columns) + " |"
-        for _, row in dataframe[columns].iterrows()
-    ]
-    return "\n".join([header, separator, *rows])
 
 
 def write_report(

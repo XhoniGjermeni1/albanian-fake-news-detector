@@ -13,30 +13,34 @@ import pandas as pd
 from scipy.stats import spearmanr
 from sklearn.base import clone
 from sklearn.pipeline import Pipeline
-from sklearn.svm import LinearSVC
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.models.analyze_length_domain_shift import (  # noqa: E402
+from src.evaluation.data_utils import (  # noqa: E402
     LENGTH_DISPLAY,
     LENGTH_LABELS,
-)
-from src.models.compare_classifiers import (  # noqa: E402
-    FIXED_CHAR_CONFIG,
     add_word_counts,
-    build_fixed_features,
     build_group_safe_folds,
-    classification_metrics,
-    dataframe_to_markdown,
-    fake_decision_scores,
-    file_sha256,
+    exclude_train_duplicates_from_test,
     refresh_model_text,
+)
+from src.evaluation.experiment_utils import (  # noqa: E402
+    escaped_dataframe_to_markdown as dataframe_to_markdown,
+    file_sha256,
+)
+from src.evaluation.metrics import (  # noqa: E402
+    classification_metrics,
+    fake_decision_scores,
     rounded_metrics,
 )
-from src.models.train_hybrid_model import (  # noqa: E402
-    exclude_train_duplicates_from_test,
+from src.models.builders import (  # noqa: E402
+    FINAL_SVM_C,
+    FIXED_CHAR_CONFIG,
+    build_fixed_features,
+    build_svm,
+    build_svm_pipeline,
 )
 
 
@@ -71,7 +75,7 @@ LENGTH_FIGURE_PATH = FIGURES_DIR / "day15_length_performance.png"
 EXTERNAL_FIGURE_PATH = FIGURES_DIR / "day15_external_confusion_matrix.png"
 
 C_VALUES = [0.25, 0.5, 1.0, 2.0, 4.0]
-BASELINE_C = 1.0
+BASELINE_C = FINAL_SVM_C
 F1_CLOSE_TOLERANCE = 0.002
 MAX_ACCEPTABLE_RECALL_GAP = 0.10
 LOGGER = logging.getLogger(__name__)
@@ -112,26 +116,6 @@ def verify_frozen_setup() -> dict:
         "day14_classifier": "linear_svm",
         "day14_c": BASELINE_C,
     }
-
-
-def build_svm(c_value: float) -> LinearSVC:
-    """Build one uncalibrated Linear SVM configuration."""
-    return LinearSVC(
-        C=float(c_value),
-        class_weight="balanced",
-        max_iter=5000,
-        random_state=42,
-    )
-
-
-def build_svm_pipeline(c_value: float) -> Pipeline:
-    """Build the frozen TF-IDF representation followed by Linear SVM."""
-    return Pipeline(
-        [
-            ("features", build_fixed_features(FIXED_CHAR_CONFIG)),
-            ("classifier", build_svm(c_value)),
-        ]
-    )
 
 
 def run_svm_cv(

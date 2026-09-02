@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
 import sys
@@ -23,7 +22,6 @@ import numpy as np
 import pandas as pd
 from scipy.stats import spearmanr
 from sklearn.calibration import CalibratedClassifierCV
-from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import (
     accuracy_score,
@@ -35,23 +33,31 @@ from sklearn.metrics import (
 from sklearn.model_selection import StratifiedGroupKFold
 from sklearn.pipeline import FeatureUnion, Pipeline
 
-from src.features.linguistic_features import extract_linguistic_features
-from src.models.analyze_length_domain_shift import (
+from src.evaluation.data_utils import (
     LENGTH_DISPLAY,
     LENGTH_LABELS,
-    assign_length_groups,
+    add_word_counts,
+    build_leakage_safe_groups,
+    exclude_train_duplicates_from_test,
+)
+from src.evaluation.experiment_utils import (
+    dataframe_to_markdown,
+    file_sha256,
+    format_percent as _percent,
+)
+from src.features.linguistic_features import extract_linguistic_features
+from src.models.analyze_length_domain_shift import (
     truncate_to_total_words,
 )
 from src.models.analyze_model_quality import (
     build_calibration_folds,
-    build_leakage_safe_groups,
 )
+from src.models.builders import build_char_vectorizer, build_word_vectorizer
 from src.models.predict import (
     DEFAULT_FAKE_THRESHOLD,
     DEFAULT_REAL_THRESHOLD,
     classify_probability,
 )
-from src.models.train_hybrid_model import exclude_train_duplicates_from_test
 from src.preprocessing.clean_text import combine_title_content
 
 
@@ -142,36 +148,6 @@ STABILITY_DISPLAY = {
 }
 
 LOGGER = logging.getLogger(__name__)
-
-
-def file_sha256(path: Path) -> str:
-    """Return a file fingerprint."""
-    digest = hashlib.sha256()
-    with path.open("rb") as file_handle:
-        for chunk in iter(lambda: file_handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def build_word_vectorizer() -> TfidfVectorizer:
-    """Return the unchanged word TF-IDF configuration."""
-    return TfidfVectorizer(
-        lowercase=False,
-        ngram_range=(1, 2),
-        min_df=2,
-        max_features=30000,
-    )
-
-
-def build_char_vectorizer(config: dict) -> TfidfVectorizer:
-    """Build one predeclared character TF-IDF configuration."""
-    return TfidfVectorizer(
-        lowercase=False,
-        analyzer=config["analyzer"],
-        ngram_range=(config["ngram_min"], config["ngram_max"]),
-        min_df=config["min_df"],
-        max_features=config["max_features"],
-    )
 
 
 def build_classifier() -> LogisticRegression:
@@ -310,16 +286,6 @@ def probability_arrays(model, texts: list[str] | pd.Series) -> tuple[np.ndarray,
     probabilities = model.predict_proba(texts)
     classes = list(model.classes_)
     return probabilities[:, classes.index(0)], probabilities[:, classes.index(1)]
-
-
-def add_word_counts(dataframe: pd.DataFrame) -> pd.DataFrame:
-    """Add Day 12-compatible word counts and length groups."""
-    result = dataframe.copy().reset_index(drop=True)
-    result["word_count"] = [
-        int(extract_linguistic_features(row.title, row.content)["word_count"])
-        for row in result.itertuples(index=False)
-    ]
-    return assign_length_groups(result)
 
 
 def prediction_table(
@@ -896,29 +862,6 @@ def plot_external_comparison(comparison: pd.DataFrame) -> None:
     fig.tight_layout()
     fig.savefig(EXTERNAL_FIGURE_PATH, dpi=180)
     plt.close(fig)
-
-
-def _markdown_value(value: object) -> str:
-    if pd.isna(value):
-        return "n/a"
-    if isinstance(value, (float, np.floating)):
-        return f"{float(value):.4f}"
-    return str(value).replace("|", "/").replace("\n", " ")
-
-
-def dataframe_to_markdown(dataframe: pd.DataFrame, columns: list[str]) -> str:
-    """Render a compact Markdown table."""
-    header = "| " + " | ".join(columns) + " |"
-    separator = "| " + " | ".join("---" for _ in columns) + " |"
-    rows = [
-        "| " + " | ".join(_markdown_value(row[column]) for column in columns) + " |"
-        for _, row in dataframe[columns].iterrows()
-    ]
-    return "\n".join([header, separator, *rows])
-
-
-def _percent(value: float) -> str:
-    return f"{100 * value:.2f}%"
 
 
 def write_report(

@@ -30,21 +30,24 @@ if str(PROJECT_ROOT) not in sys.path:
 from src.features.linguistic_features import (  # noqa: E402
     extract_linguistic_features,
 )
-from src.models.analyze_length_domain_shift import (  # noqa: E402
+from src.evaluation.data_utils import (  # noqa: E402
     LENGTH_DISPLAY,
     LENGTH_LABELS,
+    add_word_counts,
+    exclude_train_duplicates_from_test,
+    refresh_model_text,
+)
+from src.evaluation.experiment_utils import (  # noqa: E402
+    escaped_dataframe_to_markdown as dataframe_to_markdown,
+    file_sha256,
+)
+from src.evaluation.metrics import (  # noqa: E402
+    rounded_metrics,
 )
 from src.models.calibrate_linear_svm import (  # noqa: E402
     evaluate_length_behavior,
     high_confidence_error_rows,
     model_comparison_table,
-)
-from src.models.compare_classifiers import (  # noqa: E402
-    add_word_counts,
-    dataframe_to_markdown,
-    file_sha256,
-    refresh_model_text,
-    rounded_metrics,
 )
 from src.models.prediction_utils import (  # noqa: E402
     DEFAULT_FAKE_THRESHOLD,
@@ -60,9 +63,6 @@ from src.models.predict_final import (  # noqa: E402
     FINAL_REAL_THRESHOLD,
     predict_final_news,
     prepare_final_model_text,
-)
-from src.models.train_hybrid_model import (  # noqa: E402
-    exclude_train_duplicates_from_test,
 )
 
 

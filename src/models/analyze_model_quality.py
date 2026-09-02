@@ -24,10 +24,13 @@ from sklearn.metrics import (
 )
 from sklearn.model_selection import StratifiedGroupKFold
 
+from src.evaluation.data_utils import (
+    build_leakage_safe_groups,
+    exclude_train_duplicates_from_test,
+)
 from src.models.predict import predict_news, predict_news_for_app
 from src.models.train_hybrid_model import (
     build_tfidf_model,
-    exclude_train_duplicates_from_test,
     merge_text_with_features,
 )
 
@@ -112,35 +115,6 @@ def load_day6_inputs() -> tuple[pd.DataFrame, pd.DataFrame, object, dict]:
         "empty_model_text_rows": 0,
     }
     return train_data, test_with_features, baseline_model, checks
-
-
-def build_leakage_safe_groups(dataframe: pd.DataFrame) -> np.ndarray:
-    """Keep matching pair IDs and exact duplicate texts in the same CV fold."""
-    parent = list(range(len(dataframe)))
-
-    def find(index: int) -> int:
-        while parent[index] != index:
-            parent[index] = parent[parent[index]]
-            index = parent[index]
-        return index
-
-    def union(first_index: int, second_index: int) -> None:
-        first_root = find(first_index)
-        second_root = find(second_index)
-        if first_root != second_root:
-            parent[second_root] = first_root
-
-    for column in ["pair_id", "model_text"]:
-        first_index_by_value: dict[str, int] = {}
-        for index, value in enumerate(dataframe[column].astype(str)):
-            if value in first_index_by_value:
-                union(index, first_index_by_value[value])
-            else:
-                first_index_by_value[value] = index
-
-    roots = np.asarray([find(index) for index in range(len(dataframe))])
-    group_codes, _ = pd.factorize(roots)
-    return group_codes
 
 
 def build_calibration_folds(dataframe: pd.DataFrame) -> tuple[list[tuple[np.ndarray, np.ndarray]], int]:

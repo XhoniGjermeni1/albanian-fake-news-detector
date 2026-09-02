@@ -20,7 +20,7 @@ from src.models.predict import (
     classify_probability,
     predict_news_for_app,
 )
-from src.models.train_hybrid_model import exclude_train_duplicates_from_test
+from src.evaluation.data_utils import exclude_train_duplicates_from_test
 from src.preprocessing.clean_text import combine_title_content
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]

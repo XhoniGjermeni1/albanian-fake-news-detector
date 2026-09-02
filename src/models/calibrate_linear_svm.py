@@ -18,24 +18,24 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.models.analyze_length_domain_shift import (  # noqa: E402
+from src.evaluation.data_utils import (  # noqa: E402
     LENGTH_DISPLAY,
     LENGTH_LABELS,
-)
-from src.models.compare_classifiers import (  # noqa: E402
     add_word_counts,
     build_group_safe_folds,
-    classification_metrics,
-    dataframe_to_markdown,
-    file_sha256,
+    exclude_train_duplicates_from_test,
     refresh_model_text,
+)
+from src.evaluation.experiment_utils import (  # noqa: E402
+    escaped_dataframe_to_markdown as dataframe_to_markdown,
+    file_sha256,
+)
+from src.evaluation.metrics import (  # noqa: E402
+    classification_metrics,
     rounded_metrics,
 )
-from src.models.train_hybrid_model import (  # noqa: E402
-    exclude_train_duplicates_from_test,
-)
-from src.models.tune_linear_svm import (  # noqa: E402
-    BASELINE_C,
+from src.models.builders import (  # noqa: E402
+    FINAL_SVM_C as BASELINE_C,
     build_svm_pipeline,
 )
 

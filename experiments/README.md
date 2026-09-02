@@ -25,6 +25,13 @@ final i Streamlit.
 Output-et e ngrira janë te `reports/`, `reports/figures/` dhe `models/`.
 Notebook-et përdoren vetëm për auditim dhe walkthrough.
 
+Utility-t e përbashkëta nuk jetojnë më brenda një dite specifike:
+
+- `src/evaluation/data_utils.py` për grouping, alignment dhe length cohorts;
+- `src/evaluation/metrics.py` për metrikat e përbashkëta;
+- `src/evaluation/experiment_utils.py` për hash dhe tabela raportimi;
+- `src/models/builders.py` për konfigurimin Word + Character TF-IDF + SVM.
+
 ## Çfarë përdor aplikacioni
 
 Rrjedha runtime nuk varet nga skriptet e mësipërme:

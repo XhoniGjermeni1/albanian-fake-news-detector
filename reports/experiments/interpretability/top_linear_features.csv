@@ -1,0 +1,101 @@
+﻿branch,direction,rank,ngram,coefficient
+character,fake,1, E ,0.7745683974542098
+character,fake,2,pe ,0.5817310741507182
+character,fake,3,oshte,0.5617830209926916
+character,fake,4,!. ,0.5513766782084819
+character,fake,5,posht,0.546120645641469
+character,fake,6,posh,0.5450591768815414
+character,fake,7,osht,0.5140892861746668
+character,fake,8,keti,0.5097828473239202
+character,fake,9, sh,0.5057947146607402
+character,fake,10, posh,0.496466305446279
+character,fake,11, / ,0.4822839729790429
+character,fake,12,shik,0.4638777877920628
+character,fake,13, ja ,0.45638229160762966
+character,fake,14, vid,0.4555329346369027
+character,fake,15,rket,0.4513446186015191
+character,fake,16,shiko,0.4477557840749039
+character,fake,17,amje,0.445536907857173
+character,fake,18,ingu,0.4399771829176292
+character,fake,19,ketin,0.43403059075294664
+character,fake,20,rketi,0.4334099188956224
+character,fake,21,ingun,0.43092744799579824
+character,fake,22,pos,0.43080462203071135
+character,fake,23,eting,0.4298761903510468
+character,fake,24,tingu,0.4283880099400944
+character,fake,25,ngun,0.42284689747146725
+character,real,1, e ,-0.5854706244017103
+character,real,2,"”, ",-0.5388439182363651
+character,real,3,leg,-0.437784715305836
+character,real,4,at ,-0.42406914317873246
+character,real,5,na ,-0.4086761452424861
+character,real,6,eleg,-0.402154289434801
+character,real,7, On,-0.3910600743016878
+character,real,8,Tele,-0.38802597983512754
+character,real,9,Tel,-0.38719515729210047
+character,real,10,ele,-0.38376505363628344
+character,real,11, - ,-0.37936038206577355
+character,real,12, Onl,-0.3788288118230173
+character,real,13, Onli,-0.3788288118230173
+character,real,14,(Ko,-0.3734006966000842
+character,real,15,(Kos,-0.3734006966000842
+character,real,16,(Koso,-0.3734006966000842
+character,real,17,ine) ,-0.36841075224152475
+character,real,18,ne) ,-0.36841075224152475
+character,real,19,ine),-0.36795473439492365
+character,real,20,line),-0.36795473439492365
+character,real,21,ne),-0.36795473439492365
+character,real,22,vra,-0.3669379960713081
+character,real,23,e) ,-0.3658836426713882
+character,real,24,elegr,-0.36227808949227547
+character,real,25,legr,-0.36227808949227547
+word,fake,1,poshte,1.13925384064029
+word,fake,2,me poshte,1.0775073176809913
+word,fake,3,marketingun,1.0302496808274397
+word,fake,4,ja,0.9965967117581419
+word,fake,5,dhe shiko,0.9762793953531067
+word,fake,6,pamjet,0.9727425848901539
+word,fake,7,shiko,0.9487814464983383
+word,fake,8,Ja,0.8362875810608145
+word,fake,9,posht,0.8084477882599271
+word,fake,10,me posht,0.7543047088296696
+word,fake,11,FUNDIT,0.7283232125326435
+word,fake,12,videon,0.726183731848752
+word,fake,13,sëm,0.6500441681031617
+word,fake,14,LAJMI,0.6296598939834125
+word,fake,15,vid,0.5930612593524687
+word,fake,16,ak,0.5866096356423268
+word,fake,17,keq,0.5847166604612468
+word,fake,18,LAJMI FUNDIT,0.5810467280315287
+word,fake,19,lu,0.5742164108330632
+word,fake,20,shëndetin,0.5514662167469876
+word,fake,21,shiko vid,0.5439715621584176
+word,fake,22,sekonda,0.5367103103696836
+word,fake,23,shkruan Kosovarja,0.5246180886778838
+word,fake,24,është një,0.5208024328259317
+word,fake,25,on,0.5079787353421268
+word,real,1,në,-1.1554898001669658
+word,real,2,Telegrafi,-0.9847038670411421
+word,real,3,Online,-0.968647776910244
+word,real,4,Kosova Sot,-0.9570942043177575
+word,real,5,Sot Online,-0.9509617562633341
+word,real,6,të,-0.93980622110628
+word,real,7,për,-0.8607806879861872
+word,real,8,Shiko,-0.7360517372541286
+word,real,9,InfoKosova,-0.7287379480679734
+word,real,10,Sot,-0.6991322070722988
+word,real,11,Lexoni,-0.6244812888154813
+word,real,12,Lexoni edhe,-0.620327188604378
+word,real,13,ka,-0.5685020707786977
+word,real,14,Videon,-0.5644266032343799
+word,real,15,Shiko Videon,-0.5634315929075263
+word,real,16,më,-0.5275020995856221
+word,real,17,herë,-0.5243352014378238
+word,real,18,së,-0.4823164092692446
+word,real,19,edhe,-0.4764328472461909
+word,real,20,dhe,-0.45699187390154
+word,real,21,që,-0.4545302988991181
+word,real,22,se nuk,-0.4543584885210835
+word,real,23,tha,-0.4370470210396824
+word,real,24,19,-0.4317724092920971
+word,real,25,pasi që,-0.4208389126055058

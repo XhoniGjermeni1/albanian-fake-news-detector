@@ -21,6 +21,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_f
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
+from src.evaluation.data_utils import exclude_train_duplicates_from_test
 from src.models.predict import predict_hybrid_news
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -133,18 +134,6 @@ def merge_text_with_features(text_data: pd.DataFrame, features: pd.DataFrame) ->
         ]
     )
     return merged.reset_index(drop=True)
-
-
-def exclude_train_duplicates_from_test(
-    train_data: pd.DataFrame,
-    test_data: pd.DataFrame,
-) -> tuple[pd.DataFrame, list[str]]:
-    """Exclude exact train-text copies from the evaluation test set."""
-    train_texts = set(train_data["model_text"])
-    duplicate_mask = test_data["model_text"].isin(train_texts)
-    excluded_ids = test_data.loc[duplicate_mask, "article_id"].astype(str).tolist()
-    clean_test = test_data.loc[~duplicate_mask].reset_index(drop=True)
-    return clean_test, excluded_ids
 
 
 def load_and_check_data() -> tuple[pd.DataFrame, pd.DataFrame, list[str], dict]:

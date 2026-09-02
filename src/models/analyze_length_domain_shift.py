@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
 import sys
@@ -20,6 +19,16 @@ import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr, spearmanr
 
+from src.evaluation.data_utils import (
+    LENGTH_DISPLAY,
+    LENGTH_LABELS,
+    assign_length_groups,
+)
+from src.evaluation.experiment_utils import (
+    dataframe_to_markdown,
+    file_sha256,
+    format_percent as _percent,
+)
 from src.features.linguistic_features import (
     extract_linguistic_features,
     get_words,
@@ -60,18 +69,6 @@ STABILITY_FIGURE_PATH = FIGURES_DIR / "day12_internal_stability.png"
 EXPANSION_FIGURE_PATH = FIGURES_DIR / "day12_external_expansion.png"
 DOMAIN_FIGURE_PATH = FIGURES_DIR / "day12_domain_shift.png"
 
-LENGTH_LABELS = [
-    "very_short_le_60",
-    "short_61_120",
-    "medium_121_250",
-    "long_gt_250",
-]
-LENGTH_DISPLAY = {
-    "very_short_le_60": "Shumë të shkurtër (<=60)",
-    "short_61_120": "Të shkurtër (61-120)",
-    "medium_121_250": "Mesatarë (121-250)",
-    "long_gt_250": "Të gjatë (>250)",
-}
 VARIANT_ORDER = [
     "full",
     "title_plus_first_paragraph_proxy",
@@ -104,15 +101,6 @@ DAY11_FROZEN_PATHS = [
 LOGGER = logging.getLogger(__name__)
 
 
-def file_sha256(path: Path) -> str:
-    """Return the SHA-256 fingerprint of one file."""
-    digest = hashlib.sha256()
-    with path.open("rb") as file_handle:
-        for chunk in iter(lambda: file_handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
 def frozen_hashes() -> dict[str, str]:
     """Fingerprint every frozen Day 11 input and output."""
     missing = [str(path) for path in DAY11_FROZEN_PATHS if not path.exists()]
@@ -122,18 +110,6 @@ def frozen_hashes() -> dict[str, str]:
         str(path.relative_to(PROJECT_ROOT)): file_sha256(path)
         for path in DAY11_FROZEN_PATHS
     }
-
-
-def assign_length_groups(dataframe: pd.DataFrame) -> pd.DataFrame:
-    """Assign fixed, interpretable word-count groups."""
-    result = dataframe.copy()
-    result["length_group"] = pd.cut(
-        result["word_count"],
-        bins=[-np.inf, 60, 120, 250, np.inf],
-        labels=LENGTH_LABELS,
-        ordered=True,
-    )
-    return result
 
 
 def add_linguistic_features(dataframe: pd.DataFrame) -> pd.DataFrame:
@@ -800,29 +776,6 @@ def plot_domain_shift(domain: pd.DataFrame) -> None:
     fig.tight_layout()
     fig.savefig(DOMAIN_FIGURE_PATH, dpi=180)
     plt.close(fig)
-
-
-def _markdown_value(value: object) -> str:
-    if pd.isna(value):
-        return "n/a"
-    if isinstance(value, (float, np.floating)):
-        return f"{float(value):.4f}"
-    return str(value).replace("|", "/").replace("\n", " ")
-
-
-def dataframe_to_markdown(dataframe: pd.DataFrame, columns: list[str]) -> str:
-    """Render a small DataFrame without an optional dependency."""
-    header = "| " + " | ".join(columns) + " |"
-    separator = "| " + " | ".join("---" for _ in columns) + " |"
-    rows = [
-        "| " + " | ".join(_markdown_value(row[column]) for column in columns) + " |"
-        for _, row in dataframe[columns].iterrows()
-    ]
-    return "\n".join([header, separator, *rows])
-
-
-def _percent(value: float) -> str:
-    return f"{100 * value:.2f}%"
 
 
 def write_report(

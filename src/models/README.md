@@ -20,3 +20,7 @@ prishur testet dhe riprodhueshmërinë e raporteve.
 
 Indeksi i plotë është te `experiments/README.md`. `predict.py` ruan API-të e
 modeleve të vjetra; runtime-i final përdor vetëm `predict_final.py`.
+
+`builders.py` mban ndërtuesit e thjeshtë Word/Character TF-IDF dhe Linear SVM
+që duhen për riprodhimin e eksperimenteve. Runtime-i final nuk i përdor këta
+ndërtues; ai ngarkon direkt artefaktin e ngrirë.

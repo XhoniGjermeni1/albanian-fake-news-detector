@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
 import sys
@@ -14,36 +13,35 @@ import pandas as pd
 from scipy.stats import spearmanr
 from sklearn.base import clone
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (
-    accuracy_score,
-    confusion_matrix,
-    precision_recall_fscore_support,
-)
-from sklearn.model_selection import StratifiedGroupKFold
 from sklearn.naive_bayes import ComplementNB
-from sklearn.pipeline import FeatureUnion, Pipeline
+from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.models.analyze_length_domain_shift import (  # noqa: E402
+from src.evaluation.data_utils import (  # noqa: E402
     LENGTH_DISPLAY,
     LENGTH_LABELS,
-    assign_length_groups,
+    add_word_counts,
+    build_group_safe_folds,
+    exclude_train_duplicates_from_test,
+    refresh_model_text,
 )
-from src.models.analyze_model_quality import build_leakage_safe_groups  # noqa: E402
-from src.models.compare_tfidf_representations import (  # noqa: E402
-    build_char_vectorizer,
-    build_word_vectorizer,
+from src.evaluation.experiment_utils import (  # noqa: E402
+    escaped_dataframe_to_markdown as dataframe_to_markdown,
     file_sha256,
 )
-from src.models.train_hybrid_model import (  # noqa: E402
-    exclude_train_duplicates_from_test,
+from src.evaluation.metrics import (  # noqa: E402
+    classification_metrics,
+    fake_decision_scores,
+    rounded_metrics,
 )
-from src.features.linguistic_features import extract_linguistic_features  # noqa: E402
-from src.preprocessing.clean_text import combine_title_content  # noqa: E402
+from src.models.builders import (  # noqa: E402
+    FIXED_CHAR_CONFIG,
+    build_fixed_features,
+)
 
 
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
@@ -95,15 +93,6 @@ COLORS = {
     "logistic_regression": "#3976A8",
     "linear_svm": "#D76745",
     "complement_nb": "#2F937F",
-}
-
-FIXED_CHAR_CONFIG = {
-    "config_name": "char_wb_3_5",
-    "analyzer": "char_wb",
-    "ngram_min": 3,
-    "ngram_max": 5,
-    "min_df": 2,
-    "max_features": 50000,
 }
 
 CLASSIFIER_CONFIGS = [
@@ -161,25 +150,6 @@ SELECTION_TOLERANCE = 0.002
 LOGGER = logging.getLogger(__name__)
 
 
-def refresh_model_text(dataframe: pd.DataFrame) -> tuple[pd.DataFrame, int]:
-    """Apply the current basic preprocessing without changing stored CSV files."""
-    result = dataframe.copy().reset_index(drop=True)
-    current_text = pd.Series(
-        [
-            combine_title_content(row.title, row.content)
-            for row in result.itertuples(index=False)
-        ],
-        dtype="object",
-    )
-    stale_rows = 0
-    if "model_text" in result.columns:
-        stale_rows = int(
-            result["model_text"].astype(str).reset_index(drop=True).ne(current_text).sum()
-        )
-    result["model_text"] = current_text
-    return result, stale_rows
-
-
 def load_fixed_representation() -> dict:
     """Load and verify the Word + Character representation selected on Day 13."""
     if not DAY13_SELECTION_PATH.exists():
@@ -193,16 +163,6 @@ def load_fixed_representation() -> dict:
     if selection.get("external_results_used") is not False:
         raise ValueError("Day 13 selection is not marked as internal-only.")
     return selected_config.copy()
-
-
-def build_fixed_features(char_config: dict) -> FeatureUnion:
-    """Build the exact Word + Character TF-IDF representation from Day 13."""
-    return FeatureUnion(
-        [
-            ("word", build_word_vectorizer()),
-            ("character", build_char_vectorizer(char_config)),
-        ]
-    )
 
 
 def build_classifier(candidate: dict):
@@ -235,101 +195,6 @@ def build_model_pipeline(candidate: dict, char_config: dict) -> Pipeline:
             ("features", build_fixed_features(char_config)),
             ("classifier", build_classifier(candidate)),
         ]
-    )
-
-
-def build_group_safe_folds(
-    train: pd.DataFrame,
-) -> tuple[list[tuple[np.ndarray, np.ndarray]], np.ndarray, list[dict]]:
-    """Create five folds that keep pair IDs and duplicate texts together."""
-    groups = build_leakage_safe_groups(train)
-    splitter = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
-    folds = list(
-        splitter.split(train["model_text"], train["label"], groups=groups)
-    )
-    audit: list[dict] = []
-    for fold_number, (fit_index, validation_index) in enumerate(folds, start=1):
-        overlap = set(groups[fit_index]) & set(groups[validation_index])
-        if overlap:
-            raise RuntimeError(f"Fold {fold_number} contains leakage groups.")
-        validation_labels = train.iloc[validation_index]["label"]
-        audit.append(
-            {
-                "fold": fold_number,
-                "fit_rows": int(len(fit_index)),
-                "validation_rows": int(len(validation_index)),
-                "fit_groups": int(len(np.unique(groups[fit_index]))),
-                "validation_groups": int(len(np.unique(groups[validation_index]))),
-                "overlapping_groups": 0,
-                "validation_real": int(validation_labels.eq(0).sum()),
-                "validation_fake": int(validation_labels.eq(1).sum()),
-            }
-        )
-    return folds, groups, audit
-
-
-def classification_metrics(y_true, y_pred) -> dict:
-    """Calculate the common binary metrics with fake as class 1."""
-    y_true_array = np.asarray(y_true, dtype=int)
-    y_pred_array = np.asarray(y_pred, dtype=int)
-    weighted = precision_recall_fscore_support(
-        y_true_array,
-        y_pred_array,
-        average="weighted",
-        zero_division=0,
-    )
-    per_class = precision_recall_fscore_support(
-        y_true_array,
-        y_pred_array,
-        labels=[0, 1],
-        average=None,
-        zero_division=0,
-    )
-    matrix = confusion_matrix(y_true_array, y_pred_array, labels=[0, 1])
-    return {
-        "rows": int(len(y_true_array)),
-        "real_rows": int(np.sum(y_true_array == 0)),
-        "fake_rows": int(np.sum(y_true_array == 1)),
-        "accuracy": float(accuracy_score(y_true_array, y_pred_array)),
-        "precision_weighted": float(weighted[0]),
-        "recall_weighted": float(weighted[1]),
-        "f1_weighted": float(weighted[2]),
-        "precision_real": float(per_class[0][0]),
-        "recall_real": float(per_class[1][0]),
-        "f1_real": float(per_class[2][0]),
-        "precision_fake": float(per_class[0][1]),
-        "recall_fake": float(per_class[1][1]),
-        "f1_fake": float(per_class[2][1]),
-        "confusion_matrix": matrix.tolist(),
-        "false_positives": int(matrix[0, 1]),
-        "false_negatives": int(matrix[1, 0]),
-    }
-
-
-def fake_decision_scores(model, values) -> np.ndarray:
-    """Return an uncalibrated score oriented toward fake, never a probability."""
-    classes = list(model.classes_)
-    if 0 not in classes or 1 not in classes:
-        raise ValueError(f"Expected classes 0 and 1, found {classes}")
-
-    decision_function = getattr(model, "decision_function", None)
-    if decision_function is not None:
-        scores = np.asarray(decision_function(values))
-        if scores.ndim == 1:
-            if classes[1] != 1:
-                scores = -scores
-            return scores.astype(float)
-        return (scores[:, classes.index(1)] - scores[:, classes.index(0)]).astype(
-            float
-        )
-
-    predict_log_proba = getattr(model, "predict_log_proba", None)
-    if predict_log_proba is None:
-        raise TypeError("Classifier has neither decision_function nor predict_log_proba.")
-    log_probabilities = np.asarray(predict_log_proba(values), dtype=float)
-    return (
-        log_probabilities[:, classes.index(1)]
-        - log_probabilities[:, classes.index(0)]
     )
 
 
@@ -545,16 +410,6 @@ def load_internal_test_after_selection(
     }
 
 
-def add_word_counts(dataframe: pd.DataFrame) -> pd.DataFrame:
-    """Add current word counts and the fixed Day 12 length groups."""
-    result = dataframe.copy().reset_index(drop=True)
-    result["word_count"] = [
-        int(extract_linguistic_features(row.title, row.content)["word_count"])
-        for row in result.itertuples(index=False)
-    ]
-    return assign_length_groups(result)
-
-
 def fit_selected_family_models(
     train: pd.DataFrame,
     selection: dict,
@@ -741,14 +596,6 @@ def load_external_after_selection(selection_hash: str) -> tuple[pd.DataFrame, in
     return add_word_counts(external), stale_rows
 
 
-def rounded_metrics(metrics: dict) -> dict:
-    """Round only floating values for human-facing artifacts."""
-    return {
-        key: round(value, 6) if isinstance(value, float) else value
-        for key, value in metrics.items()
-    }
-
-
 def best_cv_rows(cv_summary: pd.DataFrame, selection: dict) -> pd.DataFrame:
     """Return the chosen configuration from every classifier family."""
     ids = [
@@ -865,28 +712,6 @@ def plot_external(comparison: pd.DataFrame) -> None:
     figure.tight_layout()
     figure.savefig(EXTERNAL_FIGURE_PATH, dpi=160, bbox_inches="tight")
     plt.close(figure)
-
-
-def markdown_value(value: object) -> str:
-    """Format one value for a compact Markdown table."""
-    if value is None or (isinstance(value, float) and np.isnan(value)):
-        return "n/a"
-    if isinstance(value, (float, np.floating)):
-        return f"{float(value):.4f}"
-    return str(value).replace("|", "\\|")
-
-
-def dataframe_to_markdown(dataframe: pd.DataFrame, columns: list[str]) -> str:
-    """Render a DataFrame without requiring the optional tabulate package."""
-    header = "| " + " | ".join(columns) + " |"
-    separator = "| " + " | ".join(["---"] * len(columns)) + " |"
-    rows = [
-        "| "
-        + " | ".join(markdown_value(row[column]) for column in columns)
-        + " |"
-        for _, row in dataframe[columns].iterrows()
-    ]
-    return "\n".join([header, separator, *rows])
 
 
 def write_report(
