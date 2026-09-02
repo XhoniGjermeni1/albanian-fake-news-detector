@@ -1,0 +1,70 @@
+{
+  "model_sha256": "52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5",
+  "hash_unchanged": true,
+  "tests_passed": 115,
+  "tests_failed": 0,
+  "cases_checked": 6,
+  "all_decisions_unchanged": true,
+  "maximum_probability_delta": 0.0,
+  "streamlit_smoke_test": {
+    "http_status": 200,
+    "content_type": "text/html; charset=utf-8",
+    "streamlit_root_found": true
+  },
+  "cases": [
+    {
+      "article_id": "true_1594",
+      "decision": "likely_real",
+      "binary_prediction": 0,
+      "probability_real": 0.9998998558475991,
+      "probability_fake": 0.0001001441524008815,
+      "decision_unchanged": true,
+      "max_probability_delta": 0.0
+    },
+    {
+      "article_id": "fake_531",
+      "decision": "likely_fake",
+      "binary_prediction": 1,
+      "probability_real": 2.926701381245067e-07,
+      "probability_fake": 0.9999997073298619,
+      "decision_unchanged": true,
+      "max_probability_delta": 0.0
+    },
+    {
+      "article_id": "true_585",
+      "decision": "uncertain",
+      "binary_prediction": 0,
+      "probability_real": 0.5028133475971859,
+      "probability_fake": 0.4971866524028142,
+      "decision_unchanged": true,
+      "max_probability_delta": 0.0
+    },
+    {
+      "article_id": "true_586",
+      "decision": "likely_fake",
+      "binary_prediction": 1,
+      "probability_real": 0.1036349025562524,
+      "probability_fake": 0.8963650974437476,
+      "decision_unchanged": true,
+      "max_probability_delta": 0.0
+    },
+    {
+      "article_id": "fake_1104",
+      "decision": "likely_real",
+      "binary_prediction": 0,
+      "probability_real": 0.8940620339254887,
+      "probability_fake": 0.10593796607451131,
+      "decision_unchanged": true,
+      "max_probability_delta": 0.0
+    },
+    {
+      "article_id": "fake_1932",
+      "decision": "likely_real",
+      "binary_prediction": 0,
+      "probability_real": 0.9991722709328119,
+      "probability_fake": 0.0008277290671881119,
+      "decision_unchanged": true,
+      "max_probability_delta": 0.0
+    }
+  ]
+}

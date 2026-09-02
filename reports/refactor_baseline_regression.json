@@ -1,0 +1,55 @@
+{
+  "purpose": "Immutable runtime snapshot captured before the readability refactor",
+  "model_path": "models/final_word_char_linear_svm_calibrated_v1.joblib",
+  "model_sha256": "52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5",
+  "model_size_bytes": 1416167,
+  "test_suite": {
+    "passed": 115,
+    "failed": 0
+  },
+  "probability_tolerance": 1e-12,
+  "cases": [
+    {
+      "article_id": "true_1594",
+      "decision": "likely_real",
+      "binary_prediction": 0,
+      "probability_real": 0.9998998558475991,
+      "probability_fake": 0.0001001441524008815
+    },
+    {
+      "article_id": "fake_531",
+      "decision": "likely_fake",
+      "binary_prediction": 1,
+      "probability_real": 2.926701381245067e-07,
+      "probability_fake": 0.9999997073298619
+    },
+    {
+      "article_id": "true_585",
+      "decision": "uncertain",
+      "binary_prediction": 0,
+      "probability_real": 0.5028133475971859,
+      "probability_fake": 0.4971866524028142
+    },
+    {
+      "article_id": "true_586",
+      "decision": "likely_fake",
+      "binary_prediction": 1,
+      "probability_real": 0.1036349025562524,
+      "probability_fake": 0.8963650974437476
+    },
+    {
+      "article_id": "fake_1104",
+      "decision": "likely_real",
+      "binary_prediction": 0,
+      "probability_real": 0.8940620339254887,
+      "probability_fake": 0.10593796607451131
+    },
+    {
+      "article_id": "fake_1932",
+      "decision": "likely_real",
+      "binary_prediction": 0,
+      "probability_real": 0.9991722709328119,
+      "probability_fake": 0.0008277290671881119
+    }
+  ]
+}

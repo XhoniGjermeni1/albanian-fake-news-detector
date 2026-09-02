@@ -233,6 +233,10 @@
           "sipas",
           "raporti"
         ],
+        "uncertainty_markers_found": [
+          "thuhet",
+          "mund të"
+        ],
         "exclamation_count": 0,
         "word_count": 249,
         "text_length": 1469,

@@ -1,0 +1,73 @@
+:root {
+    --app-ink: #17211f;
+    --app-muted: #56635f;
+    --app-surface: #ffffff;
+    --app-border: #d8dfdc;
+    --app-accent: #176b62;
+}
+
+.stApp {
+    background: #f5f7f5;
+    color: var(--app-ink);
+}
+
+[data-testid="stHeader"] {
+    background: rgba(245, 247, 245, 0.94);
+}
+
+[data-testid="stSidebar"] {
+    background: #e9eeec;
+    border-right: 1px solid var(--app-border);
+}
+
+.block-container {
+    max-width: 980px;
+    padding-top: 2.25rem;
+    padding-bottom: 3rem;
+}
+
+h1, h2, h3, p, label, button {
+    letter-spacing: 0 !important;
+}
+
+h1 {
+    color: #173c37;
+}
+
+[data-testid="stMetric"] {
+    background: var(--app-surface);
+    border: 1px solid var(--app-border);
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    min-height: 108px;
+}
+
+.stButton button, .stFormSubmitButton button {
+    border-radius: 6px;
+    min-height: 2.7rem;
+}
+
+.stFormSubmitButton button {
+    background: var(--app-accent);
+    border-color: var(--app-accent);
+}
+
+textarea, input {
+    border-radius: 6px !important;
+}
+
+[data-testid="stCaptionContainer"] {
+    color: var(--app-muted);
+}
+
+@media (max-width: 640px) {
+    .block-container {
+        padding-top: 1.25rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    [data-testid="stMetric"] {
+        min-height: 96px;
+    }
+}

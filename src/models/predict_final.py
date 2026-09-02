@@ -8,6 +8,8 @@ import joblib
 import numpy as np
 
 from src.models.prediction_utils import (
+    DEFAULT_FAKE_THRESHOLD,
+    DEFAULT_REAL_THRESHOLD,
     build_linguistic_explanation,
     classify_probability,
 )
@@ -21,8 +23,12 @@ FINAL_MODEL_PATH = (
     PROJECT_ROOT / "models" / "final_word_char_linear_svm_calibrated_v1.joblib"
 )
 FINAL_MANIFEST_PATH = PROJECT_ROOT / "models" / "final_model_v1_manifest.json"
-FINAL_REAL_THRESHOLD = 0.30
-FINAL_FAKE_THRESHOLD = 0.70
+FINAL_REAL_THRESHOLD = DEFAULT_REAL_THRESHOLD
+FINAL_FAKE_THRESHOLD = DEFAULT_FAKE_THRESHOLD
+FINAL_NOTICE = (
+    "Rezultati është probabilitet sipas modelit dhe sinjaleve gjuhësore; "
+    "nuk është verifikim faktik i lajmit."
+)
 
 
 def prepare_final_model_text(title: str, content: str) -> str:
@@ -35,15 +41,8 @@ def load_final_model(model_path: str | Path = FINAL_MODEL_PATH):
     return joblib.load(model_path)
 
 
-def predict_final_news(
-    title: str,
-    content: str,
-    model=None,
-    model_path: str | Path = FINAL_MODEL_PATH,
-) -> dict:
-    """Return deterministic probabilities, decision, and language signals."""
-    prediction_model = model if model is not None else load_final_model(model_path)
-    model_text = prepare_final_model_text(title, content)
+def _predict_probabilities(prediction_model, model_text: str) -> tuple[float, float]:
+    """Return validated real/fake probabilities in label order 0/1."""
     probabilities = np.asarray(
         prediction_model.predict_proba([model_text])[0], dtype=float
     )
@@ -64,7 +63,16 @@ def predict_final_news(
         raise ValueError("Final model probabilities do not sum to one.")
     if not 0.0 <= probability_real <= 1.0 or not 0.0 <= probability_fake <= 1.0:
         raise ValueError("Final model probabilities are outside [0, 1].")
+    return probability_real, probability_fake
 
+
+def _build_prediction_result(
+    title: str,
+    content: str,
+    probability_real: float,
+    probability_fake: float,
+) -> dict:
+    """Build the stable public prediction contract."""
     binary_prediction = int(probability_fake >= 0.5)
     return {
         "model_id": FINAL_MODEL_ID,
@@ -83,8 +91,22 @@ def predict_final_news(
             "likely_fake_above": FINAL_FAKE_THRESHOLD,
         },
         "linguistic_explanation": build_linguistic_explanation(title, content),
-        "notice": (
-            "Rezultati është probabilitet sipas modelit dhe sinjaleve gjuhësore; "
-            "nuk është verifikim faktik i lajmit."
-        ),
+        "notice": FINAL_NOTICE,
     }
+
+
+def predict_final_news(
+    title: str,
+    content: str,
+    model=None,
+    model_path: str | Path = FINAL_MODEL_PATH,
+) -> dict:
+    """Return deterministic probabilities, decision, and language signals."""
+    prediction_model = model if model is not None else load_final_model(model_path)
+    model_text = prepare_final_model_text(title, content)
+    probability_real, probability_fake = _predict_probabilities(
+        prediction_model, model_text
+    )
+    return _build_prediction_result(
+        title, content, probability_real, probability_fake
+    )

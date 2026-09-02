@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 import re
-import unicodedata
 
 import pandas as pd
 
+from src.preprocessing.clean_text import normalize_spaces
+
 WORD_PATTERN = re.compile(r"[^\W\d_]+(?:[-'][^\W\d_]+)?", re.UNICODE)
 SENTENCE_PATTERN = re.compile(r"[.!?]+")
-SPACE_PATTERN = re.compile(r"\s+")
 
 SENSATIONAL_PHRASES = [
     "tronditëse",
@@ -61,15 +61,6 @@ POSSIBLE_MISSING_DIACRITIC_WORDS = [
     "behet",
     "kerkon",
 ]
-
-
-def normalize_spaces(text: str) -> str:
-    """Normalize spaces without changing letters, case, or punctuation."""
-    if pd.isna(text):
-        return ""
-
-    normalized_text = unicodedata.normalize("NFC", str(text))
-    return SPACE_PATTERN.sub(" ", normalized_text).strip()
 
 
 def get_words(text: str) -> list[str]:

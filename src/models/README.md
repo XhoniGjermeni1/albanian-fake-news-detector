@@ -2,24 +2,21 @@
 
 ## Runtime final
 
-- `prediction_utils.py`: pragjet, vendimi me tri nivele dhe sinjalet gjuhësore.
-- `predict_final.py`: ngarkimi dhe prediction-i i modelit final `v1.0.0`.
+- `predict_final.py`: ngarkon artefaktin e ngrirë, përgatit tekstin, merr
+  probabilitetet dhe ndërton kontratën publike `predict_final_news()`.
+- `prediction_utils.py`: mban pragjet `0.30/0.70`, vendimin me tri nivele dhe
+  linguistic explanation.
 
-Këto janë modulet që përdor `app/streamlit_app.py`.
+Këto janë të vetmet module të kësaj dosjeje që përdor Streamlit. Modeli i
+kalibruar është brenda artefaktit `.joblib`; runtime-i nuk ritrajnon dhe nuk
+rikalibron asgjë.
 
-## Ngrirja e modelit
+## Eksperimentet historike
 
-- `finalize_model.py`: verifikon kandidatin e Ditës 16 dhe krijon manifestin e
-  artefaktit final pa bërë trajnim.
-- `calibrate_linear_svm.py`: eksperimenti i calibration-it që prodhoi
-  kandidatin final.
+Skriptet e tjera dokumentojnë baseline-in, linguistic/hybrid models, external
+evaluation, domain shift, krahasimin TF-IDF, classifier selection, tuning,
+calibration dhe ngrirjen finale. Ato ruhen në path-et ekzistuese për të mos
+prishur testet dhe riprodhueshmërinë e raporteve.
 
-## Analiza historike
-
-Modulet e tjera dokumentojnë rrugën eksperimentale: baseline Logistic
-Regression, linguistic/hybrid models, external evaluation, domain shift,
-Word/Character TF-IDF, classifier comparison dhe SVM tuning. Ato ruhen për
-riprodhueshmëri akademike, por nuk importohen nga Streamlit.
-
-`predict.py` ruan API-të e modeleve historike. Runtime-i final përdor
-`predict_final.py`.
+Indeksi i plotë është te `experiments/README.md`. `predict.py` ruan API-të e
+modeleve të vjetra; runtime-i final përdor vetëm `predict_final.py`.

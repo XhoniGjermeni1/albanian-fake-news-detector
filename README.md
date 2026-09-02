@@ -47,6 +47,20 @@ probabilitete + pragjet 0.30/0.70
 Streamlit + shpjegim i sinjaleve gjuhësore
 ```
 
+Rrjedha e kodit runtime është po aq e drejtpërdrejtë:
+
+```text
+input i përdoruesit
+        ↓
+prepare_final_model_text()
+        ↓
+model.predict_proba()  # TF-IDF + SVM + calibration brenda artefaktit
+        ↓
+classify_probability() # pragjet 0.30/0.70
+        ↓
+rezultati + linguistic explanation
+```
+
 ## Dataset-i
 
 Projekti përdor **Albanian Fake News Corpus**:
@@ -84,7 +98,7 @@ ose ndryshim të modelit. Detajet finale janë te
 
 ```text
 albanian-fake-news-detector/
-├── app/                  # ndërfaqja Streamlit
+├── app/                  # entrypoint, UI helpers dhe stylesheet i Streamlit
 ├── data/
 │   ├── raw/              # corpus-i origjinal, i pandryshuar
 │   ├── interim/          # train/test i ngrirë dhe teksti i pastruar
@@ -92,6 +106,7 @@ albanian-fake-news-detector/
 │   └── external/         # benchmark-u pilot i jashtëm
 ├── models/               # modeli final, manifesti dhe modele lokale historike
 ├── notebooks/            # auditimi dhe walkthrough-u final
+├── experiments/          # indeks i eksperimenteve historike
 ├── reports/              # raportet, tabelat dhe figurat e eksperimenteve
 ├── src/
 │   ├── data/             # loader, validation dhe dataset build
@@ -104,7 +119,8 @@ albanian-fake-news-detector/
 ```
 
 Skriptet e Ditëve 2–16 dhe modelet e tyre janë ruajtur për riprodhueshmëri
-akademike. Ato nuk përdoren nga runtime-i final.
+akademike. Ato nuk përdoren nga runtime-i final dhe janë kataloguar te
+`experiments/README.md`.
 
 ## Instalimi
 
@@ -214,7 +230,8 @@ ndryshuar skedarët raw.
 | Linguistic features | `src/features/linguistic_features.py` |
 | Vendimet dhe shpjegimi | `src/models/prediction_utils.py` |
 | Prediction final | `src/models/predict_final.py` |
-| Aplikacioni | `app/streamlit_app.py` |
+| Rrjedha e aplikacionit | `app/streamlit_app.py` |
+| Validimi dhe paraqitja UI | `app/streamlit_ui.py` |
 | Regression tests | `tests/test_final_model.py`, `tests/test_streamlit_app.py` |
 | Walkthrough | `notebooks/02_final_walkthrough.ipynb` |
 
