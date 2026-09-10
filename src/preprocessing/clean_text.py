@@ -1,4 +1,4 @@
-"""Shared basic text preprocessing for the Albanian news models."""
+"""Pastrim teksti per modelin"""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ SPACE_PATTERN = re.compile(r"\s+")
 
 
 def normalize_spaces(text: str) -> str:
-    """Normalize Unicode and replace multiple spaces/newlines with one space."""
+
     if pd.isna(text):
         return ""
 
@@ -20,7 +20,7 @@ def normalize_spaces(text: str) -> str:
 
 
 def combine_title_content(title: str, content: str) -> str:
-    """Join title and content into one model input text."""
+
     clean_title = normalize_spaces(title)
     clean_content = normalize_spaces(content)
 
@@ -32,7 +32,6 @@ def combine_title_content(title: str, content: str) -> str:
 
 
 def prepare_text_dataframe(dataframe: pd.DataFrame) -> pd.DataFrame:
-    """Create the clean text columns used by the model pipelines."""
     clean_dataframe = dataframe.copy()
 
     clean_dataframe["title_clean"] = clean_dataframe["title"].apply(normalize_spaces)
