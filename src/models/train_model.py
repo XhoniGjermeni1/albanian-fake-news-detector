@@ -1,4 +1,4 @@
-"""Train the first minimal TF-IDF + Logistic Regression baseline model."""
+
 
 from __future__ import annotations
 
@@ -36,9 +36,9 @@ METRICS_PATH = REPORTS_DIR / "day2_metrics.json"
 
 LOGGER = logging.getLogger(__name__)
 
-
+# krijimi i dataframeve train dhe test per modelin
 def split_train_test(dataframe: pd.DataFrame, test_size: float = 0.2, random_state: int = 42) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Split data by pair_id to reduce leakage between train and test."""
+
     groups = dataframe["pair_id"].fillna(dataframe["article_id"])
     splitter = GroupShuffleSplit(n_splits=1, test_size=test_size, random_state=random_state)
     train_index, test_index = next(splitter.split(dataframe, dataframe["label"], groups=groups))
@@ -46,17 +46,20 @@ def split_train_test(dataframe: pd.DataFrame, test_size: float = 0.2, random_sta
     train_dataframe = dataframe.iloc[train_index].reset_index(drop=True)
     test_dataframe = dataframe.iloc[test_index].reset_index(drop=True)
     return train_dataframe, test_dataframe
-
+# Train: 3,195 artikuj
+# Test:    799 artikuj
+# Pair ID të përbashkëta: 0 pra ska data leakage
 
 def build_baseline_model() -> Pipeline:
-    """Create the baseline text classification pipeline."""
     return Pipeline(
         steps=[
             (
                 "tfidf",
                 TfidfVectorizer(
+                    # ruan shkronjat  e medha si sinjale gjuhesore
                     lowercase=False,
                     ngram_range=(1, 2),
+                    # Një term duhet të shfaqet në të paktën dy dokumente train që të futet në vocabulary.
                     min_df=2,
                     max_features=30000,
                 ),
@@ -67,7 +70,7 @@ def build_baseline_model() -> Pipeline:
 
 
 def evaluate_model(model: Pipeline, test_dataframe: pd.DataFrame) -> dict:
-    """Calculate basic classification metrics."""
+
     y_true = test_dataframe["label"]
     y_pred = model.predict(test_dataframe["model_text"])
 
@@ -96,7 +99,6 @@ def evaluate_model(model: Pipeline, test_dataframe: pd.DataFrame) -> dict:
 
 
 def train_baseline_model() -> dict:
-    """Prepare text, split data, train the baseline model, and save artifacts."""
     INTERIM_DIR.mkdir(parents=True, exist_ok=True)
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -154,7 +156,6 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     result = train_baseline_model()
 
-    print("=== Day 2 baseline model ===")
     print(f"Input rows: {result['input_rows']}")
     print(f"Train rows: {result['train_rows']}")
     print(f"Test rows: {result['test_rows']}")

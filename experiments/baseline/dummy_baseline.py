@@ -13,11 +13,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.evaluation.data_utils import (  # noqa: E402
+from src.evaluation.data_utils import (  
     exclude_train_duplicates_from_test,
     refresh_model_text,
 )
-from src.evaluation.metrics import classification_metrics  # noqa: E402
+from src.evaluation.metrics import classification_metrics
 
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
@@ -29,7 +29,7 @@ REPORT_PATH = OUTPUT_DIR / "dummy_baseline.md"
 
 
 def load_frozen_split() -> tuple[pd.DataFrame, pd.DataFrame, list[str]]:
-    """Load train and leakage-clean internal test data."""
+
     train = pd.read_csv(TRAIN_PATH, encoding="utf-8-sig", keep_default_na=False)
     test = pd.read_csv(TEST_PATH, encoding="utf-8-sig", keep_default_na=False)
     train, _ = refresh_model_text(train)
@@ -39,7 +39,7 @@ def load_frozen_split() -> tuple[pd.DataFrame, pd.DataFrame, list[str]]:
 
 
 def evaluate_dummy_baseline() -> tuple[dict, pd.DataFrame]:
-    """Fit the trivial baseline and compare it with the frozen models."""
+  
     train, test, excluded_ids = load_frozen_split()
     classifier = DummyClassifier(strategy="most_frequent", random_state=42)
     classifier.fit(train[["model_text"]], train["label"])
