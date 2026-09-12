@@ -63,7 +63,7 @@ Brier 0.0658, log loss
 0.2192 dhe ECE 0.0285.
 Këto janë metrikat zyrtare që duhen përdorur në diplomë.
 
-![Krahasimi final](figures/day17_final_model_comparison.png)
+![Krahasimi final](figures/model_comparison.png)
 
 ## Benchmark-u i jashtëm pilot
 
@@ -99,7 +99,7 @@ Gabimet e modelit final me confidence të paktën 90%:
 | real_30_60 | 6 | 0.8333 | 0.8333 | 0.0000 | 0.3086 | 1 | [[5, 1], [0, 0]] |
 | fake_gt_250 | 29 | 0.4483 | 0.0000 | 0.4483 | 0.4478 | 9 | [[0, 0], [16, 13]] |
 
-![Gjatësia](figures/day17_final_length_performance.png)
+![Gjatësia](figures/length_performance.png)
 
 Calibration nuk e zgjidh bias-in e gjatësisë. Veçanërisht, fake mbi 250 fjalë
 mbeten një grup i vështirë, ndërsa grupi 30-60 fjalë ka shumë pak raste të

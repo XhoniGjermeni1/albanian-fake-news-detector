@@ -7,9 +7,9 @@ import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOK_PATH = PROJECT_ROOT / "notebooks" / "02_final_walkthrough.ipynb"
-DEMO_CASES_PATH = PROJECT_ROOT / "reports" / "final" / "day19_demo_cases.csv"
-FROZEN_DEMOS_PATH = (
-    PROJECT_ROOT / "reports" / "final" / "day17_final_demo_cases.csv"
+DEMO_CASES_PATH = PROJECT_ROOT / "reports" / "final" / "demo_cases.csv"
+REGRESSION_FIXTURE_PATH = (
+    PROJECT_ROOT / "tests" / "fixtures" / "final_regression_cases.json"
 )
 
 
@@ -47,16 +47,18 @@ def test_final_walkthrough_is_valid_and_uses_frozen_outputs() -> None:
 
     assert "load_final_model" in code
     assert "predict_final_news" in code
-    assert "day17_final_metrics.json" in code
-    assert "day17_final_external_predictions.csv" in code
+    assert "metrics.json" in code
+    assert "external_predictions.csv" in code
     assert ".fit(" not in code
     assert "run_finalization(" not in code
     assert "train_test_split(" not in code
 
 
-def test_day19_demo_cases_are_complete_and_match_day17() -> None:
+def test_final_demo_cases_are_complete_and_match_regression_anchors() -> None:
     demo_cases = pd.read_csv(DEMO_CASES_PATH, encoding="utf-8-sig")
-    frozen = pd.read_csv(FROZEN_DEMOS_PATH)
+    frozen = pd.DataFrame(
+        json.loads(REGRESSION_FIXTURE_PATH.read_text(encoding="utf-8"))["cases"]
+    )
     expected_types = {
         "likely_real_correct",
         "likely_fake_correct",
@@ -86,15 +88,15 @@ def test_day19_demo_cases_are_complete_and_match_day17() -> None:
             ]
         ],
         on="article_id",
-        suffixes=("_day19", "_day17"),
+        suffixes=("_demo", "_frozen"),
         validate="one_to_one",
     )
     assert (comparison["expected_decision"] == comparison["decision"]).all()
     assert np.allclose(
-        comparison["probability_real_day19"], comparison["probability_real_day17"]
+        comparison["probability_real_demo"], comparison["probability_real_frozen"]
     )
     assert np.allclose(
-        comparison["probability_fake_day19"], comparison["probability_fake_day17"]
+        comparison["probability_fake_demo"], comparison["probability_fake_frozen"]
     )
 
 

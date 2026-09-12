@@ -92,7 +92,7 @@ Test set-i i brendshëm ka 792 artikuj dhe nuk është përdorur për tuning.
 Në dataset-in e jashtëm pilot me 40 përmbledhje të shkurtra, accuracy ishte
 60%. Ky rezultat dokumenton domain shift-in dhe nuk është përdorur për tuning
 ose ndryshim të modelit. Detajet finale janë te
-`reports/final/day17_final_model.md`.
+`reports/final/model.md`.
 
 ## Struktura Kryesore
 
@@ -194,8 +194,8 @@ python -m jupyter lab notebooks\02_final_walkthrough.ipynb
 
 Notebook-u ndjek rrjedhën nga dataset-i te prediction-i, lexon output-et e
 ngrira dhe nuk ritrajnon modelin. Rastet e demonstrimit ruhen te
-`reports/final/day19_demo_cases.csv`, ndërsa skenari te
-`reports/final/day19_demo_guide.md`.
+`reports/final/demo_cases.csv`, ndërsa skenari te
+`reports/final/demo_guide.md`.
 
 ## Testet
 
@@ -249,6 +249,5 @@ ndryshuar skedarët raw.
 `v1.0.0` përfaqëson modelin klasik final. BERT/XLM-RoBERTa, SHAP dhe deploy
 online mbeten zgjerime opsionale dhe nuk janë pjesë e këtij versioni.
 
-Raporti i mbylljes teknike ruhet te
-`reports/final/day20_final_closure.md`. Historia e plotë eksperimentale ruhet
-te `archive/`.
+Rezultatet zyrtare indeksohen te `reports/final/README.md`. Historia e plotë
+eksperimentale dhe raportet teknike të mbylljes ruhen te `archive/`.

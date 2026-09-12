@@ -9,7 +9,7 @@
    python -m streamlit run app\streamlit_app.py
    ```
 
-2. Hap `reports/day19_demo_cases.csv`. Për çdo rast kopjo kolonat `title` dhe
+2. Hap `reports/final/demo_cases.csv`. Për çdo rast kopjo kolonat `title` dhe
    `content` në input-et përkatëse të Streamlit.
 3. Mbaj hapur `notebooks/02_final_walkthrough.ipynb` për të treguar rrjedhën
    dataset → preprocessing → TF-IDF → model → probabilitete.

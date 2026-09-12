@@ -22,7 +22,7 @@ from src.evaluation.metrics import classification_metrics
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 FINAL_COMPARISON_PATH = (
-    PROJECT_ROOT / "reports" / "final" / "day17_final_model_comparison.csv"
+    PROJECT_ROOT / "reports" / "final" / "model_comparison.csv"
 )
 OUTPUT_DIR = PROJECT_ROOT / "archive" / "reports" / "experiments" / "baseline"
 METRICS_PATH = OUTPUT_DIR / "dummy_baseline_metrics.json"

@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import numpy as np
@@ -24,9 +25,12 @@ PROJECT_ROOT = APP_PATH.parents[1]
 
 @pytest.fixture(scope="module")
 def frozen_demo_inputs() -> pd.DataFrame:
-    demos = pd.read_csv(
-        PROJECT_ROOT / "reports" / "final" / "day17_final_demo_cases.csv"
+    fixture = json.loads(
+        (
+            PROJECT_ROOT / "tests" / "fixtures" / "final_regression_cases.json"
+        ).read_text(encoding="utf-8")
     )
+    demos = pd.DataFrame(fixture["cases"])
     test = pd.read_csv(
         PROJECT_ROOT / "data" / "interim" / "test.csv",
         encoding="utf-8-sig",
@@ -34,7 +38,7 @@ def frozen_demo_inputs() -> pd.DataFrame:
     )
     return demos.merge(
         test[["article_id", "title", "content"]],
-        on=["article_id", "title"],
+        on="article_id",
         how="left",
         validate="one_to_one",
     )
@@ -178,7 +182,7 @@ def test_streamlit_initial_view_and_empty_submission() -> None:
     assert any("të paktën titullin" in error.value for error in app.error)
 
 
-def test_app_prediction_function_matches_all_frozen_day17_cases(
+def test_app_prediction_function_matches_all_frozen_anchors(
     frozen_demo_inputs: pd.DataFrame,
 ) -> None:
     model = get_cached_model(str(MODEL_PATH))
@@ -195,7 +199,7 @@ def test_app_prediction_function_matches_all_frozen_day17_cases(
         assert result["model_version"] == "1.0.0"
 
 
-def test_streamlit_matches_all_six_frozen_day17_cases(
+def test_streamlit_matches_all_six_frozen_anchors(
     frozen_demo_inputs: pd.DataFrame,
 ) -> None:
     app = AppTest.from_file(str(APP_PATH), default_timeout=60).run()
