@@ -9,7 +9,7 @@ from pathlib import Path
 import pandas as pd
 from sklearn.dummy import DummyClassifier
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -21,8 +21,10 @@ from src.evaluation.metrics import classification_metrics
 
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
-FINAL_COMPARISON_PATH = PROJECT_ROOT / "reports" / "day17_final_model_comparison.csv"
-OUTPUT_DIR = PROJECT_ROOT / "reports" / "experiments" / "baseline"
+FINAL_COMPARISON_PATH = (
+    PROJECT_ROOT / "reports" / "final" / "day17_final_model_comparison.csv"
+)
+OUTPUT_DIR = PROJECT_ROOT / "archive" / "reports" / "experiments" / "baseline"
 METRICS_PATH = OUTPUT_DIR / "dummy_baseline_metrics.json"
 COMPARISON_PATH = OUTPUT_DIR / "dummy_baseline_comparison.csv"
 REPORT_PATH = OUTPUT_DIR / "dummy_baseline.md"

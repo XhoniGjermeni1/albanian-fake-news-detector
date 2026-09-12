@@ -64,28 +64,28 @@ POSSIBLE_MISSING_DIACRITIC_WORDS = [
 
 
 def get_words(text: str) -> list[str]:
-    """Return word-like tokens, preserving Albanian letters."""
+
     return WORD_PATTERN.findall(text)
 
 
 def count_sentences(text: str, word_count: int) -> int:
-    """Count sentence-ending punctuation marks, with a fallback for non-empty text."""
+    
     sentence_count = len([part for part in SENTENCE_PATTERN.split(text) if part.strip()])
     if sentence_count == 0 and word_count > 0:
         return 1
     return sentence_count
 
-
+# shmang pjesetimin me 0 pra jo ! / 0 fjale
 def safe_ratio(numerator: int | float, denominator: int | float) -> float:
-    """Avoid division by zero in feature ratios."""
+   
     if denominator == 0:
         return 0.0
 
     return round(float(numerator) / float(denominator), 6)
 
-
+# Merr tekstin dhe një listë frazash. Kthen cilat fraza janë gjetur.
 def find_phrases(text: str, phrases: list[str]) -> list[str]:
-    """Find phrases with case-insensitive matching."""
+
     normalized_text = normalize_spaces(text).casefold()
     found_phrases = []
 
@@ -97,9 +97,9 @@ def find_phrases(text: str, phrases: list[str]) -> list[str]:
 
     return found_phrases
 
-
+# Ky funksion nuk kthen cilat fraza u gjetën; kthen numrin total të shfaqjeve.
 def count_phrase_occurrences(text: str, phrases: list[str]) -> int:
-    """Count total occurrences of a phrase list."""
+
     normalized_text = normalize_spaces(text).casefold()
     total = 0
 
@@ -110,9 +110,9 @@ def count_phrase_occurrences(text: str, phrases: list[str]) -> int:
 
     return total
 
-
+# Merr një artikull dhe kthen një dictionary me të gjitha linguistic features.
 def extract_linguistic_features(title: str, content: str) -> dict:
-    """Extract simple linguistic features for one article."""
+
     title = normalize_spaces(title)
     content = normalize_spaces(content)
     full_text = normalize_spaces(f"{title} {content}")

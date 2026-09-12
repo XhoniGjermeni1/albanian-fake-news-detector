@@ -9,14 +9,14 @@ import joblib
 import numpy as np
 import pandas as pd
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.evaluation.experiment_utils import file_sha256  # noqa: E402
+from archive.experiments.evaluation.experiment_utils import file_sha256  # noqa: E402
 from src.models.predict_final import FINAL_MODEL_PATH  # noqa: E402
 
-OUTPUT_DIR = PROJECT_ROOT / "reports" / "experiments" / "interpretability"
+OUTPUT_DIR = PROJECT_ROOT / "archive" / "reports" / "experiments" / "interpretability"
 FEATURES_PATH = OUTPUT_DIR / "top_linear_features.csv"
 REPORT_PATH = OUTPUT_DIR / "linear_feature_coefficients.md"
 TOP_FEATURES_PER_DIRECTION = 25

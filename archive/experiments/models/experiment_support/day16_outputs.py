@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from src.evaluation.experiment_utils import (
+from archive.experiments.evaluation.experiment_utils import (
     escaped_dataframe_to_markdown as dataframe_to_markdown,
 )
-from src.models.experiment_support.day16_analysis import (
+from archive.experiments.models.experiment_support.day16_analysis import (
     CALIBRATION_METHODS,
     INTERNAL_FIGURE_PATH,
     LENGTH_DISPLAY,

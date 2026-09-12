@@ -7,8 +7,10 @@ import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOK_PATH = PROJECT_ROOT / "notebooks" / "02_final_walkthrough.ipynb"
-DEMO_CASES_PATH = PROJECT_ROOT / "reports" / "day19_demo_cases.csv"
-FROZEN_DEMOS_PATH = PROJECT_ROOT / "reports" / "day17_final_demo_cases.csv"
+DEMO_CASES_PATH = PROJECT_ROOT / "reports" / "final" / "day19_demo_cases.csv"
+FROZEN_DEMOS_PATH = (
+    PROJECT_ROOT / "reports" / "final" / "day17_final_demo_cases.csv"
+)
 
 
 def load_notebook() -> dict:

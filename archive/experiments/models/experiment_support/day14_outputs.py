@@ -7,10 +7,10 @@ import numpy as np
 import pandas as pd
 
 from src.evaluation.data_utils import LENGTH_DISPLAY, LENGTH_LABELS
-from src.evaluation.experiment_utils import (
+from archive.experiments.evaluation.experiment_utils import (
     escaped_dataframe_to_markdown as dataframe_to_markdown,
 )
-from src.models.experiment_support.day14_analysis import (
+from archive.experiments.models.experiment_support.day14_analysis import (
     CLASSIFIER_DISPLAY,
     COLORS,
     CV_FIGURE_PATH,

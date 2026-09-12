@@ -16,14 +16,14 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_DATASET_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
 DEFAULT_TRAINING_PATH = PROJECT_ROOT / "data" / "interim" / "articles_clean.csv"
 DEFAULT_METADATA_ROOT = (
     PROJECT_ROOT / "data" / "raw" / "alb-fake-news-corpus" / "full_texts"
 )
-DEFAULT_REPORT_PATH = PROJECT_ROOT / "reports" / "day10_external_dataset_audit.json"
-DEFAULT_SIMILARITY_PATH = PROJECT_ROOT / "reports" / "day10_external_similarity_review.csv"
+DEFAULT_REPORT_PATH = PROJECT_ROOT / "archive" / "reports" / "day10_external_dataset_audit.json"
+DEFAULT_SIMILARITY_PATH = PROJECT_ROOT / "archive" / "reports" / "day10_external_similarity_review.csv"
 
 REQUIRED_COLUMNS = [
     "external_id",

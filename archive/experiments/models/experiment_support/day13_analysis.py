@@ -30,12 +30,12 @@ from src.evaluation.data_utils import (
     build_leakage_safe_groups,
     exclude_train_duplicates_from_test,
 )
-from src.evaluation.experiment_utils import file_sha256
+from archive.experiments.evaluation.experiment_utils import file_sha256
 from src.features.linguistic_features import extract_linguistic_features
-from src.models.analyze_length_domain_shift import truncate_to_total_words
-from src.models.analyze_model_quality import build_calibration_folds
+from archive.experiments.models.analyze_length_domain_shift import truncate_to_total_words
+from archive.experiments.models.analyze_model_quality import build_calibration_folds
 from src.models.builders import build_char_vectorizer, build_word_vectorizer
-from src.models.predict import (
+from archive.experiments.models.predict import (
     DEFAULT_FAKE_THRESHOLD,
     DEFAULT_REAL_THRESHOLD,
     classify_probability,
@@ -43,25 +43,25 @@ from src.models.predict import (
 from src.preprocessing.clean_text import combine_title_content
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 EXTERNAL_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
-DAY11_METRICS_PATH = PROJECT_ROOT / "reports" / "day11_external_metrics.json"
+DAY11_METRICS_PATH = PROJECT_ROOT / "archive" / "reports" / "day11_external_metrics.json"
 DAY12_STABILITY_PATH = (
-    PROJECT_ROOT / "reports" / "day12_internal_stability_experiment.csv"
+    PROJECT_ROOT / "archive" / "reports" / "day12_internal_stability_experiment.csv"
 )
-CURRENT_BASELINE_PATH = PROJECT_ROOT / "models" / "calibrated_tfidf_logreg.joblib"
+CURRENT_BASELINE_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
 
 MODEL_PATHS = {
-    "word_tfidf": PROJECT_ROOT / "models" / "day13_word_tfidf_logreg_calibrated.joblib",
-    "char_tfidf": PROJECT_ROOT / "models" / "day13_char_tfidf_logreg_calibrated.joblib",
+    "word_tfidf": PROJECT_ROOT / "archive" / "models" / "day13_word_tfidf_logreg_calibrated.joblib",
+    "char_tfidf": PROJECT_ROOT / "archive" / "models" / "day13_char_tfidf_logreg_calibrated.joblib",
     "word_char_tfidf": (
-        PROJECT_ROOT / "models" / "day13_word_char_tfidf_logreg_calibrated.joblib"
+        PROJECT_ROOT / "archive" / "models" / "day13_word_char_tfidf_logreg_calibrated.joblib"
     ),
 }
 
-REPORTS_DIR = PROJECT_ROOT / "reports"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 CHAR_SCREEN_PATH = REPORTS_DIR / "day13_char_config_screen.csv"
 INTERNAL_COMPARISON_PATH = REPORTS_DIR / "day13_internal_model_comparison.csv"

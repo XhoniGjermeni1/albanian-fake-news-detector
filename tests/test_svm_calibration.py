@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 from sklearn.calibration import CalibratedClassifierCV
 
-from src.models.calibrate_linear_svm import (
+from archive.experiments.models.calibrate_linear_svm import (
     BASELINE_C,
     build_calibrated_svm,
     classify_probability,

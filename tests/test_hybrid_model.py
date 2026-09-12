@@ -1,8 +1,8 @@
 import pandas as pd
 import pytest
 
-from src.models.predict import build_linguistic_explanation
-from src.models.train_hybrid_model import (
+from archive.experiments.models.predict import build_linguistic_explanation
+from archive.experiments.models.train_hybrid_model import (
     DIRECT_LENGTH_FEATURES,
     exclude_train_duplicates_from_test,
     merge_text_with_features,

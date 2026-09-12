@@ -24,6 +24,19 @@ def test_gitignore_excludes_experiments_but_keeps_final_model() -> None:
     assert "__pycache__/" in gitignore
     assert "models/*.joblib" in gitignore
     assert "!models/final_word_char_linear_svm_calibrated_v1.joblib" in gitignore
+    assert "archive/models/*.joblib" in gitignore
+
+
+def test_repository_separates_active_code_from_historical_experiments() -> None:
+    active_models = PROJECT_ROOT / "src" / "models"
+    archive_models = PROJECT_ROOT / "archive" / "experiments" / "models"
+
+    assert (active_models / "predict_final.py").exists()
+    assert (active_models / "builders.py").exists()
+    assert (archive_models / "tune_linear_svm.py").exists()
+    assert (archive_models / "calibrate_linear_svm.py").exists()
+    assert not (active_models / "tune_linear_svm.py").exists()
+    assert not (active_models / "calibrate_linear_svm.py").exists()
 
 
 def test_final_documentation_and_dependencies_are_reproducible() -> None:

@@ -47,6 +47,9 @@ models/*.onnx
 # Keep only the frozen runtime model in version control.
 !models/final_word_char_linear_svm_calibrated_v1.joblib
 
+# Historical model artifacts are local archive material.
+archive/models/*.joblib
+
 # Raw dataset archives, if downloaded manually
 data/raw/*.zip
 data/raw/*.tar

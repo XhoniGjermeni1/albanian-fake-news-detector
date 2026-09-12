@@ -8,14 +8,14 @@ import sys
 from pathlib import Path
 
 if __package__ is None or __package__ == "":
-    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 import joblib
 import numpy as np
 import pandas as pd
 
 from app.streamlit_app import EXAMPLES, FACT_CHECK_WARNING, validate_news_input
-from src.models.predict import (
+from archive.experiments.models.predict import (
     build_linguistic_explanation,
     classify_probability,
     predict_news_for_app,
@@ -23,12 +23,12 @@ from src.models.predict import (
 from src.evaluation.data_utils import exclude_train_duplicates_from_test
 from src.preprocessing.clean_text import combine_title_content
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
-MODEL_PATH = PROJECT_ROOT / "models" / "calibrated_tfidf_logreg.joblib"
+MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
 
-REPORTS_DIR = PROJECT_ROOT / "reports"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 CASE_RESULTS_PATH = REPORTS_DIR / "day9_system_test_cases.csv"
 DEMO_EXAMPLES_PATH = REPORTS_DIR / "day9_demo_examples.csv"
 METRICS_PATH = REPORTS_DIR / "day9_system_test_metrics.json"

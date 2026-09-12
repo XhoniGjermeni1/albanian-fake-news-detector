@@ -20,7 +20,7 @@ from sklearn.pipeline import FeatureUnion, Pipeline
 from sklearn.svm import LinearSVC
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -34,14 +34,14 @@ from src.evaluation.data_utils import (  # noqa: E402
     exclude_train_duplicates_from_test,
     refresh_model_text,
 )
-from src.evaluation.experiment_utils import (  # noqa: E402
+from archive.experiments.evaluation.experiment_utils import (  # noqa: E402
     escaped_dataframe_to_markdown as dataframe_to_markdown,
     file_sha256,
 )
 from src.evaluation.metrics import (  # noqa: E402
     rounded_metrics,
 )
-from src.models.experiment_support.day16_analysis import (  # noqa: E402
+from archive.experiments.models.experiment_support.day16_analysis import (  # noqa: E402
     evaluate_length_behavior,
     high_confidence_error_rows,
     model_comparison_table,
@@ -67,21 +67,21 @@ TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 EXTERNAL_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
 SOURCE_MODEL_PATH = (
-    PROJECT_ROOT / "models" / "day16_word_char_linear_svm_calibrated.joblib"
+    PROJECT_ROOT / "archive" / "models" / "day16_word_char_linear_svm_calibrated.joblib"
 )
-BASELINE_MODEL_PATH = PROJECT_ROOT / "models" / "calibrated_tfidf_logreg.joblib"
-DAY16_SELECTION_PATH = PROJECT_ROOT / "reports" / "day16_selection.json"
-DAY16_METRICS_PATH = PROJECT_ROOT / "reports" / "day16_metrics.json"
-DAY16_FOLDS_PATH = PROJECT_ROOT / "reports" / "day16_calibration_fold_metrics.csv"
+BASELINE_MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
+DAY16_SELECTION_PATH = PROJECT_ROOT / "archive" / "reports" / "day16_selection.json"
+DAY16_METRICS_PATH = PROJECT_ROOT / "archive" / "reports" / "day16_metrics.json"
+DAY16_FOLDS_PATH = PROJECT_ROOT / "archive" / "reports" / "day16_calibration_fold_metrics.csv"
 DAY16_INTERNAL_PREDICTIONS_PATH = (
-    PROJECT_ROOT / "reports" / "day16_internal_predictions.csv"
+    PROJECT_ROOT / "archive" / "reports" / "day16_internal_predictions.csv"
 )
 DAY16_EXTERNAL_PREDICTIONS_PATH = (
-    PROJECT_ROOT / "reports" / "day16_external_predictions.csv"
+    PROJECT_ROOT / "archive" / "reports" / "day16_external_predictions.csv"
 )
 STREAMLIT_APP_PATH = PROJECT_ROOT / "app" / "streamlit_app.py"
 
-REPORTS_DIR = PROJECT_ROOT / "reports"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 VERIFICATION_PATH = REPORTS_DIR / "day17_artifact_verification.json"
 REGRESSION_PATH = REPORTS_DIR / "day17_regression_checks.csv"

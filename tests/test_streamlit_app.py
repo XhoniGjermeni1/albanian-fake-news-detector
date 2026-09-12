@@ -24,7 +24,9 @@ PROJECT_ROOT = APP_PATH.parents[1]
 
 @pytest.fixture(scope="module")
 def frozen_demo_inputs() -> pd.DataFrame:
-    demos = pd.read_csv(PROJECT_ROOT / "reports" / "day17_final_demo_cases.csv")
+    demos = pd.read_csv(
+        PROJECT_ROOT / "reports" / "final" / "day17_final_demo_cases.csv"
+    )
     test = pd.read_csv(
         PROJECT_ROOT / "data" / "interim" / "test.csv",
         encoding="utf-8-sig",

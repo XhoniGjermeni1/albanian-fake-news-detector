@@ -9,10 +9,10 @@ import pandas as pd
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 
-from src.evaluation.experiment_utils import (
+from archive.experiments.evaluation.experiment_utils import (
     escaped_dataframe_to_markdown as dataframe_to_markdown,
 )
-from src.models.experiment_support.day17_analysis import (
+from archive.experiments.models.experiment_support.day17_analysis import (
     BASELINE_MODEL_NAME,
     FINAL_MODEL_ID,
     FINAL_MODEL_NAME,

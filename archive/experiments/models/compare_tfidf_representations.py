@@ -8,13 +8,13 @@ import sys
 from pathlib import Path
 
 if __package__ is None or __package__ == "":
-    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 import joblib
 import numpy as np
 import pandas as pd
 
-from src.models.experiment_support.day13_analysis import (
+from archive.experiments.models.experiment_support.day13_analysis import (
     CHARACTER_CONFIGS,
     CHAR_SCREEN_PATH,
     COHORT_FIGURE_PATH,
@@ -82,7 +82,7 @@ from src.models.experiment_support.day13_analysis import (
     train_calibrated_representation,
     truncate_to_total_words,
 )
-from src.models.experiment_support.day13_outputs import (
+from archive.experiments.models.experiment_support.day13_outputs import (
     plot_cohort_accuracy,
     plot_external_comparison,
     plot_internal_comparison,

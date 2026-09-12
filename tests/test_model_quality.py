@@ -5,12 +5,12 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.models.analyze_model_quality import (
+from archive.experiments.models.analyze_model_quality import (
     build_leakage_safe_groups,
     build_prediction_table,
     evaluate_thresholds,
 )
-from src.models.predict import classify_probability, predict_news_for_app
+from archive.experiments.models.predict import classify_probability, predict_news_for_app
 
 
 class FixedProbabilityModel:

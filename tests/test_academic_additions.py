@@ -1,8 +1,8 @@
 import joblib
 import numpy as np
 
-from experiments.baseline.dummy_baseline import evaluate_dummy_baseline
-from experiments.model_interpretability.linear_feature_coefficients import (
+from archive.experiments.baseline.dummy_baseline import evaluate_dummy_baseline
+from archive.experiments.model_interpretability.linear_feature_coefficients import (
     extract_linear_coefficients,
     select_top_features,
 )
@@ -14,7 +14,7 @@ from src.models.builders import (
     build_fixed_features,
     build_svm,
 )
-from src.models.compare_classifiers import (
+from archive.experiments.models.compare_classifiers import (
     add_word_counts as historical_add_word_counts,
     classification_metrics as historical_classification_metrics,
 )

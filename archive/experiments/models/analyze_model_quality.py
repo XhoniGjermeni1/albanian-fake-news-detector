@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 if __package__ is None or __package__ == "":
-    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 import joblib
 import matplotlib.pyplot as plt
@@ -28,22 +28,22 @@ from src.evaluation.data_utils import (
     build_leakage_safe_groups,
     exclude_train_duplicates_from_test,
 )
-from src.models.predict import predict_news, predict_news_for_app
-from src.models.train_hybrid_model import (
+from archive.experiments.models.predict import predict_news, predict_news_for_app
+from archive.experiments.models.train_hybrid_model import (
     build_tfidf_model,
     merge_text_with_features,
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 FEATURES_PATH = PROJECT_ROOT / "data" / "processed" / "linguistic_features.csv"
-BASELINE_MODEL_PATH = PROJECT_ROOT / "models" / "baseline_tfidf_logreg.joblib"
-HYBRID_MODEL_PATH = PROJECT_ROOT / "models" / "hybrid_tfidf_linguistic_logreg.joblib"
-CALIBRATED_MODEL_PATH = PROJECT_ROOT / "models" / "calibrated_tfidf_logreg.joblib"
-DAY5_METRICS_PATH = PROJECT_ROOT / "reports" / "day5_metrics.json"
+BASELINE_MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "baseline_tfidf_logreg.joblib"
+HYBRID_MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "hybrid_tfidf_linguistic_logreg.joblib"
+CALIBRATED_MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
+DAY5_METRICS_PATH = PROJECT_ROOT / "archive" / "reports" / "day5_metrics.json"
 
-REPORTS_DIR = PROJECT_ROOT / "reports"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 METRICS_PATH = REPORTS_DIR / "day6_metrics.json"
 ERRORS_PATH = REPORTS_DIR / "day6_error_analysis.csv"

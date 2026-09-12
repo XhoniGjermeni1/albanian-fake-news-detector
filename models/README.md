@@ -14,6 +14,5 @@ sigmoid. Versioni është `1.0.0` dhe SHA-256 i artefaktit është:
 52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5
 ```
 
-Skedarët e tjerë `*.joblib` janë modele eksperimentale lokale nga Ditët 2–16.
-Ata ruhen për analiza historike, injorohen nga Git dhe nuk përdoren nga
-aplikacioni final.
+Modelet eksperimentale lokale nga Ditët 2–16 ruhen te `archive/models/`.
+Ato injorohen nga Git dhe nuk përdoren nga aplikacioni final.

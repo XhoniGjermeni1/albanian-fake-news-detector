@@ -121,12 +121,12 @@ def inspect_model_assets(
     if not model_file.exists():
         errors.append(
             f"Artefakti final i modelit mungon: {model_file}. "
-            "Ekzekuto python src\\models\\finalize_model.py."
+            "Ekzekuto python archive\\experiments\\models\\finalize_model.py."
         )
     if not manifest_file.exists():
         errors.append(
             f"Manifesti i modelit final mungon: {manifest_file}. "
-            "Ekzekuto python src\\models\\finalize_model.py."
+            "Ekzekuto python archive\\experiments\\models\\finalize_model.py."
         )
     if errors:
         return None, errors

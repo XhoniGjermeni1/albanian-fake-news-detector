@@ -9,7 +9,7 @@ from datetime import datetime
 from pathlib import Path
 
 if __package__ is None or __package__ == "":
-    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 import matplotlib
 
@@ -25,13 +25,13 @@ from sklearn.metrics import (
 )
 
 from src.evaluation.data_utils import exclude_train_duplicates_from_test
-from src.evaluation.experiment_utils import (
+from archive.experiments.evaluation.experiment_utils import (
     dataframe_to_markdown,
     file_sha256,
     format_percent as _percent,
 )
 from src.features.linguistic_features import extract_linguistic_features
-from src.models.predict import (
+from archive.experiments.models.predict import (
     DEFAULT_FAKE_THRESHOLD,
     DEFAULT_REAL_THRESHOLD,
     classify_probability,
@@ -40,17 +40,17 @@ from src.models.predict import (
 )
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 EXTERNAL_DATASET_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
-MODEL_PATH = PROJECT_ROOT / "models" / "calibrated_tfidf_logreg.joblib"
+MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
-DAY9_METRICS_PATH = PROJECT_ROOT / "reports" / "day9_system_test_metrics.json"
+DAY9_METRICS_PATH = PROJECT_ROOT / "archive" / "reports" / "day9_system_test_metrics.json"
 RAW_METADATA_ROOT = (
     PROJECT_ROOT / "data" / "raw" / "alb-fake-news-corpus" / "full_texts"
 )
 
-REPORTS_DIR = PROJECT_ROOT / "reports"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 PREDICTIONS_PATH = REPORTS_DIR / "day11_external_predictions.csv"
 METRICS_PATH = REPORTS_DIR / "day11_external_metrics.json"

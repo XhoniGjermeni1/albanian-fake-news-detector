@@ -11,11 +11,11 @@ import joblib
 import numpy as np
 import pandas as pd
 
-_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+_PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from src.models.experiment_support.day16_analysis import (  # noqa: E402
+from archive.experiments.models.experiment_support.day16_analysis import (  # noqa: E402
     BASELINE_C,
     CALIBRATED_MODEL_PATH,
     CALIBRATION_FOLDS_PATH,
@@ -88,7 +88,7 @@ from src.models.experiment_support.day16_analysis import (  # noqa: E402
     verify_frozen_day15,
     verify_selection_hash,
 )
-from src.models.experiment_support.day16_outputs import (  # noqa: E402
+from archive.experiments.models.experiment_support.day16_outputs import (  # noqa: E402
     plot_internal_calibration,
     plot_length_probability,
     plot_model_comparison,

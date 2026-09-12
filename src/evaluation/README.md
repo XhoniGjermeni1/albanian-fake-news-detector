@@ -1,11 +1,10 @@
-# Evaluation Utilities
+# Active Evaluation Utilities
 
-Kjo dosje përmban vetëm utility që përdoren nga më shumë se një eksperiment:
+Kjo dosje mban vetëm logjikën e ripërdorshme të pipeline-it final:
 
 - `data_utils.py`: rindërtimi i `model_text`, heqja e train/test duplicates,
   group-safe folds dhe grupet e gjatësisë;
-- `metrics.py`: metrikat binare, decision scores dhe rrumbullakimi për raporte;
-- `experiment_utils.py`: SHA-256 dhe tabela të thjeshta Markdown.
+- `metrics.py`: metrikat binare, decision scores dhe rrumbullakimi numerik.
 
-Këto module nuk trajnojnë modele dhe nuk shkruajnë raporte vetë. Metodologjia
-specifike mbetet në skriptin përkatës të eksperimentit.
+Helper-at që shërbejnë vetëm për raportet historike janë te
+`archive/experiments/evaluation/`.

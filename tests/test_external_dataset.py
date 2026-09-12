@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-from src.data.validate_external_dataset import (
+from archive.experiments.data.validate_external_dataset import (
     ALLOWED_LABELS,
     ALLOWED_TOPICS,
     REQUIRED_COLUMNS,

@@ -8,9 +8,9 @@ import sys
 from pathlib import Path
 
 if __package__ is None or __package__ == "":
-    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    sys.path.append(str(Path(__file__).resolve().parents[3]))
 
-from src.models.experiment_support.day12_analysis import (
+from archive.experiments.models.experiment_support.day12_analysis import (
     CORRELATION_FIGURE_PATH,
     CORRELATIONS_PATH,
     DAY11_FROZEN_PATHS,
@@ -68,7 +68,7 @@ from src.models.experiment_support.day12_analysis import (
     truncate_to_total_words,
     validate_expansions,
 )
-from src.models.experiment_support.day12_outputs import (
+from archive.experiments.models.experiment_support.day12_outputs import (
     dataframe_to_markdown,
     plot_domain_shift,
     plot_external_expansion,

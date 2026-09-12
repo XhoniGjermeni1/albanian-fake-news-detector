@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.svm import LinearSVC
 
-from src.models.tune_linear_svm import (
+from archive.experiments.models.tune_linear_svm import (
     BASELINE_C,
     C_VALUES,
     build_svm,

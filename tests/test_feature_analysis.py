@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.features.analyze_linguistic_features import compare_features, quality_checks
+from archive.experiments.features.analyze_linguistic_features import compare_features, quality_checks
 
 
 def _sample_features() -> pd.DataFrame:

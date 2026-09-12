@@ -13,11 +13,11 @@ import numpy as np
 import pandas as pd
 import sklearn
 
-_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+_PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from src.models.experiment_support.day17_analysis import (  # noqa: E402
+from archive.experiments.models.experiment_support.day17_analysis import (  # noqa: E402
     BASELINE_MODEL_NAME,
     BASELINE_MODEL_PATH,
     DAY16_EXTERNAL_PREDICTIONS_PATH,
@@ -85,7 +85,7 @@ from src.models.experiment_support.day17_analysis import (  # noqa: E402
     verify_model_configuration,
     verify_preprocessing_contract,
 )
-from src.models.experiment_support.day17_outputs import (  # noqa: E402
+from archive.experiments.models.experiment_support.day17_outputs import (  # noqa: E402
     plot_length_results,
     plot_model_comparison,
     write_report,

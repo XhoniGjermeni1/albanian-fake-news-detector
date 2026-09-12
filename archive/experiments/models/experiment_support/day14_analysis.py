@@ -24,7 +24,7 @@ from src.evaluation.data_utils import (
     exclude_train_duplicates_from_test,
     refresh_model_text,
 )
-from src.evaluation.experiment_utils import file_sha256
+from archive.experiments.evaluation.experiment_utils import file_sha256
 from src.evaluation.metrics import (
     classification_metrics,
     fake_decision_scores,
@@ -33,18 +33,18 @@ from src.evaluation.metrics import (
 from src.models.builders import FIXED_CHAR_CONFIG, build_fixed_features
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 EXTERNAL_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
-DAY13_SELECTION_PATH = PROJECT_ROOT / "reports" / "day13_internal_selection.json"
-CURRENT_APP_MODEL_PATH = PROJECT_ROOT / "models" / "calibrated_tfidf_logreg.joblib"
+DAY13_SELECTION_PATH = PROJECT_ROOT / "archive" / "reports" / "day13_internal_selection.json"
+CURRENT_APP_MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
 STREAMLIT_APP_PATH = PROJECT_ROOT / "app" / "streamlit_app.py"
 
-REPORTS_DIR = PROJECT_ROOT / "reports"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
-MODELS_DIR = PROJECT_ROOT / "models"
+MODELS_DIR = PROJECT_ROOT / "archive" / "models"
 
 CV_FOLDS_PATH = REPORTS_DIR / "day14_cv_fold_results.csv"
 CV_SUMMARY_PATH = REPORTS_DIR / "day14_cv_summary.csv"

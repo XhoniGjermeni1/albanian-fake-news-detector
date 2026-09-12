@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import FeatureUnion
 
-from src.models.compare_tfidf_representations import (
+from archive.experiments.models.compare_tfidf_representations import (
     CHARACTER_CONFIGS,
     build_representation_pipeline,
     calculate_metrics,

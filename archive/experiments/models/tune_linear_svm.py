@@ -14,7 +14,7 @@ from scipy.stats import spearmanr
 from sklearn.base import clone
 from sklearn.pipeline import Pipeline
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -26,7 +26,7 @@ from src.evaluation.data_utils import (  # noqa: E402
     exclude_train_duplicates_from_test,
     refresh_model_text,
 )
-from src.evaluation.experiment_utils import (  # noqa: E402
+from archive.experiments.evaluation.experiment_utils import (  # noqa: E402
     escaped_dataframe_to_markdown as dataframe_to_markdown,
     file_sha256,
 )
@@ -47,14 +47,14 @@ from src.models.builders import (  # noqa: E402
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 EXTERNAL_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
-DAY13_SELECTION_PATH = PROJECT_ROOT / "reports" / "day13_internal_selection.json"
-DAY14_SELECTION_PATH = PROJECT_ROOT / "reports" / "day14_selection.json"
-CURRENT_APP_MODEL_PATH = PROJECT_ROOT / "models" / "calibrated_tfidf_logreg.joblib"
+DAY13_SELECTION_PATH = PROJECT_ROOT / "archive" / "reports" / "day13_internal_selection.json"
+DAY14_SELECTION_PATH = PROJECT_ROOT / "archive" / "reports" / "day14_selection.json"
+CURRENT_APP_MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
 STREAMLIT_APP_PATH = PROJECT_ROOT / "app" / "streamlit_app.py"
 
-REPORTS_DIR = PROJECT_ROOT / "reports"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
-MODELS_DIR = PROJECT_ROOT / "models"
+MODELS_DIR = PROJECT_ROOT / "archive" / "models"
 
 CV_FOLDS_PATH = REPORTS_DIR / "day15_cv_fold_results.csv"
 CV_SUMMARY_PATH = REPORTS_DIR / "day15_cv_summary.csv"

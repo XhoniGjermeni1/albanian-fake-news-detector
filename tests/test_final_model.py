@@ -8,27 +8,27 @@ import numpy as np
 import pandas as pd
 import src.models.predict_final as predict_final_module
 
-from src.models.compare_classifiers import file_sha256, refresh_model_text
-from src.models.finalize_model import (
-    BASELINE_MODEL_PATH,
-    FINAL_MANIFEST_PATH,
-    SOURCE_MODEL_PATH,
-    STREAMLIT_APP_PATH,
+from src.evaluation.data_utils import refresh_model_text
+from src.models.model_contract import (
+    file_sha256,
     verify_model_configuration,
     verify_preprocessing_contract,
 )
-from src.models.predict import DEFAULT_FAKE_THRESHOLD, DEFAULT_REAL_THRESHOLD
 from src.models.predict_final import (
     FINAL_FAKE_THRESHOLD,
+    FINAL_MANIFEST_PATH,
     FINAL_MODEL_PATH,
     FINAL_MODEL_VERSION,
     FINAL_REAL_THRESHOLD,
     predict_final_news,
     prepare_final_model_text,
 )
+from src.models.prediction_utils import DEFAULT_FAKE_THRESHOLD, DEFAULT_REAL_THRESHOLD
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+STREAMLIT_APP_PATH = PROJECT_ROOT / "app" / "streamlit_app.py"
+REGRESSION_FIXTURE_PATH = PROJECT_ROOT / "tests" / "fixtures" / "final_regression_cases.json"
 
 
 @lru_cache(maxsize=1)
@@ -36,10 +36,11 @@ def final_model():
     return joblib.load(FINAL_MODEL_PATH)
 
 
-def test_final_artifact_is_byte_identical_to_day16_candidate() -> None:
-    assert SOURCE_MODEL_PATH.exists()
+def test_final_artifact_matches_the_frozen_manifest() -> None:
     assert FINAL_MODEL_PATH.exists()
-    assert file_sha256(FINAL_MODEL_PATH) == file_sha256(SOURCE_MODEL_PATH)
+    manifest = json.loads(FINAL_MANIFEST_PATH.read_text(encoding="utf-8"))
+
+    assert file_sha256(FINAL_MODEL_PATH) == manifest["artifact"]["final_sha256"]
 
 
 def test_final_pipeline_has_the_frozen_configuration() -> None:
@@ -86,6 +87,26 @@ def test_prediction_is_identical_after_model_reload() -> None:
     assert first["probability_real"] == reloaded["probability_real"]
     assert first["probability_fake"] == reloaded["probability_fake"]
     assert first["decision"] == reloaded["decision"]
+
+
+def test_frozen_regression_predictions_are_unchanged() -> None:
+    fixture = json.loads(REGRESSION_FIXTURE_PATH.read_text(encoding="utf-8"))
+    test_data = pd.read_csv(
+        PROJECT_ROOT / "data" / "interim" / "test.csv",
+        encoding="utf-8-sig",
+        keep_default_na=False,
+    ).set_index("article_id")
+    tolerance = float(fixture["probability_tolerance"])
+
+    for expected in fixture["cases"]:
+        article = test_data.loc[expected["article_id"]]
+        actual = predict_final_news(
+            article["title"], article["content"], model=final_model()
+        )
+        assert actual["decision"] == expected["decision"]
+        assert actual["binary_prediction"] == expected["binary_prediction"]
+        assert abs(actual["probability_real"] - expected["probability_real"]) <= tolerance
+        assert abs(actual["probability_fake"] - expected["probability_fake"]) <= tolerance
 
 
 def test_nfc_and_nfd_inputs_have_identical_predictions() -> None:
@@ -160,14 +181,11 @@ def test_final_manifest_documents_version_hash_and_limitations() -> None:
     assert "length_bias" in manifest["limitations"]
 
 
-def test_day17_does_not_train_or_replace_the_baseline() -> None:
-    finalizer_source = (
-        PROJECT_ROOT / "src" / "models" / "finalize_model.py"
-    ).read_text(encoding="utf-8")
-
-    assert ".fit(" not in finalizer_source
-    assert BASELINE_MODEL_PATH.exists()
-    assert BASELINE_MODEL_PATH != FINAL_MODEL_PATH
+def test_historical_training_is_outside_active_src() -> None:
+    assert not (PROJECT_ROOT / "src" / "models" / "finalize_model.py").exists()
+    assert (
+        PROJECT_ROOT / "archive" / "experiments" / "models" / "finalize_model.py"
+    ).exists()
 
 
 def test_streamlit_integration_uses_only_the_final_contract() -> None:

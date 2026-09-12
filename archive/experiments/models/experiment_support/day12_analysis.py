@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 if __package__ is None or __package__ == "":
-    sys.path.append(str(Path(__file__).resolve().parents[3]))
+    sys.path.append(str(Path(__file__).resolve().parents[4]))
 
 import numpy as np
 import pandas as pd
@@ -19,26 +19,26 @@ from src.evaluation.data_utils import (
     LENGTH_LABELS,
     assign_length_groups,
 )
-from src.evaluation.experiment_utils import file_sha256
+from archive.experiments.evaluation.experiment_utils import file_sha256
 from src.features.linguistic_features import (
     extract_linguistic_features,
     get_words,
 )
-from src.models.evaluate_app_system import evaluate_test_set, load_evaluation_data
-from src.models.predict import (
+from archive.experiments.models.evaluate_app_system import evaluate_test_set, load_evaluation_data
+from archive.experiments.models.predict import (
     DEFAULT_FAKE_THRESHOLD,
     DEFAULT_REAL_THRESHOLD,
     predict_news_for_app,
 )
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 EXTERNAL_DATASET_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
 EXPANSIONS_PATH = PROJECT_ROOT / "data" / "interim" / "day12_external_expansions.csv"
-MODEL_PATH = PROJECT_ROOT / "models" / "calibrated_tfidf_logreg.joblib"
-DAY11_PREDICTIONS_PATH = PROJECT_ROOT / "reports" / "day11_external_predictions.csv"
-DAY11_METRICS_PATH = PROJECT_ROOT / "reports" / "day11_external_metrics.json"
+MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
+DAY11_PREDICTIONS_PATH = PROJECT_ROOT / "archive" / "reports" / "day11_external_predictions.csv"
+DAY11_METRICS_PATH = PROJECT_ROOT / "archive" / "reports" / "day11_external_metrics.json"
 
-REPORTS_DIR = PROJECT_ROOT / "reports"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 INTERNAL_PREDICTIONS_PATH = REPORTS_DIR / "day12_internal_predictions.csv"
 LENGTH_GROUPS_PATH = REPORTS_DIR / "day12_internal_length_groups.csv"

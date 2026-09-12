@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 if __package__ is None or __package__ == "":
-    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 import joblib
 import matplotlib
@@ -25,13 +25,13 @@ from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_f
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 FEATURES_PATH = PROJECT_ROOT / "data" / "processed" / "linguistic_features.csv"
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
-REPORTS_DIR = PROJECT_ROOT / "reports"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
-MODEL_PATH = PROJECT_ROOT / "models" / "linguistic_features_logreg.joblib"
+MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "linguistic_features_logreg.joblib"
 
 QUALITY_PATH = REPORTS_DIR / "day4_feature_quality.json"
 COMPARISON_PATH = REPORTS_DIR / "day4_feature_comparison.csv"

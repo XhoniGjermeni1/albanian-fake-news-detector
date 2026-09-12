@@ -10,7 +10,7 @@ from pathlib import Path
 import pandas as pd
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -22,7 +22,7 @@ from src.evaluation.data_utils import (  # noqa: E402
     exclude_train_duplicates_from_test,
     refresh_model_text,
 )
-from src.evaluation.experiment_utils import (  # noqa: E402
+from archive.experiments.evaluation.experiment_utils import (  # noqa: E402
     escaped_dataframe_to_markdown as dataframe_to_markdown,
     file_sha256,
 )
@@ -32,7 +32,7 @@ from src.evaluation.metrics import (  # noqa: E402
     rounded_metrics,
 )
 from src.models.builders import FIXED_CHAR_CONFIG, build_fixed_features  # noqa: E402
-from src.models.experiment_support.day14_analysis import (  # noqa: E402
+from archive.experiments.models.experiment_support.day14_analysis import (  # noqa: E402
     CLASSIFIER_CONFIGS,
     CLASSIFIER_DISPLAY,
     COHORT_METRICS_PATH,
@@ -81,7 +81,7 @@ from src.models.experiment_support.day14_analysis import (  # noqa: E402
     select_from_cv,
     verify_selection_hash,
 )
-from src.models.experiment_support.day14_outputs import (  # noqa: E402
+from archive.experiments.models.experiment_support.day14_outputs import (  # noqa: E402
     plot_cv,
     plot_external,
     plot_internal,

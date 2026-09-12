@@ -1,4 +1,4 @@
-"""Build linguistic feature tables for all articles."""
+# merr funksionet nga skedari i mëparshëm dhe i aplikon mbi të 3,994 artikujt
 
 from __future__ import annotations
 

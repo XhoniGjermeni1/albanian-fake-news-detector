@@ -7,7 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import ComplementNB
 from sklearn.svm import LinearSVC
 
-from src.models.compare_classifiers import (
+from archive.experiments.models.compare_classifiers import (
     FIXED_CHAR_CONFIG,
     add_word_counts,
     build_classifier,

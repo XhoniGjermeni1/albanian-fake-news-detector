@@ -92,7 +92,7 @@ Test set-i i brendshëm ka 792 artikuj dhe nuk është përdorur për tuning.
 Në dataset-in e jashtëm pilot me 40 përmbledhje të shkurtra, accuracy ishte
 60%. Ky rezultat dokumenton domain shift-in dhe nuk është përdorur për tuning
 ose ndryshim të modelit. Detajet finale janë te
-`reports/day17_final_model.md`.
+`reports/final/day17_final_model.md`.
 
 ## Struktura Kryesore
 
@@ -104,23 +104,30 @@ albanian-fake-news-detector/
 │   ├── interim/          # train/test i ngrirë dhe teksti i pastruar
 │   ├── processed/        # dataset-i dhe linguistic features
 │   └── external/         # benchmark-u pilot i jashtëm
-├── models/               # modeli final, manifesti dhe modele lokale historike
+├── archive/
+│   ├── experiments/      # comparisons, tuning, calibration dhe analiza historike
+│   ├── models/           # modele historike lokale, të injoruara nga Git
+│   └── reports/          # raportet ditore dhe output-et diagnostike
+├── models/               # vetëm modeli final dhe manifesti
 ├── notebooks/            # auditimi dhe walkthrough-u final
-├── experiments/          # indeks i eksperimenteve historike
-├── reports/              # raportet, tabelat dhe figurat e eksperimenteve
+├── reports/
+│   └── final/            # rezultatet, metrikat dhe figurat zyrtare
 ├── src/
 │   ├── data/             # loader, validation dhe dataset build
+│   ├── evaluation/       # data checks, folds dhe metrika të ripërdorshme
 │   ├── preprocessing/    # pastrimi bazë dhe Unicode NFC
 │   ├── features/         # linguistic features
-│   └── models/           # prediction final dhe analiza historike
+│   └── models/           # konfigurimi, kontrata dhe prediction-i final
 ├── tests/                # regression, data, model dhe Streamlit tests
 ├── requirements.txt
 └── README.md
 ```
 
-Skriptet e Ditëve 2–16 dhe modelet e tyre janë ruajtur për riprodhueshmëri
-akademike. Ato nuk përdoren nga runtime-i final dhe janë kataloguar te
-`experiments/README.md`.
+Kodi aktiv dhe arkiva nuk varen nga njëra-tjetra gjatë prediction-it.
+`src/models/builders.py` përshkruan konfigurimin e ngrirë Word+Char Linear SVM,
+ndërsa `src/models/model_contract.py` verifikon modelin, calibration-in,
+thresholds dhe SHA-256 pa e ritrajnuar. Skriptet e Ditëve 2–17 ruhen për
+riprodhueshmëri te `archive/experiments/` dhe nuk importohen nga Streamlit.
 
 ## Instalimi
 
@@ -187,8 +194,8 @@ python -m jupyter lab notebooks\02_final_walkthrough.ipynb
 
 Notebook-u ndjek rrjedhën nga dataset-i te prediction-i, lexon output-et e
 ngrira dhe nuk ritrajnon modelin. Rastet e demonstrimit ruhen te
-`reports/day19_demo_cases.csv`, ndërsa skenari te
-`reports/day19_demo_guide.md`.
+`reports/final/day19_demo_cases.csv`, ndërsa skenari te
+`reports/final/day19_demo_guide.md`.
 
 ## Testet
 
@@ -228,6 +235,8 @@ ndryshuar skedarët raw.
 | Ngarkimi i dataset-it | `src/data/load_dataset.py` |
 | Preprocessing | `src/preprocessing/clean_text.py` |
 | Linguistic features | `src/features/linguistic_features.py` |
+| Konfigurimi Word+Char SVM | `src/models/builders.py` |
+| Verifikimi i modelit final | `src/models/model_contract.py` |
 | Vendimet dhe shpjegimi | `src/models/prediction_utils.py` |
 | Prediction final | `src/models/predict_final.py` |
 | Rrjedha e aplikacionit | `app/streamlit_app.py` |
@@ -240,5 +249,6 @@ ndryshuar skedarët raw.
 `v1.0.0` përfaqëson modelin klasik final. BERT/XLM-RoBERTa, SHAP dhe deploy
 online mbeten zgjerime opsionale dhe nuk janë pjesë e këtij versioni.
 
-Raporti i mbylljes teknike ruhet te `reports/day20_final_closure.md`, ndërsa
-ndryshimet e release-it te `CHANGELOG.md`.
+Raporti i mbylljes teknike ruhet te
+`reports/final/day20_final_closure.md`. Historia e plotë eksperimentale ruhet
+te `archive/`.

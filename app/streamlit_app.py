@@ -118,7 +118,7 @@ def main() -> None:
                 LOGGER.exception("Final model file was not found")
                 st.error(
                     "Modeli final mungon. Ekzekuto python "
-                    "src\\models\\finalize_model.py."
+                    "archive\\experiments\\models\\finalize_model.py."
                 )
             except Exception:
                 LOGGER.exception("Prediction failed")

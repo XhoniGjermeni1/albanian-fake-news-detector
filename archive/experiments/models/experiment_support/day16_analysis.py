@@ -15,7 +15,7 @@ from scipy.stats import spearmanr
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.metrics import brier_score_loss, log_loss as sklearn_log_loss
 
-PROJECT_ROOT = Path(__file__).resolve().parents[3]
+PROJECT_ROOT = Path(__file__).resolve().parents[4]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
@@ -27,7 +27,7 @@ from src.evaluation.data_utils import (  # noqa: E402
     exclude_train_duplicates_from_test,
     refresh_model_text,
 )
-from src.evaluation.experiment_utils import (  # noqa: E402
+from archive.experiments.evaluation.experiment_utils import (  # noqa: E402
     escaped_dataframe_to_markdown as dataframe_to_markdown,
     file_sha256,
 )
@@ -44,14 +44,14 @@ from src.models.builders import (  # noqa: E402
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 EXTERNAL_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
-DAY15_SELECTION_PATH = PROJECT_ROOT / "reports" / "day15_selection.json"
-DAY15_LENGTH_BIAS_PATH = PROJECT_ROOT / "reports" / "day15_length_bias_comparison.csv"
-CURRENT_APP_MODEL_PATH = PROJECT_ROOT / "models" / "calibrated_tfidf_logreg.joblib"
+DAY15_SELECTION_PATH = PROJECT_ROOT / "archive" / "reports" / "day15_selection.json"
+DAY15_LENGTH_BIAS_PATH = PROJECT_ROOT / "archive" / "reports" / "day15_length_bias_comparison.csv"
+CURRENT_APP_MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
 STREAMLIT_APP_PATH = PROJECT_ROOT / "app" / "streamlit_app.py"
 
-REPORTS_DIR = PROJECT_ROOT / "reports"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
-MODELS_DIR = PROJECT_ROOT / "models"
+MODELS_DIR = PROJECT_ROOT / "archive" / "models"
 
 OOF_PREDICTIONS_PATH = REPORTS_DIR / "day16_oof_calibration_predictions.csv"
 CALIBRATION_FOLDS_PATH = REPORTS_DIR / "day16_calibration_fold_metrics.csv"

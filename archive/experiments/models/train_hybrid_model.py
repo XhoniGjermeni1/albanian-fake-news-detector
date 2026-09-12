@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 if __package__ is None or __package__ == "":
-    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 import joblib
 import matplotlib.pyplot as plt
@@ -22,16 +22,16 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from src.evaluation.data_utils import exclude_train_duplicates_from_test
-from src.models.predict import predict_hybrid_news
+from archive.experiments.models.predict import predict_hybrid_news
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 CLEAN_DATA_PATH = PROJECT_ROOT / "data" / "interim" / "articles_clean.csv"
 FEATURES_PATH = PROJECT_ROOT / "data" / "processed" / "linguistic_features.csv"
 
-MODEL_DIR = PROJECT_ROOT / "models"
-REPORTS_DIR = PROJECT_ROOT / "reports"
+MODEL_DIR = PROJECT_ROOT / "archive" / "models"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
 
 BASELINE_MODEL_PATH = MODEL_DIR / "baseline_tfidf_logreg.joblib"

@@ -2,7 +2,7 @@ import pandas as pd
 import pytest
 
 from src.features.linguistic_features import get_words
-from src.models.analyze_length_domain_shift import (
+from archive.experiments.models.analyze_length_domain_shift import (
     LENGTH_LABELS,
     assign_length_groups,
     summarize_group,

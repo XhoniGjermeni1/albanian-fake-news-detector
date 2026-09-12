@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 
 if __package__ is None or __package__ == "":
-    sys.path.append(str(Path(__file__).resolve().parents[2]))
+    sys.path.append(str(Path(__file__).resolve().parents[3]))
 
 import joblib
 import pandas as pd
@@ -20,13 +20,13 @@ from sklearn.model_selection import GroupShuffleSplit
 from sklearn.pipeline import Pipeline
 
 from src.preprocessing.clean_text import prepare_text_dataframe
-from src.models.predict import predict_news
+from archive.experiments.models.predict import predict_news
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
 INPUT_DATA_PATH = PROJECT_ROOT / "data" / "processed" / "articles.csv"
 INTERIM_DIR = PROJECT_ROOT / "data" / "interim"
-MODEL_DIR = PROJECT_ROOT / "models"
-REPORTS_DIR = PROJECT_ROOT / "reports"
+MODEL_DIR = PROJECT_ROOT / "archive" / "models"
+REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 
 CLEAN_DATA_PATH = INTERIM_DIR / "articles_clean.csv"
 TRAIN_DATA_PATH = INTERIM_DIR / "train.csv"

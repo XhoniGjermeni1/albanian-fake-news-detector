@@ -10,11 +10,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from src.evaluation.experiment_utils import (
+from archive.experiments.evaluation.experiment_utils import (
     dataframe_to_markdown,
     format_percent as _percent,
 )
-from src.models.experiment_support.day13_analysis import (
+from archive.experiments.models.experiment_support.day13_analysis import (
     COHORT_FIGURE_PATH,
     EXTERNAL_FIGURE_PATH,
     INTERNAL_FIGURE_PATH,
