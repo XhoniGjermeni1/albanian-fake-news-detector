@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 import json
-import logging
-import platform
 import shutil
 import sys
 import unicodedata
@@ -13,7 +11,6 @@ from pathlib import Path
 import joblib
 import numpy as np
 import pandas as pd
-import sklearn
 from sklearn.calibration import CalibratedClassifierCV
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import FeatureUnion, Pipeline
@@ -24,28 +21,11 @@ PROJECT_ROOT = Path(__file__).resolve().parents[4]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.features.linguistic_features import (  # noqa: E402
-    extract_linguistic_features,
-)
 from src.evaluation.data_utils import (  # noqa: E402
-    LENGTH_DISPLAY,
-    LENGTH_LABELS,
-    add_word_counts,
     exclude_train_duplicates_from_test,
     refresh_model_text,
 )
-from archive.experiments.evaluation.experiment_utils import (  # noqa: E402
-    escaped_dataframe_to_markdown as dataframe_to_markdown,
-    file_sha256,
-)
-from src.evaluation.metrics import (  # noqa: E402
-    rounded_metrics,
-)
-from archive.experiments.models.experiment_support.day16_analysis import (  # noqa: E402
-    evaluate_length_behavior,
-    high_confidence_error_rows,
-    model_comparison_table,
-)
+from archive.experiments.evaluation.experiment_utils import file_sha256  # noqa: E402
 from src.models.prediction_utils import (  # noqa: E402
     DEFAULT_FAKE_THRESHOLD,
     DEFAULT_REAL_THRESHOLD,
@@ -69,7 +49,6 @@ EXTERNAL_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
 SOURCE_MODEL_PATH = (
     PROJECT_ROOT / "archive" / "models" / "day16_word_char_linear_svm_calibrated.joblib"
 )
-BASELINE_MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
 DAY16_SELECTION_PATH = PROJECT_ROOT / "archive" / "reports" / "day16_selection.json"
 DAY16_METRICS_PATH = PROJECT_ROOT / "archive" / "reports" / "day16_metrics.json"
 DAY16_FOLDS_PATH = PROJECT_ROOT / "archive" / "reports" / "day16_calibration_fold_metrics.csv"
@@ -79,32 +58,13 @@ DAY16_INTERNAL_PREDICTIONS_PATH = (
 DAY16_EXTERNAL_PREDICTIONS_PATH = (
     PROJECT_ROOT / "archive" / "reports" / "day16_external_predictions.csv"
 )
-STREAMLIT_APP_PATH = PROJECT_ROOT / "app" / "streamlit_app.py"
-
 REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
-FIGURES_DIR = REPORTS_DIR / "figures"
-VERIFICATION_PATH = REPORTS_DIR / "day17_artifact_verification.json"
-REGRESSION_PATH = REPORTS_DIR / "day17_regression_checks.csv"
-INTERNAL_COMPARISON_PATH = REPORTS_DIR / "day17_final_model_comparison.csv"
-INTERNAL_PREDICTIONS_PATH = REPORTS_DIR / "day17_final_internal_predictions.csv"
-EXTERNAL_COMPARISON_PATH = REPORTS_DIR / "day17_final_external_evaluation.csv"
-EXTERNAL_PREDICTIONS_PATH = REPORTS_DIR / "day17_final_external_predictions.csv"
-LENGTH_METRICS_PATH = REPORTS_DIR / "day17_final_length_metrics.csv"
-SPECIAL_COHORTS_PATH = REPORTS_DIR / "day17_final_special_cohorts.csv"
-DEMO_CASES_PATH = REPORTS_DIR / "day17_final_demo_cases.csv"
-HIGH_CONFIDENCE_ERRORS_PATH = REPORTS_DIR / "day17_final_high_confidence_errors.csv"
 METRICS_PATH = REPORTS_DIR / "day17_final_metrics.json"
-REPORT_PATH = REPORTS_DIR / "day17_final_model.md"
-MODEL_COMPARISON_FIGURE_PATH = FIGURES_DIR / "day17_final_model_comparison.png"
-LENGTH_FIGURE_PATH = FIGURES_DIR / "day17_final_length_performance.png"
 
 FINAL_MODEL_NAME = "final_word_char_svm"
-BASELINE_MODEL_NAME = "baseline_word_logreg"
 EXPECTED_TRAIN_ROWS = 3195
 EXPECTED_TEST_ROWS = 792
 EXPECTED_EXTERNAL_ROWS = 40
-HIGH_CONFIDENCE = 0.90
-LOGGER = logging.getLogger(__name__)
 
 REGRESSION_CASES = [
     {
@@ -329,14 +289,12 @@ def load_evaluation_data() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, di
     train, stale_train = refresh_model_text(raw_train)
     test, stale_test = refresh_model_text(raw_test)
     test, excluded_ids = exclude_train_duplicates_from_test(train, test)
-    test = add_word_counts(test)
 
     external = pd.read_csv(EXTERNAL_PATH, encoding="utf-8", keep_default_na=False)
     if set(external["label"]) != {"real", "fake"}:
         raise ValueError("Unexpected external labels.")
     external["label"] = external["label"].map({"real": 0, "fake": 1})
     external, stale_external = refresh_model_text(external)
-    external = add_word_counts(external)
 
     if len(train) != EXPECTED_TRAIN_ROWS:
         raise ValueError(f"Expected {EXPECTED_TRAIN_ROWS} train rows, found {len(train)}.")
@@ -530,146 +488,4 @@ def maximum_day16_probability_difference(
         .abs()
         .max()
     )
-
-
-def observed_signal_summary(features: dict) -> str:
-    signals = [f"gjatesia {int(features['word_count'])} fjale"]
-    if features["sensational_found"]:
-        signals.append(f"markues sensacional: {features['sensational_found']}")
-    if features["source_indicators_found"]:
-        signals.append(f"tregues burimi: {features['source_indicators_found']}")
-    if int(features["exclamation_count"]):
-        signals.append(f"{int(features['exclamation_count'])} pikëçuditëse")
-    signals.append(f"uppercase ratio {float(features['uppercase_char_ratio']):.3f}")
-    signals.append(f"diacritic ratio {float(features['diacritic_ratio']):.3f}")
-    return "; ".join(signals)
-
-
-def demo_explanation(demo_type: str, row: pd.Series, features: dict) -> str:
-    probability = float(row["probability_fake"])
-    if demo_type == "likely_real_correct":
-        opening = "Vendimi likely_real përputhet me label-in real."
-    elif demo_type == "likely_fake_correct":
-        opening = "Vendimi likely_fake përputhet me label-in fake."
-    elif demo_type == "uncertain":
-        opening = (
-            f"Probability fake {probability:.3f} bie brenda zonës 0.30-0.70."
-        )
-    elif demo_type == "false_positive":
-        opening = "Artikulli real u shty gabimisht drejt fake."
-    elif demo_type == "false_negative":
-        opening = "Artikulli fake u shty gabimisht drejt real."
-    else:
-        opening = (
-            "Ky është një gabim i rëndësishëm sepse confidence kalon 90%."
-        )
-    return (
-        f"{opening} Sinjale të vëzhguara: {observed_signal_summary(features)}. "
-        "Këto sinjale përshkruajnë sjelljen e modelit, jo vërtetësinë faktike."
-    )
-
-
-def select_demo_cases(final_internal: pd.DataFrame) -> pd.DataFrame:
-    """Select six distinct and reproducible thesis demonstration cases."""
-    data = final_internal.copy()
-    data["confidence"] = data[["probability_real", "probability_fake"]].max(axis=1)
-    used: set[str] = set()
-    selected: list[tuple[str, pd.Series]] = []
-
-    def choose(demo_type: str, subset: pd.DataFrame, sort_columns, ascending) -> None:
-        available = subset.loc[~subset["article_id"].isin(used)].sort_values(
-            sort_columns, ascending=ascending
-        )
-        if available.empty:
-            raise RuntimeError(f"No candidate found for demo type {demo_type}.")
-        row = available.iloc[0]
-        used.add(str(row["article_id"]))
-        selected.append((demo_type, row))
-
-    medium_length = data["word_count"].between(61, 250)
-    choose(
-        "likely_real_correct",
-        data.loc[
-            data["label"].eq(0)
-            & data["decision"].eq("likely_real")
-            & medium_length
-        ],
-        ["confidence", "article_id"],
-        [False, True],
-    )
-    choose(
-        "likely_fake_correct",
-        data.loc[
-            data["label"].eq(1)
-            & data["decision"].eq("likely_fake")
-            & medium_length
-        ],
-        ["confidence", "article_id"],
-        [False, True],
-    )
-    uncertain = data.loc[data["decision"].eq("uncertain")].copy()
-    uncertain["distance_from_half"] = (
-        uncertain["probability_fake"] - 0.5
-    ).abs()
-    choose(
-        "uncertain",
-        uncertain,
-        ["distance_from_half", "article_id"],
-        [True, True],
-    )
-    choose(
-        "false_positive",
-        data.loc[
-            data["error_type"].eq("false_positive")
-            & data["confidence"].lt(HIGH_CONFIDENCE)
-        ],
-        ["confidence", "article_id"],
-        [False, True],
-    )
-    choose(
-        "false_negative",
-        data.loc[
-            data["error_type"].eq("false_negative")
-            & data["confidence"].lt(HIGH_CONFIDENCE)
-        ],
-        ["confidence", "article_id"],
-        [False, True],
-    )
-    choose(
-        "high_confidence_error",
-        data.loc[
-            data["error_type"].ne("correct")
-            & data["confidence"].ge(HIGH_CONFIDENCE)
-        ],
-        ["confidence", "article_id"],
-        [False, True],
-    )
-
-    rows = []
-    for demo_type, row in selected:
-        features = extract_linguistic_features(row["title"], row["content"])
-        rows.append(
-            {
-                "demo_type": demo_type,
-                "article_id": row["article_id"],
-                "title": row["title"],
-                "content_excerpt": str(row["content"])[:240].replace("\n", " "),
-                "true_label": "fake" if int(row["label"]) == 1 else "real",
-                "binary_prediction": (
-                    "fake" if int(row["binary_prediction"]) == 1 else "real"
-                ),
-                "decision": row["decision"],
-                "probability_real": float(row["probability_real"]),
-                "probability_fake": float(row["probability_fake"]),
-                "confidence": float(row["confidence"]),
-                "word_count": int(features["word_count"]),
-                "sensational_words": features["sensational_found"],
-                "source_markers": features["source_indicators_found"],
-                "exclamation_count": int(features["exclamation_count"]),
-                "uppercase_ratio": float(features["uppercase_char_ratio"]),
-                "diacritic_ratio": float(features["diacritic_ratio"]),
-                "explanation": demo_explanation(demo_type, row, features),
-            }
-        )
-    return pd.DataFrame(rows)
 

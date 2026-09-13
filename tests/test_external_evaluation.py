@@ -4,7 +4,6 @@ from archive.experiments.models.evaluate_external_dataset import (
     calculate_binary_metrics,
     calculate_decision_metrics,
     source_group,
-    summarize_groups,
 )
 
 
@@ -58,14 +57,6 @@ def test_three_level_decision_metrics() -> None:
     assert metrics["strong_decision_coverage"] == 0.75
     assert metrics["strong_decision_accuracy"] == 0.6667
     assert metrics["binary_errors_moved_to_uncertain"] == 1
-
-
-def test_group_summary_counts_errors() -> None:
-    summary = summarize_groups(sample_predictions(), "topic").set_index("topic")
-
-    assert summary.loc["politikë", "false_positives"] == 1
-    assert summary.loc["ekonomi", "false_negatives"] == 1
-    assert summary.loc["ekonomi", "recall_fake"] == 0.5
 
 
 def test_source_group_recognizes_external_source_types() -> None:

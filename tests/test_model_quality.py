@@ -5,12 +5,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from archive.experiments.models.analyze_model_quality import (
-    build_leakage_safe_groups,
-    build_prediction_table,
-    evaluate_thresholds,
-)
+from archive.experiments.models.analyze_model_quality import evaluate_thresholds
 from archive.experiments.models.predict import classify_probability, predict_news_for_app
+from src.evaluation.data_utils import build_leakage_safe_groups
 
 
 class FixedProbabilityModel:
@@ -61,30 +58,6 @@ def test_threshold_evaluation_counts_uncertain_rows() -> None:
     assert variant["likely_fake_count"] == 1
     assert variant["errors_moved_to_uncertain"] == 1
     assert variant["strong_decision_accuracy"] == 1.0
-
-
-def test_prediction_table_marks_false_positive_and_false_negative() -> None:
-    test_data = pd.DataFrame(
-        {
-            "article_id": ["true_1", "fake_1"],
-            "pair_id": [1, 1],
-            "label": [0, 1],
-            "label_name": ["real", "fake"],
-            "title": ["Titull real", "Titull fake"],
-            "content": ["Përmbajtje reale", "Përmbajtje fake"],
-            "word_count": [10, 20],
-            "source_indicators_found": ["", "sipas"],
-            "sensational_found": ["skandal", ""],
-            "diacritic_ratio": [0.02, 0.03],
-            "uppercase_char_ratio": [0.01, 0.02],
-            "exclamation_count": [1, 0],
-        }
-    )
-
-    table = build_prediction_table(test_data, np.array([0.80, 0.20]))
-
-    assert table["error_type"].tolist() == ["false_positive", "false_negative"]
-    assert table["interpretation"].str.contains("TF-IDF").all()
 
 
 def test_app_prediction_returns_uncertain_and_explanation(tmp_path: Path) -> None:

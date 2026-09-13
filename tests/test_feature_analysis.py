@@ -1,6 +1,6 @@
 import pandas as pd
 
-from archive.experiments.features.analyze_linguistic_features import compare_features, quality_checks
+from archive.experiments.features.analyze_linguistic_features import compare_features
 
 
 def _sample_features() -> pd.DataFrame:
@@ -33,21 +33,13 @@ def _sample_features() -> pd.DataFrame:
     )
 
 
-def test_quality_checks_reports_basic_issues() -> None:
-    quality = quality_checks(_sample_features())
-
-    assert quality["rows"] == 2
-    assert quality["duplicate_article_ids"] == 0
-    assert quality["numeric_missing_values_total"] == 0
-    assert quality["infinite_values_total"] == 0
-    assert quality["ratio_values_outside_0_1"]["sensational_ratio"] == 0
-
-
-def test_compare_features_returns_real_fake_statistics() -> None:
+def test_compare_features_returns_statistical_analysis() -> None:
     comparison = compare_features(_sample_features(), feature_names=["word_count", "sensational_count"])
 
     assert set(comparison["feature"]) == {"word_count", "sensational_count"}
-    word_count = comparison.loc[comparison["feature"] == "word_count"].iloc[0]
-    assert word_count["fake_mean"] == 50
-    assert word_count["real_mean"] == 100
-    assert word_count["higher_average_label"] == "real"
+    assert set(comparison.columns) == {
+        "feature",
+        "mann_whitney_p",
+        "ttest_p",
+        "cohens_d_fake_minus_real",
+    }

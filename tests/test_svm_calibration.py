@@ -8,11 +8,13 @@ from archive.experiments.models.calibrate_linear_svm import (
     classify_probability,
     evaluate_threshold_variants,
     expected_calibration_error,
-    high_confidence_error_rows,
     select_calibration_method,
     select_thresholds,
     threshold_metrics,
     verify_frozen_day15,
+)
+from archive.experiments.models.experiment_support.day16_analysis import (
+    high_confidence_error_rows,
 )
 
 

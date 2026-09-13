@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import logging
 import sys
 from pathlib import Path
@@ -20,6 +19,11 @@ from src.evaluation.data_utils import (
     assign_length_groups,
 )
 from archive.experiments.evaluation.experiment_utils import file_sha256
+from archive.experiments.models.evaluate_external_dataset import (
+    load_external_inputs,
+    raw_corpus_date_range,
+    run_external_predictions,
+)
 from src.features.linguistic_features import (
     extract_linguistic_features,
     get_words,
@@ -34,9 +38,9 @@ from archive.experiments.models.predict import (
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 EXTERNAL_DATASET_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
 EXPANSIONS_PATH = PROJECT_ROOT / "data" / "interim" / "day12_external_expansions.csv"
+TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
+TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
-DAY11_PREDICTIONS_PATH = PROJECT_ROOT / "archive" / "reports" / "day11_external_predictions.csv"
-DAY11_METRICS_PATH = PROJECT_ROOT / "archive" / "reports" / "day11_external_metrics.json"
 
 REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
 FIGURES_DIR = REPORTS_DIR / "figures"
@@ -74,28 +78,20 @@ VARIANT_DISPLAY = {
 
 DAY11_FROZEN_PATHS = [
     EXTERNAL_DATASET_PATH,
+    EXPANSIONS_PATH,
+    TRAIN_PATH,
+    TEST_PATH,
     MODEL_PATH,
-    REPORTS_DIR / "day11_external_predictions.csv",
-    REPORTS_DIR / "day11_external_metrics.json",
-    REPORTS_DIR / "day11_external_by_topic.csv",
-    REPORTS_DIR / "day11_external_by_label.csv",
-    REPORTS_DIR / "day11_external_by_length.csv",
-    REPORTS_DIR / "day11_external_by_source.csv",
-    REPORTS_DIR / "day11_external_errors.csv",
-    REPORTS_DIR / "day11_external_interesting_cases.csv",
-    REPORTS_DIR / "day11_external_confusion_matrix.csv",
-    FIGURES_DIR / "day11_external_confusion_matrix.png",
-    REPORTS_DIR / "day11_external_evaluation.md",
 ]
 
 LOGGER = logging.getLogger("src.models.analyze_length_domain_shift")
 
 
 def frozen_hashes() -> dict[str, str]:
-    """Fingerprint every frozen Day 11 input and output."""
+    """Fingerprint every dataset and model used by the analysis."""
     missing = [str(path) for path in DAY11_FROZEN_PATHS if not path.exists()]
     if missing:
-        raise FileNotFoundError(f"Missing frozen Day 11 artifacts: {missing}")
+        raise FileNotFoundError(f"Missing analysis inputs: {missing}")
     return {
         str(path.relative_to(PROJECT_ROOT)): file_sha256(path)
         for path in DAY11_FROZEN_PATHS
@@ -226,21 +222,21 @@ def summarize_label_by_length(predictions: pd.DataFrame) -> pd.DataFrame:
 
 
 def prepare_external_predictions() -> tuple[pd.DataFrame, pd.DataFrame, dict]:
-    """Load the unchanged external data and frozen Day 11 predictions."""
-    external = pd.read_csv(EXTERNAL_DATASET_PATH, encoding="utf-8", keep_default_na=False)
-    day11 = pd.read_csv(DAY11_PREDICTIONS_PATH, encoding="utf-8", keep_default_na=False)
-    metrics = json.loads(DAY11_METRICS_PATH.read_text(encoding="utf-8"))
-
-    if len(external) != 40 or len(day11) != 40:
-        raise ValueError("Day 12 expects the same 40 external rows used on Day 11.")
-    if set(external["external_id"]) != set(day11["external_id"]):
-        raise ValueError("External IDs do not match the frozen Day 11 predictions.")
-
-    result = day11.copy()
+    """Reproduce external predictions directly from the dataset and model."""
+    external, model = load_external_inputs()
+    result = run_external_predictions(external, model)
     result["label"] = result["true_label_number"].astype(int)
     result["binary_prediction"] = result["binary_prediction_number"].astype(int)
     result["prediction_correct"] = result["label"].eq(result["binary_prediction"])
-    return external, result, metrics
+    external_dates = pd.to_datetime(external["published_date"], errors="coerce")
+    periods = {
+        "internal": raw_corpus_date_range(),
+        "external": {
+            "minimum": external_dates.min().date().isoformat(),
+            "maximum": external_dates.max().date().isoformat(),
+        },
+    }
+    return external, result, periods
 
 
 def build_matched_length_comparison(
@@ -586,4 +582,3 @@ def build_domain_shift_summary(
     rows = domain_summary_rows(internal, "internal_test")
     rows.extend(domain_summary_rows(external_features, "external_day10"))
     return pd.DataFrame(rows)
-

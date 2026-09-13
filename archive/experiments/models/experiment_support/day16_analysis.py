@@ -27,14 +27,8 @@ from src.evaluation.data_utils import (  # noqa: E402
     exclude_train_duplicates_from_test,
     refresh_model_text,
 )
-from archive.experiments.evaluation.experiment_utils import (  # noqa: E402
-    escaped_dataframe_to_markdown as dataframe_to_markdown,
-    file_sha256,
-)
-from src.evaluation.metrics import (  # noqa: E402
-    classification_metrics,
-    rounded_metrics,
-)
+from archive.experiments.evaluation.experiment_utils import file_sha256  # noqa: E402
+from src.evaluation.metrics import classification_metrics  # noqa: E402
 from src.models.builders import (  # noqa: E402
     FINAL_SVM_C as BASELINE_C,
     build_svm_pipeline,
@@ -45,40 +39,14 @@ TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 EXTERNAL_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
 DAY15_SELECTION_PATH = PROJECT_ROOT / "archive" / "reports" / "day15_selection.json"
-DAY15_LENGTH_BIAS_PATH = PROJECT_ROOT / "archive" / "reports" / "day15_length_bias_comparison.csv"
-CURRENT_APP_MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
-STREAMLIT_APP_PATH = PROJECT_ROOT / "app" / "streamlit_app.py"
-
 REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
-FIGURES_DIR = REPORTS_DIR / "figures"
 MODELS_DIR = PROJECT_ROOT / "archive" / "models"
 
-OOF_PREDICTIONS_PATH = REPORTS_DIR / "day16_oof_calibration_predictions.csv"
 CALIBRATION_FOLDS_PATH = REPORTS_DIR / "day16_calibration_fold_metrics.csv"
-METHOD_COMPARISON_PATH = REPORTS_DIR / "day16_calibration_method_comparison.csv"
-OOF_BINS_PATH = REPORTS_DIR / "day16_oof_calibration_bins.csv"
-PROBABILITY_DISTRIBUTION_PATH = REPORTS_DIR / "day16_probability_distribution.csv"
-THRESHOLD_COMPARISON_PATH = REPORTS_DIR / "day16_threshold_comparison.csv"
 SELECTION_PATH = REPORTS_DIR / "day16_selection.json"
 INTERNAL_PREDICTIONS_PATH = REPORTS_DIR / "day16_internal_predictions.csv"
-INTERNAL_MODEL_COMPARISON_PATH = REPORTS_DIR / "day16_internal_model_comparison.csv"
-INTERNAL_BINS_PATH = REPORTS_DIR / "day16_internal_calibration_bins.csv"
-INTERNAL_THRESHOLD_PATH = REPORTS_DIR / "day16_internal_threshold_metrics.csv"
-LENGTH_METRICS_PATH = REPORTS_DIR / "day16_length_group_metrics.csv"
-SPECIAL_COHORTS_PATH = REPORTS_DIR / "day16_special_cohort_metrics.csv"
-LENGTH_BIAS_PATH = REPORTS_DIR / "day16_length_bias.csv"
 EXTERNAL_PREDICTIONS_PATH = REPORTS_DIR / "day16_external_predictions.csv"
-EXTERNAL_MODEL_COMPARISON_PATH = REPORTS_DIR / "day16_external_model_comparison.csv"
-EXTERNAL_THRESHOLD_PATH = REPORTS_DIR / "day16_external_threshold_metrics.csv"
-HIGH_CONFIDENCE_ERRORS_PATH = REPORTS_DIR / "day16_high_confidence_errors.csv"
 METRICS_PATH = REPORTS_DIR / "day16_metrics.json"
-REPORT_PATH = REPORTS_DIR / "day16_calibration_thresholds.md"
-
-OOF_FIGURE_PATH = FIGURES_DIR / "day16_oof_calibration_comparison.png"
-THRESHOLD_FIGURE_PATH = FIGURES_DIR / "day16_threshold_comparison.png"
-INTERNAL_FIGURE_PATH = FIGURES_DIR / "day16_internal_calibration.png"
-LENGTH_FIGURE_PATH = FIGURES_DIR / "day16_length_probability.png"
-MODEL_COMPARISON_FIGURE_PATH = FIGURES_DIR / "day16_model_comparison.png"
 
 CALIBRATED_MODEL_PATH = MODELS_DIR / "day16_word_char_linear_svm_calibrated.joblib"
 
@@ -402,46 +370,6 @@ def summarize_calibration_methods(
                 "total_training_seconds": float(folds["training_seconds"].sum()),
             }
         )
-    return pd.DataFrame(rows)
-
-
-def build_calibration_bin_output(oof_predictions: pd.DataFrame) -> pd.DataFrame:
-    tables = []
-    for method in CALIBRATION_METHODS:
-        subset = oof_predictions.loc[oof_predictions["method"].eq(method)]
-        bins = calibration_bins(subset["label"], subset["probability_fake"])
-        bins.insert(0, "method", method)
-        tables.append(bins)
-    return pd.concat(tables, ignore_index=True)
-
-
-def probability_distribution(oof_predictions: pd.DataFrame) -> pd.DataFrame:
-    """Summarize probability distributions overall and by true class."""
-    rows: list[dict] = []
-    for method in CALIBRATION_METHODS:
-        method_table = oof_predictions.loc[oof_predictions["method"].eq(method)]
-        for label_name, subset in (
-            ("all", method_table),
-            ("real", method_table.loc[method_table["label"].eq(0)]),
-            ("fake", method_table.loc[method_table["label"].eq(1)]),
-        ):
-            values = subset["probability_fake"].astype(float)
-            rows.append(
-                {
-                    "method": method,
-                    "true_label": label_name,
-                    "rows": int(len(values)),
-                    "mean": float(values.mean()),
-                    "std": float(values.std()),
-                    "min": float(values.min()),
-                    "p10": float(values.quantile(0.10)),
-                    "p25": float(values.quantile(0.25)),
-                    "median": float(values.median()),
-                    "p75": float(values.quantile(0.75)),
-                    "p90": float(values.quantile(0.90)),
-                    "max": float(values.max()),
-                }
-            )
     return pd.DataFrame(rows)
 
 
@@ -786,4 +714,3 @@ def load_external_after_selection(selection_hash: str) -> tuple[pd.DataFrame, in
     external["label"] = external["label"].map({"real": 0, "fake": 1})
     external, stale_rows = refresh_model_text(external)
     return add_word_counts(external), stale_rows
-
