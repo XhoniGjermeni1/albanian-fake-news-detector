@@ -1,4 +1,4 @@
-"""Run the historical Day 6 calibration and threshold comparison."""
+"""Run Day 6 error analysis, calibration, and threshold evaluation."""
 
 from __future__ import annotations
 
@@ -14,7 +14,10 @@ import joblib
 import numpy as np
 import pandas as pd
 from sklearn.calibration import CalibratedClassifierCV
-from sklearn.metrics import brier_score_loss, log_loss
+from sklearn.metrics import (
+    brier_score_loss,
+    log_loss,
+)
 
 from src.evaluation.data_utils import (
     build_group_safe_folds,
@@ -314,7 +317,6 @@ def main() -> None:
     before = result["probability_metrics"]["uncalibrated"]
     after = result["probability_metrics"]["calibrated_sigmoid"]
 
-    print("=== Day 6 model quality ===")
     print(f"Evaluation rows: {result['data_checks']['evaluation_test_rows']}")
     print(f"False positives: {before['false_positives']}")
     print(f"False negatives: {before['false_negatives']}")
