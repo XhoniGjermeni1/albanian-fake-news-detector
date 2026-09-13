@@ -1,4 +1,5 @@
-"""Simple validation checks for the processed dataset."""
+# Kontrollon që dataset-i ka kolonat, etiketat dhe numrin e rreshtave të pritshëm;
+# raporton gjithashtu mungesat, dublikatat dhe statistikat bazë të tekstit.
 
 from __future__ import annotations
 
@@ -18,7 +19,6 @@ REQUIRED_COLUMNS = [
 
 
 def numeric_stats(values: pd.Series) -> dict:
-    """Return basic statistics for a numeric pandas Series."""
     values = values.fillna(0)
     return {
         "min": int(values.min()),
@@ -29,7 +29,6 @@ def numeric_stats(values: pd.Series) -> dict:
 
 
 def text_length_stats(text: pd.Series) -> dict:
-    """Return basic character-length statistics for a text column."""
     lengths = text.fillna("").astype(str).str.len()
     return numeric_stats(lengths)
 
@@ -39,7 +38,6 @@ def validate_dataset(
     short_text_threshold: int = 80,
     print_report: bool = True,
 ) -> dict:
-    """Validate the loaded articles and return a summary dictionary."""
     missing_columns = [column for column in REQUIRED_COLUMNS if column not in dataframe.columns]
     if missing_columns:
         raise ValueError(f"Missing required columns: {missing_columns}")
@@ -86,7 +84,6 @@ def validate_dataset(
 
 
 def print_validation_report(summary: dict) -> None:
-    """Print the validation summary in a readable way."""
     print("=== Dataset validation report ===")
     print(f"Total articles: {summary['total_articles']}")
     print(f"Label counts: {summary['label_counts']}")

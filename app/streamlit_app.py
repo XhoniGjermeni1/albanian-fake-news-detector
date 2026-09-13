@@ -1,4 +1,5 @@
-"""Streamlit entrypoint for the frozen Albanian news model."""
+# Ky është hyrja kryesore e aplikacionit Streamlit: kontrollon artefaktet finale,
+# ngarkon modelin vetëm një herë dhe dërgon tekstin te rruga zyrtare e parashikimit.
 
 from __future__ import annotations
 
@@ -50,12 +51,10 @@ __all__ = [
 
 @st.cache_resource(show_spinner=False)
 def get_cached_model(model_path: str):
-    """Load the model once for the lifetime of the Streamlit process."""
     return load_final_model(model_path)
 
 
 def predict_with_final_model(title: str, content: str, model) -> dict:
-    """Use the single frozen prediction path shared with evaluation."""
     return predict_final_news(title, content, model=model)
 
 

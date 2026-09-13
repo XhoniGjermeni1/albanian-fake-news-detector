@@ -1,5 +1,6 @@
-"""Evaluate a most-frequent DummyClassifier on the frozen internal split."""
-
+# Trajnon një DummyClassifier që zgjedh gjithmonë klasën më të shpeshtë dhe e vlerëson
+# mbi test split-in e sigurt. Shërben si kufi minimal për të treguar se modelet tekstuale
+# mësojnë sinjal real dhe nuk përfitojnë vetëm nga shpërndarja e etiketave.
 from __future__ import annotations
 
 import json
@@ -77,7 +78,6 @@ def evaluate_dummy_baseline() -> tuple[dict, pd.DataFrame]:
 
 
 def save_outputs(metrics: dict, comparison: pd.DataFrame) -> None:
-    """Save machine-readable baseline results without generating a report."""
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     METRICS_PATH.write_text(
         json.dumps(metrics, ensure_ascii=False, indent=2),

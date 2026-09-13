@@ -1,4 +1,6 @@
-"""Compare the historical text, linguistic, and hybrid Logistic Regression models."""
+# Bashkon split-et me karakteristikat gjuhësore dhe trajnon katër variante historike:
+# baseline tekstual, tekst i ritrajnuar, vetëm features gjuhësore dhe model hybrid.
+# U krijua për të provuar nëse këto features shtojnë vlerë mbi TF-IDF-in bazë.
 
 from __future__ import annotations
 
@@ -59,14 +61,12 @@ def _require_columns(
     columns: set[str],
     name: str,
 ) -> None:
-    """Raise a clear error when an input table is incomplete."""
     missing = sorted(columns - set(dataframe.columns))
     if missing:
         raise ValueError(f"{name} is missing required columns: {missing}")
 
 
 def numeric_feature_columns(features: pd.DataFrame) -> list[str]:
-    """Return numeric linguistic features without identifiers or the label."""
     ignored_columns = {"pair_id", "label"}
     return [
         column
@@ -79,7 +79,6 @@ def merge_text_with_features(
     text_data: pd.DataFrame,
     features: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Join linguistic features by article_id and verify labels and pair IDs."""
     text_required = {"article_id", "pair_id", "label", "label_name", "model_text"}
     feature_required = {"article_id", "pair_id", "label", "label_name"}
     _require_columns(text_data, text_required, "Text data")
@@ -142,7 +141,6 @@ def merge_text_with_features(
 
 
 def load_and_check_data() -> tuple[pd.DataFrame, pd.DataFrame, list[str], dict]:
-    """Load the frozen split and align it with the linguistic features."""
     required_paths = [TRAIN_PATH, TEST_PATH, FEATURES_PATH]
     missing_paths = [str(path) for path in required_paths if not path.exists()]
     if missing_paths:
@@ -231,7 +229,6 @@ def load_and_check_data() -> tuple[pd.DataFrame, pd.DataFrame, list[str], dict]:
 
 
 def _tfidf_vectorizer() -> TfidfVectorizer:
-    """Use the same TF-IDF configuration as the Day 2 baseline."""
     return TfidfVectorizer(
         lowercase=False,
         ngram_range=(1, 2),
@@ -241,12 +238,10 @@ def _tfidf_vectorizer() -> TfidfVectorizer:
 
 
 def _classifier() -> LogisticRegression:
-    """Create the shared classifier used by all Day 5 comparisons."""
     return LogisticRegression(max_iter=1000, class_weight="balanced")
 
 
 def build_tfidf_model() -> Pipeline:
-    """Build the text-only baseline for the fair Day 5 comparison."""
     return Pipeline(
         steps=[
             ("tfidf", _tfidf_vectorizer()),
@@ -256,7 +251,6 @@ def build_tfidf_model() -> Pipeline:
 
 
 def build_linguistic_model() -> Pipeline:
-    """Build a Logistic Regression model using only numeric features."""
     return Pipeline(
         steps=[
             ("imputer", SimpleImputer(strategy="median")),
@@ -267,7 +261,6 @@ def build_linguistic_model() -> Pipeline:
 
 
 def build_hybrid_model(feature_columns: list[str]) -> Pipeline:
-    """Combine TF-IDF and standardized linguistic features."""
     numeric_pipeline = Pipeline(
         steps=[
             ("imputer", SimpleImputer(strategy="median")),
@@ -289,7 +282,6 @@ def build_hybrid_model(feature_columns: list[str]) -> Pipeline:
 
 
 def evaluate_predictions(y_true: pd.Series, y_pred: pd.Series) -> dict:
-    """Calculate the metrics retained in the historical comparison."""
     metrics = classification_metrics(y_true, y_pred)
     return {
         "accuracy": round(metrics["accuracy"], 4),
@@ -304,7 +296,6 @@ def evaluate_predictions(y_true: pd.Series, y_pred: pd.Series) -> dict:
 
 
 def build_comparison_table(metrics: dict[str, dict]) -> pd.DataFrame:
-    """Create one readable row per evaluated model."""
     rows = []
     for model_key in MODEL_NAMES:
         model_metrics = metrics[model_key]
@@ -334,7 +325,6 @@ def _relative_path(path: Path) -> str:
 
 
 def train_and_compare_models() -> dict:
-    """Train the four Day 5 candidates and save their comparison."""
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 

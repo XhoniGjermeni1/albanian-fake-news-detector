@@ -1,4 +1,5 @@
-
+# Përgatit të dhënat për vlerësim të drejtë: rindërton tekstin me preprocessing-un zyrtar,
+# heq kopjet train–test dhe krijon pesë folds ku pair_id dhe tekstet identike nuk ndahen.
 
 from __future__ import annotations
 
@@ -25,7 +26,6 @@ LENGTH_DISPLAY = {
 
 
 def refresh_model_text(dataframe: pd.DataFrame) -> tuple[pd.DataFrame, int]:
-    """Rebuild model text with the authoritative preprocessing function."""
     result = dataframe.copy().reset_index(drop=True)
     current_text = pd.Series(
         [
@@ -47,7 +47,6 @@ def exclude_train_duplicates_from_test(
     train_data: pd.DataFrame,
     test_data: pd.DataFrame,
 ) -> tuple[pd.DataFrame, list[str]]:
-    """Exclude exact train-text copies from an evaluation test set."""
     train_texts = set(train_data["model_text"])
     duplicate_mask = test_data["model_text"].isin(train_texts)
     excluded_ids = test_data.loc[duplicate_mask, "article_id"].astype(str).tolist()
@@ -56,7 +55,6 @@ def exclude_train_duplicates_from_test(
 
 
 def assign_length_groups(dataframe: pd.DataFrame) -> pd.DataFrame:
-    """Assign the fixed word-count groups used since Day 12."""
     result = dataframe.copy()
     result["length_group"] = pd.cut(
         result["word_count"],
@@ -68,7 +66,6 @@ def assign_length_groups(dataframe: pd.DataFrame) -> pd.DataFrame:
 
 
 def add_word_counts(dataframe: pd.DataFrame) -> pd.DataFrame:
-    """Add current word counts and the fixed length groups."""
     result = dataframe.copy().reset_index(drop=True)
     result["word_count"] = [
         int(extract_linguistic_features(row.title, row.content)["word_count"])
@@ -78,7 +75,6 @@ def add_word_counts(dataframe: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_leakage_safe_groups(dataframe: pd.DataFrame) -> np.ndarray:
-    """Keep pair IDs and exact duplicate texts in the same group."""
     parent = list(range(len(dataframe)))
 
     def find(index: int) -> int:
@@ -109,7 +105,6 @@ def build_leakage_safe_groups(dataframe: pd.DataFrame) -> np.ndarray:
 def build_group_safe_folds(
     train: pd.DataFrame,
 ) -> tuple[list[tuple[np.ndarray, np.ndarray]], np.ndarray, list[dict]]:
-    """Create five stratified folds without pair/text group leakage."""
     groups = build_leakage_safe_groups(train)
     splitter = StratifiedGroupKFold(n_splits=5, shuffle=True, random_state=42)
     folds = list(splitter.split(train["model_text"], train["label"], groups=groups))

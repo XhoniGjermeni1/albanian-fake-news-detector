@@ -1,4 +1,6 @@
-"""Quality and train-overlap checks for the Day 10 external dataset."""
+# Auditon dataset-in e jashtëm: kontrollon skemën, etiketat, URL-të, dublikatat,
+# lidhjen me metadata-n raw dhe ngjashmërinë me train-in ose artikujt e tjerë.
+# U krijua për të garantuar që benchmark-u i jashtëm mat përgjithësim real pa leakage.
 
 from __future__ import annotations
 
@@ -46,27 +48,23 @@ ALLOWED_TOPICS = {"politikë", "shëndetësi", "ekonomi", "sociale", "teknologji
 
 
 def normalize_for_comparison(value: object) -> str:
-    """Normalize text for exact duplicate checks without changing the stored data."""
     text = unicodedata.normalize("NFC", str(value or "")).casefold()
     text = re.sub(r"[^\w\s]", " ", text, flags=re.UNICODE)
     return " ".join(text.split())
 
 
 def combine_text(dataframe: pd.DataFrame) -> pd.Series:
-    """Combine title and content in the same order used by the project."""
     title = dataframe["title"].fillna("").astype(str).str.strip()
     content = dataframe["content"].fillna("").astype(str).str.strip()
     return (title + " " + content).str.strip()
 
 
 def is_http_url(value: object) -> bool:
-    """Return True for a syntactically valid HTTP or HTTPS URL."""
     parsed = urlsplit(str(value).strip())
     return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
 
 
 def normalize_url(value: object) -> str:
-    """Normalize an HTTP URL for exact comparisons."""
     parsed = urlsplit(str(value).strip())
     if parsed.scheme not in {"http", "https"} or not parsed.netloc:
         return ""
@@ -77,14 +75,13 @@ def normalize_url(value: object) -> str:
 
 
 def load_corpus_urls(metadata_root: Path) -> tuple[set[str], int]:
-    """Read source URLs from the true/fake metadata files in the raw corpus."""
     paths: list[Path] = []
     for directory_name in ("true-meta-information", "fake-meta-information"):
         directory = metadata_root / directory_name
         if directory.exists():
             paths.extend(directory.glob("*.txt"))
 
-    # Thousands of small metadata files are considerably faster to read in parallel on Windows.
+    # Leximi paralel është dukshëm më i shpejtë për mijëra skedarë të vegjël metadata në Windows.
     with ThreadPoolExecutor(max_workers=16) as executor:
         url_groups = executor.map(_read_urls_from_metadata_file, paths)
         urls = {url for group in url_groups for url in group}
@@ -92,7 +89,6 @@ def load_corpus_urls(metadata_root: Path) -> tuple[set[str], int]:
 
 
 def _read_urls_from_metadata_file(path: Path) -> set[str]:
-    """Extract normalized URLs from one raw metadata file."""
     urls: set[str] = set()
     with path.open(encoding="utf-8", errors="replace") as metadata_file:
         for line in metadata_file:
@@ -103,7 +99,6 @@ def _read_urls_from_metadata_file(path: Path) -> set[str]:
 
 
 def duplicate_summary(values: pd.Series) -> dict[str, int]:
-    """Count rows and groups involved in non-empty duplicates."""
     normalized = values.fillna("").astype(str).map(normalize_for_comparison)
     normalized = normalized[normalized.ne("")]
     counts = normalized.value_counts()
@@ -118,7 +113,6 @@ def _nearest_similarities(
     training_text: pd.Series,
     max_features: int = 50_000,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-    """Return nearest training and external text similarities using char TF-IDF."""
     all_text = pd.concat([external_text, training_text], ignore_index=True)
     vectorizer = TfidfVectorizer(
         analyzer="char_wb",
@@ -156,7 +150,6 @@ def build_similarity_review(
     training: pd.DataFrame,
     similarity_threshold: float = 0.90,
 ) -> pd.DataFrame:
-    """Compare external rows with training rows and with each other."""
     required_training = {"article_id", "title", "content"}
     missing_training = sorted(required_training - set(training.columns))
     if missing_training:
@@ -213,7 +206,6 @@ def validate_external_dataset(
     similarity_threshold: float = 0.90,
     print_report: bool = True,
 ) -> tuple[dict, pd.DataFrame]:
-    """Validate the external dataset and return a summary plus similarity details."""
     missing_columns = [column for column in REQUIRED_COLUMNS if column not in external.columns]
     if missing_columns:
         raise ValueError(f"External dataset is missing columns: {missing_columns}")
@@ -411,7 +403,6 @@ def validate_external_dataset(
 
 
 def print_validation_report(summary: dict) -> None:
-    """Print a compact, readable quality report."""
     print("=== Day 10 external dataset validation ===")
     print(f"Articles: {summary['total_articles']}")
     print(f"Labels: {summary['label_counts']}")
@@ -440,7 +431,6 @@ def print_validation_report(summary: dict) -> None:
 
 
 def parse_args() -> argparse.Namespace:
-    """Read command-line arguments."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET_PATH)
     parser.add_argument("--training", type=Path, default=DEFAULT_TRAINING_PATH)
@@ -453,7 +443,6 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
-    """Run validation and save the Day 10 audit artifacts."""
     args = parse_args()
     if not args.dataset.exists():
         raise FileNotFoundError(f"External dataset not found: {args.dataset}")

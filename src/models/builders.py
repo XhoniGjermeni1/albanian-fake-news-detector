@@ -1,4 +1,5 @@
-"""Simple builders for the frozen Word + Character Linear SVM design."""
+# Përmban ndërtuesit e konfigurimit final: Word TF-IDF, Character TF-IDF,
+# bashkimin e tyre dhe Linear SVM me C=1.0, që eksperimentet të përdorin të njëjtën bazë.
 
 from __future__ import annotations
 
@@ -18,7 +19,6 @@ FINAL_SVM_C = 1.0
 
 
 def build_word_vectorizer() -> TfidfVectorizer:
-    """Return the frozen word TF-IDF configuration."""
     return TfidfVectorizer(
         lowercase=False,
         ngram_range=(1, 2),
@@ -28,7 +28,6 @@ def build_word_vectorizer() -> TfidfVectorizer:
 
 
 def build_char_vectorizer(config: dict) -> TfidfVectorizer:
-    """Build one predeclared character TF-IDF configuration."""
     return TfidfVectorizer(
         lowercase=False,
         analyzer=config["analyzer"],
@@ -39,7 +38,6 @@ def build_char_vectorizer(config: dict) -> TfidfVectorizer:
 
 
 def build_fixed_features(char_config: dict = FIXED_CHAR_CONFIG) -> FeatureUnion:
-    """Build the frozen Word + Character TF-IDF representation."""
     return FeatureUnion(
         [
             ("word", build_word_vectorizer()),
@@ -49,7 +47,6 @@ def build_fixed_features(char_config: dict = FIXED_CHAR_CONFIG) -> FeatureUnion:
 
 
 def build_svm(c_value: float = FINAL_SVM_C) -> LinearSVC:
-    """Build the selected Linear SVM classifier."""
     return LinearSVC(
         C=float(c_value),
         class_weight="balanced",
@@ -59,7 +56,6 @@ def build_svm(c_value: float = FINAL_SVM_C) -> LinearSVC:
 
 
 def build_svm_pipeline(c_value: float = FINAL_SVM_C) -> Pipeline:
-    """Build the frozen TF-IDF representation followed by Linear SVM."""
     return Pipeline(
         [
             ("features", build_fixed_features(FIXED_CHAR_CONFIG)),

@@ -1,4 +1,6 @@
-"""Analyze length sensitivity and domain shift for the historical model."""
+# Drejton analizën e gjatësisë dhe domain shift-it duke përdorur modelin dhe dataset-et
+# e ngrira. Mat sjelljen sipas grupeve të gjatësisë, stabilitetin pas shkurtimit/zgjerimit
+# dhe dallimet gjuhësore mes të dhënave të brendshme dhe benchmark-ut të jashtëm.
 
 from __future__ import annotations
 
@@ -34,7 +36,6 @@ from archive.experiments.models.experiment_support.day12_analysis import (
 
 
 def run_length_domain_shift_analysis() -> dict:
-    """Calculate the core length and domain-shift diagnostics."""
     METRICS_PATH.parent.mkdir(parents=True, exist_ok=True)
     hashes_before = frozen_hashes()
 
@@ -119,7 +120,7 @@ def run_length_domain_shift_analysis() -> dict:
     return metrics
 
 
-# Historical public name retained for callers and notebooks.
+# Emri publik historik ruhet për thirrjet dhe notebook-et ekzistuese.
 run_day12_analysis = run_length_domain_shift_analysis
 
 

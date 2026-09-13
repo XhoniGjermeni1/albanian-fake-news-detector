@@ -1,4 +1,6 @@
-"""Prediction helper for the baseline fake news model."""
+# Ngarkon modelet historike baseline, calibrated dhe hybrid dhe parashikon një artikull.
+# Ruhet që eksperimentet e vjetra të riprodhohen me kontratën e tyre, ndërsa aplikacioni
+# final përdor veçmas src/models/predict_final.py.
 
 from __future__ import annotations
 
@@ -22,12 +24,10 @@ DEFAULT_CALIBRATED_MODEL_PATH = Path("models/calibrated_tfidf_logreg.joblib")
 
 
 def load_model(model_path: str | Path = DEFAULT_MODEL_PATH):
-    """Load a saved sklearn model pipeline."""
     return joblib.load(model_path)
 
 
 def predict_news(title: str, content: str, model_path: str | Path = DEFAULT_MODEL_PATH) -> dict:
-    """Predict whether one news article is real or fake."""
     model = load_model(model_path)
     model_text = combine_title_content(title, content)
 
@@ -53,7 +53,6 @@ def predict_news_for_app(
     fake_threshold: float = DEFAULT_FAKE_THRESHOLD,
     model=None,
 ) -> dict:
-    """Return the legacy calibrated contract used by historical analyses."""
     prediction_model = model if model is not None else load_model(model_path)
     model_text = combine_title_content(title, content)
     probabilities = prediction_model.predict_proba([model_text])[0]
@@ -89,7 +88,6 @@ def predict_hybrid_news(
     content: str,
     model_path: str | Path = DEFAULT_HYBRID_MODEL_PATH,
 ) -> dict:
-    """Predict with the hybrid model and include a simple language summary."""
     model = load_model(model_path)
     linguistic_features = extract_linguistic_features(title, content)
     model_row = pd.DataFrame(

@@ -1,4 +1,6 @@
-"""Reusable classification metrics for thesis experiments."""
+# Llogarit në një vend metrikat e klasifikimit dhe score-in e orientuar nga klasa fake,
+# që çdo eksperiment t'i krahasojë modelet me të njëjtat përkufizime.
+
 
 from __future__ import annotations
 
@@ -11,7 +13,6 @@ from sklearn.metrics import (
 
 
 def classification_metrics(y_true, y_pred) -> dict:
-    """Calculate common binary metrics with fake represented by class 1."""
     y_true_array = np.asarray(y_true, dtype=int)
     y_pred_array = np.asarray(y_pred, dtype=int)
     weighted = precision_recall_fscore_support(
@@ -49,7 +50,6 @@ def classification_metrics(y_true, y_pred) -> dict:
 
 
 def fake_decision_scores(model, values) -> np.ndarray:
-    """Return a classifier score oriented toward fake, never a probability."""
     classes = list(model.classes_)
     if 0 not in classes or 1 not in classes:
         raise ValueError(f"Expected classes 0 and 1, found {classes}")
@@ -76,7 +76,6 @@ def fake_decision_scores(model, values) -> np.ndarray:
 
 
 def rounded_metrics(metrics: dict) -> dict:
-    """Round only floating values for human-facing artifacts."""
     return {
         key: round(value, 6) if isinstance(value, float) else value
         for key, value in metrics.items()

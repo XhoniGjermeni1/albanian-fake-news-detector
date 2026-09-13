@@ -1,4 +1,6 @@
-"""Select calibration and thresholds for the frozen Linear SVM candidate."""
+# Ekzekuton fazën e calibration-it për kandidatin Word+Character Linear SVM: krahason
+# sigmoid me isotonic përmes probabiliteteve OOF, zgjedh pragjet e vendimit vetëm nga train
+# dhe krijon kandidatin e kalibruar bashkë me snapshot-in e nevojshëm për finalizim.
 
 from __future__ import annotations
 
@@ -13,7 +15,7 @@ _PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from archive.experiments.models.experiment_support.day16_analysis import (  # noqa: E402
+from archive.experiments.models.experiment_support.day16_analysis import (
     BASELINE_C,
     CALIBRATED_MODEL_PATH,
     CALIBRATION_FOLDS_PATH,
@@ -48,7 +50,7 @@ from archive.experiments.models.experiment_support.day16_analysis import (  # no
     verify_frozen_day15,
     verify_selection_hash,
 )
-from src.evaluation.metrics import rounded_metrics  # noqa: E402
+from src.evaluation.metrics import rounded_metrics
 
 
 def _prediction_snapshot(
@@ -58,7 +60,6 @@ def _prediction_snapshot(
     lower: float,
     upper: float,
 ) -> tuple[pd.DataFrame, dict]:
-    """Create the prediction snapshot required by final artifact verification."""
     table = probability_prediction_table(
         dataframe,
         model,
@@ -78,7 +79,6 @@ def _prediction_snapshot(
 
 
 def run_calibration() -> dict:
-    """Select calibration and thresholds, then create the frozen candidate."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -139,12 +139,12 @@ def run_calibration() -> dict:
     )
     selection_hash = file_sha256(SELECTION_PATH)
 
-    # Finalization verifies all ten calibration fold rows for group leakage.
+    # Finalizimi kontrollon të dhjetë rreshtat e folds të calibration-it për group leakage.
     calibration_folds.to_csv(
         CALIBRATION_FOLDS_PATH, index=False, encoding="utf-8"
     )
 
-    # Test and external data are opened only after both choices are frozen.
+    # Të dhënat test dhe external hapen vetëm pasi të dyja zgjedhjet janë ngrirë.
     test, test_audit = load_internal_test_after_selection(train, selection_hash)
     calibrated_model, training_metadata = train_final_calibrated_model(
         train, selected_method
@@ -276,7 +276,7 @@ def run_calibration() -> dict:
     return metrics
 
 
-# Historical public name retained for callers and notebooks.
+# Emri publik historik ruhet për thirrjet dhe notebook-et ekzistuese.
 run_day16_calibration = run_calibration
 
 

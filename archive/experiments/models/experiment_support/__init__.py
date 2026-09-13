@@ -1,6 +1,2 @@
-"""Implementation details for the historical model experiments.
-
-The original ``src.models`` modules remain the stable command-line and import
-entry points.  Supporting calculations and output rendering live here so the
-entry points can show each experiment's data-to-results flow directly.
-"""
+# Grupon llogaritjet e detajuara të eksperimenteve historike, të ndara nga skriptet
+# që i ekzekutojnë, në mënyrë që rrjedha nga input-et te rezultatet të mbetet e qartë.

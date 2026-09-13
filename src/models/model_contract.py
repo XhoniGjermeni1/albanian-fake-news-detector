@@ -1,4 +1,6 @@
-"""Integrity checks for the frozen final model and preprocessing contract."""
+# Kontrollon integritetin e modelit final: strukturën Word/Character TF-IDF + Linear SVM,
+# calibration-in sigmoid, klasat, parametrat dhe rastet fikse të preprocessing-ut.
+# Përdoret për të zbuluar çdo ndryshim aksidental para ekzekutimit të aplikacionit.
 
 from __future__ import annotations
 
@@ -20,7 +22,6 @@ from src.models.prediction_utils import DEFAULT_FAKE_THRESHOLD, DEFAULT_REAL_THR
 
 
 def file_sha256(path: str | Path) -> str:
-    """Return the SHA-256 fingerprint of one file."""
     digest = hashlib.sha256()
     with Path(path).open("rb") as file_handle:
         for chunk in iter(lambda: file_handle.read(1024 * 1024), b""):
@@ -29,7 +30,6 @@ def file_sha256(path: str | Path) -> str:
 
 
 def verify_model_configuration(model) -> dict:
-    """Require the exact fitted Word+Char Linear SVM calibration setup."""
     if not isinstance(model, CalibratedClassifierCV):
         raise TypeError("Final model is not CalibratedClassifierCV.")
     if model.method != "sigmoid" or model.ensemble is not False:
@@ -109,7 +109,6 @@ def verify_model_configuration(model) -> dict:
 
 
 def verify_preprocessing_contract() -> dict:
-    """Verify Unicode normalization and application thresholds."""
     nfc_title = "Çështja për ëndrrën"
     nfc_content = "Është një përmbledhje e shkurtër."
     prepared_nfc = prepare_final_model_text(nfc_title, nfc_content)

@@ -1,4 +1,6 @@
-"""Analysis helpers and frozen paths for the historical Day 12 experiment."""
+# Përmban zbatimin e plotë të analizës së gjatësisë dhe domain shift-it: rindërton
+# parashikimet e brendshme/jashtme, krijon grupet sipas numrit të fjalëve, mat korrelacionet
+# dhe teston stabilitetin kur artikujt shkurtohen ose zgjerohen pa shtuar verdikt.
 
 from __future__ import annotations
 
@@ -70,7 +72,6 @@ LOGGER = logging.getLogger("src.models.analyze_length_domain_shift")
 
 
 def frozen_hashes() -> dict[str, str]:
-    """Fingerprint every dataset and model used by the analysis."""
     missing = [str(path) for path in DAY11_FROZEN_PATHS if not path.exists()]
     if missing:
         raise FileNotFoundError(f"Missing analysis inputs: {missing}")
@@ -81,7 +82,6 @@ def frozen_hashes() -> dict[str, str]:
 
 
 def add_linguistic_features(dataframe: pd.DataFrame) -> pd.DataFrame:
-    """Add the same observable linguistic features used by the app."""
     features = pd.DataFrame(
         [
             extract_linguistic_features(row.title, row.content)
@@ -95,7 +95,6 @@ def add_linguistic_features(dataframe: pd.DataFrame) -> pd.DataFrame:
 
 
 def prepare_internal_predictions() -> tuple[pd.DataFrame, object, list[str], dict]:
-    """Load the frozen model and reproduce leakage-safe internal predictions."""
     test_data, model, excluded_ids = load_evaluation_data()
     predictions, overall_metrics = evaluate_test_set(test_data, model)
     predictions = add_linguistic_features(predictions)
@@ -108,7 +107,6 @@ def prepare_internal_predictions() -> tuple[pd.DataFrame, object, list[str], dic
 
 
 def summarize_group(group: pd.DataFrame, name: str) -> dict:
-    """Summarize predictions for one cohort."""
     if group.empty:
         return {
             "cohort": name,
@@ -162,7 +160,6 @@ def summarize_group(group: pd.DataFrame, name: str) -> dict:
 
 
 def summarize_length_groups(predictions: pd.DataFrame) -> pd.DataFrame:
-    """Calculate the requested metrics for every fixed length group."""
     rows: list[dict] = []
     for length_group in LENGTH_LABELS:
         group = predictions.loc[
@@ -175,7 +172,6 @@ def summarize_length_groups(predictions: pd.DataFrame) -> pd.DataFrame:
 
 
 def summarize_label_by_length(predictions: pd.DataFrame) -> pd.DataFrame:
-    """Separate the length relationship for real and fake articles."""
     rows: list[dict] = []
     for label_number, label_name in ((0, "real"), (1, "fake")):
         for length_group in LENGTH_LABELS:
@@ -204,7 +200,6 @@ def summarize_label_by_length(predictions: pd.DataFrame) -> pd.DataFrame:
 
 
 def prepare_external_predictions() -> tuple[pd.DataFrame, pd.DataFrame, dict]:
-    """Reproduce external predictions directly from the dataset and model."""
     external, model = load_external_inputs()
     result = run_external_predictions(external, model)
     result["label"] = result["true_label_number"].astype(int)
@@ -225,7 +220,6 @@ def build_matched_length_comparison(
     internal: pd.DataFrame,
     external_predictions: pd.DataFrame,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Compare the external benchmark with similar-length internal cohorts."""
     internal_30_60 = internal.loc[internal["word_count"].between(30, 60)].copy()
     internal_exact = internal.loc[internal["word_count"].between(38, 51)].copy()
     rows = [
@@ -237,7 +231,6 @@ def build_matched_length_comparison(
 
 
 def calculate_correlations(predictions: pd.DataFrame) -> pd.DataFrame:
-    """Measure simple length-probability associations overall and by label."""
     rows: list[dict] = []
     for scope, group in (
         ("all", predictions),
@@ -260,7 +253,6 @@ def calculate_correlations(predictions: pd.DataFrame) -> pd.DataFrame:
 
 
 def truncate_to_total_words(title: str, content: str, target_words: int) -> str:
-    """Keep content tokens until title plus content reaches the target length."""
     if target_words <= len(get_words(title)):
         return ""
 
@@ -274,7 +266,6 @@ def truncate_to_total_words(title: str, content: str, target_words: int) -> str:
 
 
 def select_stability_cases(predictions: pd.DataFrame) -> pd.DataFrame:
-    """Select four cases per label spanning the model's probability range."""
     selections: list[pd.DataFrame] = []
     for label_number in (0, 1):
         candidates = predictions.loc[
@@ -297,7 +288,6 @@ def run_internal_stability_experiment(
     predictions: pd.DataFrame,
     model,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Predict full and shortened versions of selected internal articles."""
     selected = select_stability_cases(predictions)
     rows: list[dict] = []
 
@@ -399,7 +389,6 @@ def run_internal_stability_experiment(
 
 
 def validate_expansions(expansions: pd.DataFrame, external: pd.DataFrame) -> None:
-    """Ensure diagnostic expansions are linked and contain no explicit verdict."""
     required = {
         "external_id",
         "expanded_content",
@@ -443,7 +432,6 @@ def run_external_expansion_experiment(
     day11_predictions: pd.DataFrame,
     model,
 ) -> pd.DataFrame:
-    """Compare frozen short summaries with separate source-based expansions."""
     expansions = pd.read_csv(EXPANSIONS_PATH, encoding="utf-8", keep_default_na=False)
     validate_expansions(expansions, external)
     external_index = external.set_index("external_id")
@@ -503,7 +491,6 @@ def domain_summary_rows(
     dataframe: pd.DataFrame,
     dataset_name: str,
 ) -> list[dict]:
-    """Summarize non-label and label-specific domain characteristics."""
     rows: list[dict] = []
     for scope, group in (
         ("all", dataframe),
@@ -556,7 +543,6 @@ def build_domain_shift_summary(
     internal: pd.DataFrame,
     external: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Compare observable linguistic distributions across domains."""
     external_features = add_linguistic_features(external)
     external_features["label"] = external_features["label"].map(
         {"real": 0, "fake": 1}

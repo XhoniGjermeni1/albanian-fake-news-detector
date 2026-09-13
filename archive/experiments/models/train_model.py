@@ -1,4 +1,6 @@
-
+# Pastron dataset-in, krijon train/test split-in e ngrirë sipas pair_id dhe trajnon
+# baseline-in Word TF-IDF + Logistic Regression. Ruan split-et, modelin dhe metrikat
+# që shërbyen si pikënisje për të gjitha eksperimentet pasuese.
 
 from __future__ import annotations
 

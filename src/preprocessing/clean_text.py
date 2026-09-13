@@ -1,4 +1,5 @@
-"""Pastrim teksti per modelin"""
+# Normalizon Unicode-in dhe hapësirat, pastaj bashkon titullin me përmbajtjen.
+# Ky është preprocessing-u i vetëm që duhet përdorur njësoj në trajnim dhe parashikim.
 
 from __future__ import annotations
 

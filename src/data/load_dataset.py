@@ -1,4 +1,5 @@
-"""Load the raw Albanian fake news text files into a pandas DataFrame."""
+# Lexon skedarët raw të lajmeve reale dhe të rreme, ndan titullin nga përmbajtja
+# dhe krijon DataFrame-in standard me etiketë, burim, article_id dhe pair_id.
 
 from __future__ import annotations
 
@@ -30,7 +31,6 @@ EXPECTED_COLUMNS = [
 
 
 def read_text_file(file_path: Path) -> str:
-    """Read one article file safely."""
     try:
         return file_path.read_text(encoding="utf-8")
     except UnicodeDecodeError:
@@ -42,7 +42,6 @@ def read_text_file(file_path: Path) -> str:
 
 
 def extract_pair_id(file_path: Path) -> int | None:
-    """Use the numeric file name as pair_id, e.g. 12.txt -> 12."""
     if file_path.stem.isdigit():
         return int(file_path.stem)
 
@@ -51,7 +50,6 @@ def extract_pair_id(file_path: Path) -> int | None:
 
 
 def split_title_content(raw_text: str) -> tuple[str, str]:
-    """Treat the first line as title and the remaining lines as content."""
     lines = raw_text.splitlines()
     if not lines:
         return "", ""
@@ -62,7 +60,6 @@ def split_title_content(raw_text: str) -> tuple[str, str]:
 
 
 def article_to_row(file_path: Path, source_split: str, label: int, label_name: str) -> dict:
-    """Convert one raw .txt article into one table row."""
     raw_text = read_text_file(file_path)
     title, content = split_title_content(raw_text)
     pair_id = extract_pair_id(file_path)
@@ -88,13 +85,11 @@ def article_to_row(file_path: Path, source_split: str, label: int, label_name: s
 
 
 def sort_by_pair_id(file_path: Path) -> tuple[bool, int, str]:
-    """Sort numeric files by number and keep unusual names at the end."""
     pair_id = extract_pair_id(file_path)
     return (pair_id is None, pair_id or 0, file_path.name)
 
 
 def load_dataset(dataset_dir: str | Path = DEFAULT_DATASET_DIR) -> pd.DataFrame:
-    """Load true and fake articles from the Albanian Fake News Corpus."""
     dataset_dir = Path(dataset_dir)
     full_texts_dir = dataset_dir if dataset_dir.name == "full_texts" else dataset_dir / "full_texts"
 

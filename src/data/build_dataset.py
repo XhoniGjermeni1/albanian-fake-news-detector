@@ -1,4 +1,5 @@
-"""Build the processed article dataset for Day 1."""
+# Drejton ndërtimin e dataset-it: ngarkon artikujt raw, kryen validimet bazë
+# dhe ruan versionet CSV/Parquet që përdoren nga pjesa tjetër e pipeline-it.
 
 from __future__ import annotations
 
@@ -27,7 +28,6 @@ def build_dataset(
     raw_dir: str | Path = DEFAULT_RAW_DIR,
     processed_dir: str | Path = DEFAULT_PROCESSED_DIR,
 ) -> dict[str, Any]:
-    """Load, validate, and save the processed Day 1 dataset."""
     raw_path = Path(raw_dir)
     processed_path = Path(processed_dir)
     processed_path.mkdir(parents=True, exist_ok=True)

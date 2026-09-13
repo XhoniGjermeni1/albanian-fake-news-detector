@@ -1,4 +1,6 @@
-"""Configuration and calculations for the Day 16 calibration experiment."""
+# Përmban llogaritjet e plota të calibration-it final: nested OOF folds, sigmoid/isotonic,
+# Brier score, log-loss, ECE, pragjet me tre nivele dhe gabimet me confidence të lartë.
+# Pas përzgjedhjes trajnon kandidatin e kalibruar dhe e vlerëson mbi test/external.
 
 from __future__ import annotations
 
@@ -19,7 +21,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[4]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.evaluation.data_utils import (  # noqa: E402
+from src.evaluation.data_utils import (
     LENGTH_DISPLAY,
     LENGTH_LABELS,
     add_word_counts,
@@ -27,9 +29,9 @@ from src.evaluation.data_utils import (  # noqa: E402
     exclude_train_duplicates_from_test,
     refresh_model_text,
 )
-from archive.experiments.evaluation.experiment_utils import file_sha256  # noqa: E402
-from src.evaluation.metrics import classification_metrics  # noqa: E402
-from src.models.builders import (  # noqa: E402
+from archive.experiments.evaluation.experiment_utils import file_sha256
+from src.evaluation.metrics import classification_metrics
+from src.models.builders import (
     FINAL_SVM_C as BASELINE_C,
     build_svm_pipeline,
 )
@@ -65,7 +67,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 def verify_frozen_day15() -> dict:
-    """Verify that Day 16 starts from the frozen Day 15 candidate."""
     selection = json.loads(DAY15_SELECTION_PATH.read_text(encoding="utf-8"))
     if selection.get("fixed_representation", {}).get("name") != "word_char_tfidf":
         raise ValueError("Day 15 representation is not Word + Character TF-IDF.")
@@ -88,7 +89,6 @@ def verify_frozen_day15() -> dict:
 
 
 def fake_probabilities(model, texts) -> tuple[np.ndarray, np.ndarray]:
-    """Return probabilities by class label rather than fixed column positions."""
     probabilities = np.asarray(model.predict_proba(texts), dtype=float)
     classes = list(model.classes_)
     if 0 not in classes or 1 not in classes:
@@ -107,7 +107,6 @@ def calibration_bins(
     probability_fake,
     n_bins: int = N_CALIBRATION_BINS,
 ) -> pd.DataFrame:
-    """Return equal-width bins used by ECE and reliability diagrams."""
     labels = np.asarray(y_true, dtype=int)
     probabilities = np.asarray(probability_fake, dtype=float)
     bin_ids = np.minimum((probabilities * n_bins).astype(int), n_bins - 1)
@@ -141,7 +140,6 @@ def expected_calibration_error(
     probability_fake,
     n_bins: int = N_CALIBRATION_BINS,
 ) -> float:
-    """Calculate weighted equal-width Expected Calibration Error."""
     bins = calibration_bins(y_true, probability_fake, n_bins=n_bins)
     total = int(bins["rows"].sum())
     if total == 0:
@@ -157,7 +155,6 @@ def expected_calibration_error(
 
 
 def probability_metrics(y_true, probability_fake) -> dict:
-    """Calculate discrimination, calibration, and confidence metrics."""
     labels = np.asarray(y_true, dtype=int)
     fake = np.asarray(probability_fake, dtype=float)
     predictions = (fake >= 0.5).astype(int)
@@ -189,7 +186,6 @@ def probability_metrics(y_true, probability_fake) -> dict:
 
 
 def classify_probability(probability_fake: float, lower: float, upper: float) -> str:
-    """Map a calibrated fake probability to one of the three decisions."""
     if probability_fake < lower:
         return "likely_real"
     if probability_fake > upper:
@@ -203,7 +199,6 @@ def threshold_metrics(
     lower: float,
     upper: float,
 ) -> dict:
-    """Evaluate one three-level threshold variant."""
     labels = np.asarray(y_true, dtype=int)
     fake = np.asarray(probability_fake, dtype=float)
     binary = (fake >= 0.5).astype(int)
@@ -247,7 +242,6 @@ def build_calibrated_svm(
     method: str,
     calibration_folds: list[tuple[np.ndarray, np.ndarray]],
 ) -> CalibratedClassifierCV:
-    """Build the fixed Linear SVM with group-safe calibration folds."""
     if method not in CALIBRATION_METHODS:
         raise ValueError(f"Unknown calibration method: {method}")
     return CalibratedClassifierCV(
@@ -262,7 +256,6 @@ def build_calibrated_svm(
 def nested_oof_calibration(
     train: pd.DataFrame,
 ) -> tuple[pd.DataFrame, pd.DataFrame, list[dict], int]:
-    """Create unbiased OOF probabilities with nested group-safe calibration."""
     outer_folds, outer_groups, outer_audit = build_group_safe_folds(train)
     probability_by_method = {
         method: np.full(len(train), np.nan, dtype=float)
@@ -347,7 +340,6 @@ def summarize_calibration_methods(
     oof_predictions: pd.DataFrame,
     fold_metrics: pd.DataFrame,
 ) -> pd.DataFrame:
-    """Aggregate OOF probability quality and outer-fold stability."""
     rows: list[dict] = []
     for method in CALIBRATION_METHODS:
         table = oof_predictions.loc[oof_predictions["method"].eq(method)]
@@ -374,7 +366,6 @@ def summarize_calibration_methods(
 
 
 def select_calibration_method(method_comparison: pd.DataFrame) -> dict:
-    """Select calibration from OOF train metrics, preferring sigmoid if close."""
     comparison = method_comparison.copy()
     best_brier = float(comparison["brier_score"].min())
     best_log_loss = float(comparison["log_loss"].min())
@@ -425,7 +416,6 @@ def evaluate_threshold_variants(
 
 
 def select_thresholds(threshold_comparison: pd.DataFrame) -> dict:
-    """Prefer coverage when strong accuracy is within 0.5 points of the best."""
     best_accuracy = float(threshold_comparison["strong_accuracy"].max())
     finalists = threshold_comparison.loc[
         threshold_comparison["strong_accuracy"].ge(
@@ -464,7 +454,6 @@ def high_confidence_error_rows(
     model_name: str,
     id_column: str,
 ) -> pd.DataFrame:
-    """Return wrong predictions whose predicted-class confidence is at least 90%."""
     predictions = table["binary_prediction"].to_numpy(dtype=int)
     labels = table["label"].to_numpy(dtype=int)
     confidence = table["confidence"].to_numpy(dtype=float)
@@ -485,7 +474,6 @@ def probability_prediction_table(
     lower: float,
     upper: float,
 ) -> pd.DataFrame:
-    """Create probabilities, binary predictions, and frozen three-level decisions."""
     probability_real, probability_fake = fake_probabilities(
         model, dataframe["model_text"]
     )
@@ -541,7 +529,6 @@ def train_final_calibrated_model(
     train: pd.DataFrame,
     method: str,
 ) -> tuple[CalibratedClassifierCV, dict]:
-    """Fit the selected calibrated model on full train with group-safe folds."""
     folds, groups, audit = build_group_safe_folds(train)
     model = build_calibrated_svm(method, folds)
     started = time.perf_counter()
@@ -569,7 +556,6 @@ def model_comparison_table(
     lower: float,
     upper: float,
 ) -> tuple[pd.DataFrame, pd.DataFrame, list[pd.DataFrame]]:
-    """Evaluate the new model and current app model on exactly the same rows."""
     prediction_tables = []
     metric_rows = []
     high_confidence_tables = []
@@ -611,7 +597,6 @@ def evaluate_length_behavior(
     lower: float,
     upper: float,
 ) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
-    """Evaluate selected calibrated probabilities across fixed length cohorts."""
     length_rows: list[dict] = []
     for group_name in LENGTH_LABELS:
         subset = table.loc[table["length_group"].astype(str).eq(group_name)]

@@ -1,4 +1,6 @@
-"""Evaluate the historical calibrated model on the leakage-safe test split."""
+# Riprodhon testimin end-to-end të modelit historik të kalibruar mbi test split-in pa leakage.
+# Kontrollon probabilitetet, vendimet 0.30/0.70, mbulimin e zonës së sigurt dhe përputhjen
+# mes helper-it të parashikimit dhe llogaritjes së pavarur të pragjeve.
 
 from __future__ import annotations
 
@@ -35,7 +37,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 def load_evaluation_data() -> tuple[pd.DataFrame, object, list[str]]:
-    """Load the historical calibrated model and leakage-safe test data."""
     required_paths = [TRAIN_PATH, TEST_PATH, MODEL_PATH]
     missing = [str(path) for path in required_paths if not path.exists()]
     if missing:
@@ -52,7 +53,6 @@ def _count_threshold_mismatches(
     decisions: pd.Series,
     probabilities: pd.Series,
 ) -> int:
-    """Validate decisions independently from the helper that created them."""
     likely_real = probabilities.lt(DEFAULT_REAL_THRESHOLD) & decisions.eq("likely_real")
     uncertain = probabilities.between(
         DEFAULT_REAL_THRESHOLD,
@@ -64,7 +64,6 @@ def _count_threshold_mismatches(
 
 
 def evaluate_test_set(test_data: pd.DataFrame, model) -> tuple[pd.DataFrame, dict]:
-    """Evaluate probability and decision invariants on every test article."""
     model_texts = [
         combine_title_content(row.title, row.content)
         for row in test_data.itertuples(index=False)
@@ -167,7 +166,6 @@ def evaluate_test_set(test_data: pd.DataFrame, model) -> tuple[pd.DataFrame, dic
 
 
 def run_system_evaluation() -> dict:
-    """Reproduce the historical test-set evaluation without demo reporting."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     test_data, model, excluded_ids = load_evaluation_data()
 

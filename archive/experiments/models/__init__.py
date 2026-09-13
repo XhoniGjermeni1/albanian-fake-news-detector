@@ -1,1 +1,1 @@
-"""Historical model-training and comparison experiments."""
+# Grupon trajnimet, krahasimet dhe verifikimet historike që çuan te modeli final.

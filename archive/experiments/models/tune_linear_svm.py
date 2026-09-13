@@ -1,4 +1,6 @@
-"""Tune Linear SVM C with train-only, group-safe cross-validation."""
+# Krahason C={0.25, 0.5, 1.0, 2.0, 4.0} për Linear SVM mbi të njëjtat folds pa leakage.
+# Zgjedh C nga F1, stabiliteti ndërmjet folds, ekuilibri i recall-it dhe rreziku i overfitting;
+# ky eksperiment fiksoi C=1.0 për kandidatin final.
 
 from __future__ import annotations
 
@@ -15,13 +17,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from archive.experiments.evaluation.experiment_utils import file_sha256  # noqa: E402
-from src.evaluation.data_utils import (  # noqa: E402
+from archive.experiments.evaluation.experiment_utils import file_sha256
+from src.evaluation.data_utils import (
     build_group_safe_folds,
     refresh_model_text,
 )
-from src.evaluation.metrics import classification_metrics  # noqa: E402
-from src.models.builders import (  # noqa: E402
+from src.evaluation.metrics import classification_metrics
+from src.models.builders import (
     FINAL_SVM_C,
     FIXED_CHAR_CONFIG,
     build_fixed_features,
@@ -47,12 +49,10 @@ LOGGER = logging.getLogger(__name__)
 
 
 def candidate_id(c_value: float) -> str:
-    """Return the stable identifier used in selection artifacts."""
     return f"linear_svm_c_{str(float(c_value)).replace('.', '_')}"
 
 
 def verify_frozen_setup() -> dict:
-    """Verify the representation and classifier selected upstream."""
     day13 = json.loads(DAY13_SELECTION_PATH.read_text(encoding="utf-8"))
     day14 = json.loads(DAY14_SELECTION_PATH.read_text(encoding="utf-8"))
 
@@ -80,7 +80,6 @@ def verify_frozen_setup() -> dict:
 def run_svm_cv(
     train: pd.DataFrame,
 ) -> tuple[pd.DataFrame, pd.DataFrame, list[dict], int]:
-    """Evaluate every C value on the same leakage-safe folds and features."""
     folds, groups, fold_audit = build_group_safe_folds(train)
     rows: list[dict] = []
 
@@ -163,7 +162,6 @@ def run_svm_cv(
 
 
 def select_c_from_cv(cv_summary: pd.DataFrame) -> dict:
-    """Select C using F1, fold stability, class balance, and overfitting risk."""
     summary = cv_summary.copy()
     eligible = summary.loc[
         summary["mean_recall_gap"].le(MAX_ACCEPTABLE_RECALL_GAP)
@@ -236,7 +234,6 @@ def select_c_from_cv(cv_summary: pd.DataFrame) -> dict:
 
 
 def run_svm_tuning() -> dict:
-    """Run tuning and persist only its selection contract and CV metrics."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     required_paths = [TRAIN_PATH, DAY13_SELECTION_PATH, DAY14_SELECTION_PATH]
     missing = [str(path) for path in required_paths if not path.exists()]
@@ -309,7 +306,7 @@ def run_svm_tuning() -> dict:
     return metrics
 
 
-# Historical public name retained for callers and notebooks.
+# Emri publik historik ruhet për thirrjet dhe notebook-et ekzistuese.
 run_day15_tuning = run_svm_tuning
 
 

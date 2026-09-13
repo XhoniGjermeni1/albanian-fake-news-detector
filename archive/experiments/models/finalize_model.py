@@ -1,4 +1,6 @@
-"""Verify and freeze the calibrated candidate without retraining it."""
+# Finalizon kandidatin e zgjedhur pa ritrajnim: verifikon konfigurimin, calibration-in,
+# metrikat dhe prediction anchors, kopjon artefaktin byte-for-byte dhe ndërton manifestin.
+# Ky file garanton që modeli i publikuar është pikërisht ai që fitoi eksperimentet.
 
 from __future__ import annotations
 
@@ -17,12 +19,12 @@ _PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(_PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(_PROJECT_ROOT))
 
-from archive.experiments.models.experiment_support.day16_analysis import (  # noqa: E402
+from archive.experiments.models.experiment_support.day16_analysis import (
     probability_metrics,
     probability_prediction_table,
     threshold_metrics,
 )
-from archive.experiments.models.experiment_support.day17_analysis import (  # noqa: E402
+from archive.experiments.models.experiment_support.day17_analysis import (
     DAY16_EXTERNAL_PREDICTIONS_PATH,
     DAY16_FOLDS_PATH,
     DAY16_INTERNAL_PREDICTIONS_PATH,
@@ -51,7 +53,7 @@ from archive.experiments.models.experiment_support.day17_analysis import (  # no
     verify_model_configuration,
     verify_preprocessing_contract,
 )
-from src.evaluation.metrics import rounded_metrics  # noqa: E402
+from src.evaluation.metrics import rounded_metrics
 
 
 def _evaluation_snapshot(
@@ -59,7 +61,6 @@ def _evaluation_snapshot(
     model,
     id_column: str,
 ) -> tuple[pd.DataFrame, dict]:
-    """Return predictions and the metrics retained in final documentation."""
     predictions = probability_prediction_table(
         dataframe,
         model,
@@ -122,7 +123,6 @@ def _external_pilot_metrics(metrics: dict) -> dict:
 
 
 def run_finalization() -> dict:
-    """Freeze the selected model and verify its final prediction contract."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     input_paths = {
         "train": TRAIN_PATH,

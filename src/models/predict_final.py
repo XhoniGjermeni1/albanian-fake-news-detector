@@ -1,4 +1,6 @@
-"""Stable prediction contract for the frozen classical model."""
+# Përkufizon rrugën e vetme zyrtare të parashikimit: përgatit tekstin, ngarkon artefaktin,
+# verifikon probabilitetet dhe zbaton pragjet 0.30/0.70. Rezultati përfshin vendimin
+# determinist dhe sinjalet gjuhësore që shfaqen në aplikacion.
 
 from __future__ import annotations
 
@@ -32,17 +34,14 @@ FINAL_NOTICE = (
 
 
 def prepare_final_model_text(title: str, content: str) -> str:
-    """Apply the same Unicode NFC preprocessing used during evaluation."""
     return combine_title_content(title, content)
 
 
 def load_final_model(model_path: str | Path = FINAL_MODEL_PATH):
-    """Load the frozen final sklearn artifact."""
     return joblib.load(model_path)
 
 
 def _predict_probabilities(prediction_model, model_text: str) -> tuple[float, float]:
-    """Return validated real/fake probabilities in label order 0/1."""
     probabilities = np.asarray(
         prediction_model.predict_proba([model_text])[0], dtype=float
     )
@@ -72,7 +71,6 @@ def _build_prediction_result(
     probability_real: float,
     probability_fake: float,
 ) -> dict:
-    """Build the stable public prediction contract."""
     binary_prediction = int(probability_fake >= 0.5)
     return {
         "model_id": FINAL_MODEL_ID,
@@ -101,7 +99,6 @@ def predict_final_news(
     model=None,
     model_path: str | Path = FINAL_MODEL_PATH,
 ) -> dict:
-    """Return deterministic probabilities, decision, and language signals."""
     prediction_model = model if model is not None else load_final_model(model_path)
     model_text = prepare_final_model_text(title, content)
     probability_real, probability_fake = _predict_probabilities(

@@ -1,4 +1,6 @@
-"""Core computations for comparing TF-IDF representations."""
+# Ndërton dhe vlerëson në kushte identike tre përfaqësime TF-IDF: vetëm fjalë,
+# vetëm karaktere dhe bashkimin Word+Character. Përfshin screening-un e konfigurimit
+# character, calibration-in e njëjtë dhe përzgjedhjen vetëm nga metrikat e train/CV.
 
 from __future__ import annotations
 
@@ -65,7 +67,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 def build_classifier() -> LogisticRegression:
-    """Return the same classifier for every representation."""
     return LogisticRegression(max_iter=1000, class_weight="balanced")
 
 
@@ -73,7 +74,6 @@ def build_representation_pipeline(
     representation: str,
     char_config: dict,
 ) -> Pipeline:
-    """Build one of the three comparable TF-IDF pipelines."""
     if representation == "word_tfidf":
         features = build_word_vectorizer()
     elif representation == "char_tfidf":
@@ -97,7 +97,6 @@ def build_representation_pipeline(
 
 
 def load_internal_data() -> tuple[pd.DataFrame, pd.DataFrame, list[str]]:
-    """Load the fixed split and remove exact train duplicates from test."""
     required = [TRAIN_PATH, TEST_PATH]
     missing = [str(path) for path in required if not path.exists()]
     if missing:
@@ -110,7 +109,6 @@ def load_internal_data() -> tuple[pd.DataFrame, pd.DataFrame, list[str]]:
 
 
 def build_screen_folds(train: pd.DataFrame) -> list[tuple[np.ndarray, np.ndarray]]:
-    """Create three train-only group-safe folds for the character screen."""
     groups = build_leakage_safe_groups(train)
     splitter = StratifiedGroupKFold(n_splits=3, shuffle=True, random_state=42)
     folds = list(splitter.split(train["model_text"], train["label"], groups=groups))
@@ -121,7 +119,6 @@ def build_screen_folds(train: pd.DataFrame) -> list[tuple[np.ndarray, np.ndarray
 
 
 def screen_character_configs(train: pd.DataFrame) -> tuple[pd.DataFrame, dict]:
-    """Choose between the two character settings using train data only."""
     folds = build_screen_folds(train)
     rows: list[dict] = []
 
@@ -181,7 +178,6 @@ def train_calibrated_representation(
     char_config: dict,
     calibration_folds: list[tuple[np.ndarray, np.ndarray]],
 ) -> CalibratedClassifierCV:
-    """Train one representation with identical group-safe calibration."""
     model = CalibratedClassifierCV(
         estimator=build_representation_pipeline(representation, char_config),
         method="sigmoid",
@@ -193,7 +189,6 @@ def train_calibrated_representation(
 
 
 def probability_arrays(model, texts: list[str] | pd.Series) -> tuple[np.ndarray, np.ndarray]:
-    """Return real and fake probabilities using class labels, not positions."""
     probabilities = model.predict_proba(texts)
     classes = list(model.classes_)
     return probabilities[:, classes.index(0)], probabilities[:, classes.index(1)]
@@ -205,7 +200,6 @@ def prediction_table(
     model_name: str,
     id_column: str,
 ) -> pd.DataFrame:
-    """Create the common internal prediction table."""
     model_texts = [
         combine_title_content(row.title, row.content)
         for row in base_data.itertuples(index=False)
@@ -235,7 +229,6 @@ def prediction_table(
 
 
 def calculate_metrics(table: pd.DataFrame) -> dict:
-    """Calculate classification, probability, and threshold metrics."""
     y_true = table["label"].to_numpy(dtype=int)
     y_pred = table["binary_prediction"].to_numpy(dtype=int)
     probability_fake = table["probability_fake"].to_numpy(dtype=float)
@@ -289,7 +282,6 @@ def calculate_metrics(table: pd.DataFrame) -> dict:
 
 
 def internal_selection(comparison: pd.DataFrame, selected_char_config: dict) -> dict:
-    """Choose the best representation using only internal metrics."""
     best_internal = comparison.sort_values(
         ["f1_weighted", "f1_fake", "accuracy", "brier_score"],
         ascending=[False, False, False, True],

@@ -1,4 +1,7 @@
-"""Run the historical statistical analysis of linguistic features."""
+# Krahason karakteristikat gjuhësore të lajmeve real dhe fake me Mann–Whitney U
+# dhe Cohen's d. U krijua për të matur cilat dallime janë statistikisht domethënëse,
+# jo për të prodhuar probabilitetin e modelit final.
+
 
 from __future__ import annotations
 
@@ -37,12 +40,10 @@ KEY_FEATURES = [
 ]
 
 def load_features() -> pd.DataFrame:
-    """Load the linguistic feature table."""
     return pd.read_csv(FEATURES_PATH, encoding="utf-8-sig", keep_default_na=False)
 
 
 def cohens_d(fake_values: pd.Series, real_values: pd.Series) -> float:
-    """Calculate a simple Cohen's d effect size."""
     fake = fake_values.dropna().astype(float)
     real = real_values.dropna().astype(float)
     pooled_std = np.sqrt((fake.var(ddof=1) + real.var(ddof=1)) / 2)
@@ -54,7 +55,6 @@ def cohens_d(fake_values: pd.Series, real_values: pd.Series) -> float:
 
 
 def compare_features(features: pd.DataFrame, feature_names: list[str] = KEY_FEATURES) -> pd.DataFrame:
-    """Run the historical statistical tests for each linguistic feature."""
     rows = []
 
     for feature in feature_names:
@@ -84,7 +84,6 @@ def compare_features(features: pd.DataFrame, feature_names: list[str] = KEY_FEAT
 
 
 def run_analysis() -> pd.DataFrame:
-    """Run and save the historical Day 4 statistical analysis."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
     features = load_features()

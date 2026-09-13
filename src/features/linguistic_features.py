@@ -1,4 +1,7 @@
-"""Extract simple linguistic and stylistic features from Albanian news text."""
+# Nxjerr nga titulli dhe përmbajtja sinjale të matshme si gjatësia, pikësimi,
+# shkronjat e mëdha dhe frazat sensacionale/burimore; këto përdoren në analiza
+# dhe në shpjegimin e rezultatit, por nuk ndryshojnë probabilitetin e modelit final.
+
 
 from __future__ import annotations
 
@@ -178,7 +181,6 @@ def extract_linguistic_features(title: str, content: str) -> dict:
 
 
 def extract_features_dataframe(dataframe: pd.DataFrame) -> pd.DataFrame:
-    """Extract linguistic features for every article in a DataFrame."""
     feature_rows = [
         extract_linguistic_features(row["title"], row["content"])
         for _, row in dataframe.iterrows()

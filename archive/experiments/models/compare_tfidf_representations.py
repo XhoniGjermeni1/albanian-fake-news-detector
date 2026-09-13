@@ -1,4 +1,6 @@
-"""Compare word, character, and combined TF-IDF representations."""
+# Krahason Word TF-IDF, Character TF-IDF dhe bashkimin e tyre me të njëjtin classifier
+# dhe të njëjtin split. Përzgjedh vetëm nga të dhënat e brendshme përfaqësimin që më pas
+# përdoret në krahasimin e classifier-ave dhe në modelin final.
 
 from __future__ import annotations
 
@@ -37,7 +39,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 def run_representation_comparison() -> dict:
-    """Select a TF-IDF representation using only the internal split."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     train, test, excluded_ids = load_internal_data()
     character_screen, selected_char_config = screen_character_configs(train)
@@ -109,7 +110,7 @@ def run_representation_comparison() -> dict:
     return metrics
 
 
-# Historical public name retained for callers and notebooks.
+# Emri publik historik ruhet për thirrjet dhe notebook-et ekzistuese.
 run_day13_comparison = run_representation_comparison
 
 

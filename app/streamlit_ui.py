@@ -1,4 +1,5 @@
-"""Validation and rendering helpers for the Streamlit interface."""
+# Ndërton ndërfaqen e aplikacionit: kontrollon tekstin e përdoruesit, shfaq metadatat
+# e modelit dhe paraqet vendimin, paralajmërimet dhe shpjegimet gjuhësore.
 
 from __future__ import annotations
 
@@ -69,7 +70,6 @@ def validate_news_input(
     long_text_characters: int = LONG_TEXT_CHARACTERS,
     max_input_characters: int = MAX_INPUT_CHARACTERS,
 ) -> tuple[list[str], list[str]]:
-    """Return blocking errors and non-blocking warnings for the form input."""
     clean_title = "" if title is None else str(title).strip()
     clean_content = "" if content is None else str(content).strip()
     combined_text = f"{clean_title} {clean_content}".strip()
@@ -114,7 +114,6 @@ def inspect_model_assets(
     model_path: str | Path = FINAL_MODEL_PATH,
     manifest_path: str | Path = FINAL_MANIFEST_PATH,
 ) -> tuple[dict | None, list[str]]:
-    """Return final model metadata and clear blocking asset errors."""
     model_file = Path(model_path)
     manifest_file = Path(manifest_path)
     errors: list[str] = []
@@ -148,7 +147,6 @@ def inspect_model_assets(
 
 
 def apply_page_style() -> None:
-    """Load the static stylesheet used by the application."""
     css = STYLE_PATH.read_text(encoding="utf-8")
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
@@ -209,7 +207,6 @@ def _format_markers(markers: list[str]) -> str:
 
 
 def build_human_explanations(explanation: dict) -> list[str]:
-    """Turn numeric language features into cautious, readable observations."""
     word_count = int(explanation["word_count"])
     text_length = int(explanation["text_length"])
     exclamation_count = int(explanation["exclamation_count"])

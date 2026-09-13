@@ -1,4 +1,6 @@
-"""Evaluate the historical calibrated model on the external benchmark."""
+# Zbaton kontratën historike të aplikacionit mbi benchmark-un e jashtëm dhe llogarit
+# metrikat binare, vendimet me tre nivele, rezultatet sipas klasës/burimit dhe krahasimin
+# me testin e brendshëm. U krijua për të matur përgjithësimin jashtë corpus-it të trajnimit.
 
 from __future__ import annotations
 
@@ -55,7 +57,6 @@ REQUIRED_EXTERNAL_COLUMNS = {
 
 
 def source_group(source: str) -> str:
-    """Create the source category stored in the historical prediction table."""
     if source.startswith("Këshilli i Ministrave"):
         return "institutional_government"
     if source == "Banka e Shqipërisë":
@@ -68,7 +69,6 @@ def source_group(source: str) -> str:
 
 
 def load_external_inputs() -> tuple[pd.DataFrame, object]:
-    """Load and validate the frozen external benchmark and historical model."""
     required_paths = [EXTERNAL_DATASET_PATH, MODEL_PATH]
     missing_paths = [str(path) for path in required_paths if not path.exists()]
     if missing_paths:
@@ -91,7 +91,6 @@ def load_external_inputs() -> tuple[pd.DataFrame, object]:
 
 
 def _expected_decision(probability_fake: float) -> str:
-    """Apply the fixed thresholds independently from the prediction helper."""
     if probability_fake < DEFAULT_REAL_THRESHOLD:
         return "likely_real"
     if probability_fake > DEFAULT_FAKE_THRESHOLD:
@@ -100,7 +99,6 @@ def _expected_decision(probability_fake: float) -> str:
 
 
 def run_external_predictions(external: pd.DataFrame, model) -> pd.DataFrame:
-    """Predict every external article with the historical application contract."""
     rows: list[dict] = []
     for article in external.itertuples(index=False):
         result = predict_news_for_app(article.title, article.content, model=model)
@@ -166,7 +164,6 @@ def run_external_predictions(external: pd.DataFrame, model) -> pd.DataFrame:
 
 
 def calculate_binary_metrics(predictions: pd.DataFrame) -> dict:
-    """Calculate overall and per-class binary classification metrics."""
     y_true = predictions["true_label_number"].to_numpy()
     y_pred = predictions["binary_prediction_number"].to_numpy()
     common = classification_metrics(y_true, y_pred)
@@ -217,7 +214,6 @@ def calculate_binary_metrics(predictions: pd.DataFrame) -> dict:
 
 
 def calculate_decision_metrics(predictions: pd.DataFrame) -> dict:
-    """Evaluate the fixed 30/70 three-level decision policy."""
     strong_mask = predictions["decision"].ne("uncertain")
     strong_correct = (
         (
@@ -283,7 +279,6 @@ def calculate_decision_metrics(predictions: pd.DataFrame) -> dict:
 
 
 def raw_corpus_date_range() -> dict:
-    """Read the publication-date range needed by the domain comparison."""
     dates: list[datetime] = []
     for directory_name in ("true-meta-information", "fake-meta-information"):
         directory = RAW_METADATA_ROOT / directory_name
@@ -304,7 +299,6 @@ def raw_corpus_date_range() -> dict:
 
 
 def build_internal_comparison(predictions: pd.DataFrame) -> dict:
-    """Compare the external results with freshly reproduced internal results."""
     internal_test, internal_model, excluded_ids = load_evaluation_data()
     _, internal_summary = evaluate_test_set(internal_test, internal_model)
     internal_words = pd.Series(
@@ -376,7 +370,6 @@ def build_internal_comparison(predictions: pd.DataFrame) -> dict:
 
 
 def run_external_evaluation() -> dict:
-    """Run the external evaluation and save only predictions and core metrics."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
     model_hash_before = file_sha256(MODEL_PATH)

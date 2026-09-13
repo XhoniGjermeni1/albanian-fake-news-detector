@@ -1,4 +1,6 @@
-"""Verify and freeze the Day 16 candidate without retraining it."""
+# Kontrollon kandidatin para publikimit: verifikon hash-et, strukturën sklearn,
+# preprocessing-un, pragjet dhe prediction anchors. Pastaj ngrin të njëjtin artefakt
+# byte-for-byte, pa ritrajnim dhe pa lejuar mbishkrimin e një modeli tjetër me versionin v1.
 
 from __future__ import annotations
 
@@ -21,17 +23,17 @@ PROJECT_ROOT = Path(__file__).resolve().parents[4]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.evaluation.data_utils import (  # noqa: E402
+from src.evaluation.data_utils import (
     exclude_train_duplicates_from_test,
     refresh_model_text,
 )
-from archive.experiments.evaluation.experiment_utils import file_sha256  # noqa: E402
-from src.models.prediction_utils import (  # noqa: E402
+from archive.experiments.evaluation.experiment_utils import file_sha256
+from src.models.prediction_utils import (
     DEFAULT_FAKE_THRESHOLD,
     DEFAULT_REAL_THRESHOLD,
     classify_probability,
 )
-from src.models.predict_final import (  # noqa: E402
+from src.models.predict_final import (
     FINAL_FAKE_THRESHOLD,
     FINAL_MANIFEST_PATH,
     FINAL_MODEL_ID,
@@ -116,7 +118,6 @@ def load_json(path: Path) -> dict:
 
 
 def verify_frozen_selection() -> tuple[dict, dict]:
-    """Verify the Day 16 decision before touching the final artifact."""
     selection = load_json(DAY16_SELECTION_PATH)
     metrics = load_json(DAY16_METRICS_PATH)
     fixed = selection.get("fixed_configuration", {})
@@ -147,7 +148,6 @@ def verify_frozen_selection() -> tuple[dict, dict]:
 
 
 def verify_model_configuration(model) -> dict:
-    """Inspect the fitted sklearn object and require the exact final setup."""
     if not isinstance(model, CalibratedClassifierCV):
         raise TypeError("Final candidate is not CalibratedClassifierCV.")
     if model.method != "sigmoid" or model.ensemble is not False:
@@ -254,7 +254,6 @@ def verify_preprocessing_contract() -> dict:
 
 
 def freeze_artifact(source_hash: str) -> tuple[object, dict]:
-    """Copy the candidate byte-for-byte and refuse to overwrite another v1."""
     FINAL_MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     if FINAL_MODEL_PATH.exists():
         existing_hash = file_sha256(FINAL_MODEL_PATH)
@@ -488,4 +487,3 @@ def maximum_day16_probability_difference(
         .abs()
         .max()
     )
-

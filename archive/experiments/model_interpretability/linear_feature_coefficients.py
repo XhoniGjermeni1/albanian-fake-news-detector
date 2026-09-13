@@ -1,4 +1,5 @@
-"""Report global feature coefficients from the frozen linear classifier."""
+# Lexon koeficientët e modelit final dhe lidh peshat me n-gramet Word/Character TF-IDF.
+# Ruan termat më të fortë drejt klasës real ose fake për interpretim global të modelit.
 
 from __future__ import annotations
 
@@ -13,7 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from src.models.predict_final import FINAL_MODEL_PATH  # noqa: E402
+from src.models.predict_final import FINAL_MODEL_PATH  
 
 OUTPUT_DIR = PROJECT_ROOT / "archive" / "reports" / "experiments" / "interpretability"
 FEATURES_PATH = OUTPUT_DIR / "top_linear_features.csv"
@@ -21,7 +22,6 @@ TOP_FEATURES_PER_DIRECTION = 25
 
 
 def extract_linear_coefficients(model) -> pd.DataFrame:
-    """Return feature names and class-1-oriented Linear SVM coefficients."""
     calibrated = getattr(model, "calibrated_classifiers_", None)
     if not calibrated:
         raise TypeError("Expected a fitted CalibratedClassifierCV artifact.")
@@ -64,7 +64,6 @@ def select_top_features(
     coefficients: pd.DataFrame,
     top_n: int = TOP_FEATURES_PER_DIRECTION,
 ) -> pd.DataFrame:
-    """Select the strongest positive and negative features per TF-IDF branch."""
     selected: list[pd.DataFrame] = []
     for branch in ["word", "character"]:
         branch_rows = coefficients.loc[coefficients["branch"].eq(branch)]
@@ -80,7 +79,6 @@ def select_top_features(
 
 
 def save_outputs(top_features: pd.DataFrame) -> None:
-    """Save the strongest global Word and Character TF-IDF features."""
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     top_features.to_csv(FEATURES_PATH, index=False, encoding="utf-8-sig")
 

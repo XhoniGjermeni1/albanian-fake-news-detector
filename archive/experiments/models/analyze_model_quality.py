@@ -1,4 +1,6 @@
-"""Run Day 6 error analysis, calibration, and threshold evaluation."""
+# Kalibron baseline-in historik TF-IDF + Logistic Regression me folds pa leakage dhe
+# mat accuracy, F1, Brier score, log-loss, ECE dhe cilësinë e confidence-it. Krahason
+# gjithashtu variante pragjesh për zonën e pasigurt që parapriu kontratën e aplikacionit.
 
 from __future__ import annotations
 
@@ -46,7 +48,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 def load_day6_inputs() -> tuple[pd.DataFrame, pd.DataFrame, object, dict]:
-    """Load the frozen split and the Logistic Regression baseline."""
     required_paths = [TRAIN_PATH, TEST_PATH, BASELINE_MODEL_PATH]
     missing_paths = [str(path) for path in required_paths if not path.exists()]
     if missing_paths:
@@ -72,13 +73,11 @@ def load_day6_inputs() -> tuple[pd.DataFrame, pd.DataFrame, object, dict]:
 
 
 def build_calibration_folds(dataframe: pd.DataFrame) -> tuple[list[tuple[np.ndarray, np.ndarray]], int]:
-    """Return the shared five group-safe folds in the historical Day 6 contract."""
     folds, groups, _ = build_group_safe_folds(dataframe)
     return folds, int(len(np.unique(groups)))
 
 
 def train_calibrated_model(train_data: pd.DataFrame) -> tuple[CalibratedClassifierCV, dict]:
-    """Calibrate TF-IDF Logistic Regression with group-safe out-of-fold scores."""
     folds, group_count = build_calibration_folds(train_data)
     model = CalibratedClassifierCV(
         estimator=build_tfidf_model(),
@@ -109,7 +108,6 @@ def expected_calibration_error(
     probability_fake: np.ndarray,
     n_bins: int = 10,
 ) -> float:
-    """Calculate equal-width expected calibration error."""
     edges = np.linspace(0, 1, n_bins + 1)
     bin_ids = np.digitize(probability_fake, edges[1:-1], right=False)
     error = 0.0
@@ -129,7 +127,6 @@ def calculate_probability_metrics(
     y_true: pd.Series,
     probability_fake: np.ndarray,
 ) -> dict:
-    """Calculate classification, probability, and confidence metrics."""
     y_array = y_true.to_numpy(dtype=int)
     predictions = (probability_fake >= 0.5).astype(int)
     wrong = predictions != y_array
@@ -188,7 +185,6 @@ def evaluate_thresholds(
     y_true: pd.Series,
     probability_fake: np.ndarray,
 ) -> pd.DataFrame:
-    """Compare three uncertain-zone variants for the future app."""
     y_array = y_true.to_numpy(dtype=int)
     ordinary_predictions = (probability_fake >= 0.5).astype(int)
     ordinary_errors = ordinary_predictions != y_array
@@ -238,7 +234,6 @@ def _relative_path(path: Path) -> str:
 
 
 def run_model_quality_analysis() -> dict:
-    """Calibrate the baseline and compare the supported probability thresholds."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     CALIBRATED_MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
 

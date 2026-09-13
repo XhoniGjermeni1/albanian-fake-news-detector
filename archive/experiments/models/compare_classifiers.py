@@ -1,4 +1,6 @@
-"""Compare classifier families with one fixed TF-IDF representation."""
+# Krahason Logistic Regression, Linear SVM dhe SGD mbi të njëjtin përfaqësim
+# Word+Character TF-IDF dhe të njëjtat folds pa leakage. U krijua për të zgjedhur
+# classifier-in nga metrikat dhe stabiliteti, pa e ndikuar krahasimin nga features të tjera.
 
 from __future__ import annotations
 
@@ -13,8 +15,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from archive.experiments.evaluation.experiment_utils import file_sha256  # noqa: E402
-from archive.experiments.models.experiment_support.day14_analysis import (  # noqa: E402
+from archive.experiments.evaluation.experiment_utils import file_sha256
+from archive.experiments.models.experiment_support.day14_analysis import (
     CLASSIFIER_CONFIGS,
     CLASSIFIER_DISPLAY,
     DAY13_SELECTION_PATH,
@@ -27,23 +29,22 @@ from archive.experiments.models.experiment_support.day14_analysis import (  # no
     run_group_safe_cv,
     select_from_cv,
 )
-from src.evaluation.data_utils import (  # noqa: E402
+from src.evaluation.data_utils import (
     add_word_counts,
     build_group_safe_folds,
     refresh_model_text,
 )
-from src.evaluation.metrics import (  # noqa: E402
+from src.evaluation.metrics import (
     classification_metrics,
     fake_decision_scores,
     rounded_metrics,
 )
-from src.models.builders import FIXED_CHAR_CONFIG, build_fixed_features  # noqa: E402
+from src.models.builders import FIXED_CHAR_CONFIG, build_fixed_features
 
 LOGGER = logging.getLogger(__name__)
 
 
 def _without_timing(row: dict) -> dict:
-    """Keep model-quality results while omitting machine-dependent timings."""
     return {
         key: value
         for key, value in rounded_metrics(row).items()
@@ -52,7 +53,6 @@ def _without_timing(row: dict) -> dict:
 
 
 def run_classifier_comparison() -> dict:
-    """Select the classifier using train-only group-safe cross-validation."""
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     required_paths = [TRAIN_PATH, DAY13_SELECTION_PATH]
     missing = [str(path) for path in required_paths if not path.exists()]
@@ -128,7 +128,7 @@ def run_classifier_comparison() -> dict:
     return metrics
 
 
-# Historical public name retained for callers and notebooks.
+# Emri publik historik ruhet për thirrjet dhe notebook-et ekzistuese.
 run_day14_comparison = run_classifier_comparison
 
 

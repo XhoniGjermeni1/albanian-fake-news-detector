@@ -1,4 +1,5 @@
-# merr funksionet nga skedari i mëparshëm dhe i aplikon mbi të 3,994 artikujt
+# Zbaton nxjerrjen e karakteristikave gjuhësore mbi të gjithë artikujt, kontrollon input-in
+# dhe ruan tabelën e plotë të features bashkë me përmbledhjen real–fake.
 
 from __future__ import annotations
 
@@ -25,7 +26,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 def load_input_dataset() -> pd.DataFrame:
-    """Load the clean Day 2 dataset, or rebuild minimal clean columns if needed."""
     data_path = INPUT_DATA_PATH if INPUT_DATA_PATH.exists() else FALLBACK_DATA_PATH
     LOGGER.info("Reading %s", data_path)
 
@@ -37,7 +37,6 @@ def load_input_dataset() -> pd.DataFrame:
 
 
 def build_feature_summary(features: pd.DataFrame) -> pd.DataFrame:
-    """Compare simple average feature values between real and fake articles."""
     numeric_columns = features.select_dtypes(include="number").columns
     ignored_columns = {"pair_id", "label"}
     feature_columns = [column for column in numeric_columns if column not in ignored_columns]
@@ -52,7 +51,6 @@ def build_feature_summary(features: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_linguistic_features() -> dict:
-    """Extract features for the dataset and save CSV outputs."""
     FEATURES_PATH.parent.mkdir(parents=True, exist_ok=True)
     SUMMARY_PATH.parent.mkdir(parents=True, exist_ok=True)
 

@@ -1,4 +1,6 @@
-"""Core computations for the classifier comparison."""
+# Ndërton kandidatët Logistic Regression, Linear SVM dhe SGD mbi përfaqësimin TF-IDF
+# tashmë të ngrirë. I mat me të njëjtat folds group-safe dhe zgjedh classifier-in
+# duke kombinuar F1 me stabilitetin ndërmjet folds.
 
 from __future__ import annotations
 
@@ -87,7 +89,6 @@ SELECTION_TOLERANCE = 0.002
 
 
 def load_fixed_representation() -> dict:
-    """Verify the previously selected Word + Character representation."""
     if not DAY13_SELECTION_PATH.exists():
         raise FileNotFoundError(
             f"Missing TF-IDF representation selection: {DAY13_SELECTION_PATH}"
@@ -104,7 +105,6 @@ def load_fixed_representation() -> dict:
 
 
 def build_classifier(candidate: dict):
-    """Build one uncalibrated classifier candidate."""
     value = float(candidate["parameter_value"])
     classifier = candidate["classifier"]
     if classifier == "logistic_regression":
@@ -127,7 +127,6 @@ def build_classifier(candidate: dict):
 
 
 def build_model_pipeline(candidate: dict, char_config: dict) -> Pipeline:
-    """Combine the fixed representation with one classifier candidate."""
     return Pipeline(
         [
             ("features", build_fixed_features(char_config)),
@@ -140,7 +139,6 @@ def run_group_safe_cv(
     train: pd.DataFrame,
     char_config: dict,
 ) -> tuple[pd.DataFrame, pd.DataFrame, list[dict], int]:
-    """Evaluate every classifier candidate on the same group-safe folds."""
     folds, groups, fold_audit = build_group_safe_folds(train)
     rows: list[dict] = []
 
@@ -214,7 +212,6 @@ def run_group_safe_cv(
 
 
 def select_from_cv(cv_summary: pd.DataFrame, char_config: dict) -> dict:
-    """Select a candidate using only CV F1 and fold stability."""
     ranking_columns = [
         "mean_f1_weighted",
         "std_f1_weighted",
