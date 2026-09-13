@@ -27,7 +27,6 @@ FINAL_COMPARISON_PATH = (
 OUTPUT_DIR = PROJECT_ROOT / "archive" / "reports" / "experiments" / "baseline"
 METRICS_PATH = OUTPUT_DIR / "dummy_baseline_metrics.json"
 COMPARISON_PATH = OUTPUT_DIR / "dummy_baseline_comparison.csv"
-REPORT_PATH = OUTPUT_DIR / "dummy_baseline.md"
 
 
 def load_frozen_split() -> tuple[pd.DataFrame, pd.DataFrame, list[str]]:
@@ -78,7 +77,7 @@ def evaluate_dummy_baseline() -> tuple[dict, pd.DataFrame]:
 
 
 def save_outputs(metrics: dict, comparison: pd.DataFrame) -> None:
-    """Save the baseline without changing any frozen report."""
+    """Save machine-readable baseline results without generating a report."""
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     METRICS_PATH.write_text(
         json.dumps(metrics, ensure_ascii=False, indent=2),
@@ -86,28 +85,6 @@ def save_outputs(metrics: dict, comparison: pd.DataFrame) -> None:
     )
     comparison.to_csv(COMPARISON_PATH, index=False, encoding="utf-8-sig")
 
-    dummy = comparison.loc[comparison["model"].eq("dummy_most_frequent")].iloc[0]
-    logistic = comparison.loc[comparison["model"].eq("baseline_word_logreg")].iloc[0]
-    final = comparison.loc[comparison["model"].eq("final_word_char_svm")].iloc[0]
-    REPORT_PATH.write_text(
-        f"""# Trivial Dummy Baseline
-
-Ky eksperiment përdor `DummyClassifier(strategy=\"most_frequent\")` mbi të
-njëjtin train set dhe test set të brendshëm prej 792 artikujsh. Shtatë kopjet
-ekzakte train-test përjashtohen me të njëjtën logjikë si vlerësimi final.
-
-| Modeli | Accuracy | F1 weighted | F1 fake |
-|---|---:|---:|---:|
-| Dummy most-frequent | {float(dummy['accuracy']):.4f} | {float(dummy['f1_weighted']):.4f} | {float(dummy['f1_fake']):.4f} |
-| Word TF-IDF + Logistic Regression | {float(logistic['accuracy']):.4f} | {float(logistic['f1_weighted']):.4f} | {float(logistic['f1_fake']):.4f} |
-| Word + Character TF-IDF + Linear SVM | {float(final['accuracy']):.4f} | {float(final['f1_weighted']):.4f} | {float(final['f1_fake']):.4f} |
-
-Dummy baseline parashikon vetëm klasën shumicë dhe nuk është kandidat për
-aplikacionin. Ai tregon se modelet reale mësojnë sinjal përtej shpërndarjes së
-klasave.
-""",
-        encoding="utf-8",
-    )
 
 
 def main() -> None:

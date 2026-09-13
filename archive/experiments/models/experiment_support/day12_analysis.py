@@ -43,25 +43,7 @@ TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
 
 REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
-FIGURES_DIR = REPORTS_DIR / "figures"
-INTERNAL_PREDICTIONS_PATH = REPORTS_DIR / "day12_internal_predictions.csv"
-LENGTH_GROUPS_PATH = REPORTS_DIR / "day12_internal_length_groups.csv"
-LABEL_LENGTH_PATH = REPORTS_DIR / "day12_label_length_summary.csv"
-MATCHED_CASES_PATH = REPORTS_DIR / "day12_internal_30_60_cases.csv"
-MATCHED_COMPARISON_PATH = REPORTS_DIR / "day12_matched_length_comparison.csv"
-CORRELATIONS_PATH = REPORTS_DIR / "day12_length_correlations.csv"
-STABILITY_PATH = REPORTS_DIR / "day12_internal_stability_experiment.csv"
-STABILITY_SUMMARY_PATH = REPORTS_DIR / "day12_internal_stability_summary.csv"
-EXTERNAL_EXPANSION_PATH = REPORTS_DIR / "day12_external_expansion_experiment.csv"
-DOMAIN_SHIFT_PATH = REPORTS_DIR / "day12_domain_shift_summary.csv"
 METRICS_PATH = REPORTS_DIR / "day12_metrics.json"
-REPORT_PATH = REPORTS_DIR / "day12_length_domain_shift.md"
-
-LENGTH_FIGURE_PATH = FIGURES_DIR / "day12_internal_length_performance.png"
-CORRELATION_FIGURE_PATH = FIGURES_DIR / "day12_probability_vs_length.png"
-STABILITY_FIGURE_PATH = FIGURES_DIR / "day12_internal_stability.png"
-EXPANSION_FIGURE_PATH = FIGURES_DIR / "day12_external_expansion.png"
-DOMAIN_FIGURE_PATH = FIGURES_DIR / "day12_domain_shift.png"
 
 VARIANT_ORDER = [
     "full",

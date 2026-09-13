@@ -71,3 +71,28 @@ def test_final_documentation_and_dependencies_are_reproducible() -> None:
 
     assert "plotly" not in requirements
     assert "statsmodels" not in requirements
+
+
+def test_project_has_one_readme_and_one_final_report() -> None:
+    documentation_roots = [
+        PROJECT_ROOT / "app",
+        PROJECT_ROOT / "src",
+        PROJECT_ROOT / "archive",
+        PROJECT_ROOT / "models",
+        PROJECT_ROOT / "reports",
+        PROJECT_ROOT / "notebooks",
+        PROJECT_ROOT / "tests",
+        PROJECT_ROOT / "data" / "external",
+        PROJECT_ROOT / "data" / "interim",
+        PROJECT_ROOT / "data" / "processed",
+    ]
+    nested_readmes = [
+        path
+        for root in documentation_roots
+        for path in root.rglob("*")
+        if path.is_file() and path.name.lower() == "readme.md"
+    ]
+
+    assert (PROJECT_ROOT / "README.md").exists()
+    assert nested_readmes == []
+    assert (PROJECT_ROOT / "reports" / "final" / "FINAL_REPORT.md").exists()

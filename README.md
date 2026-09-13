@@ -1,81 +1,217 @@
 # Albanian Fake News Detector
 
-Aplikacion dhe projekt diplome bachelor për klasifikimin gjuhësor të lajmeve
-në gjuhën shqipe. Përdoruesi vendos titullin dhe përmbajtjen e një lajmi;
-sistemi kthen probabilitetet `real/fake` dhe një nga vendimet:
+Projekt diplome bachelor dhe aplikacion Streamlit për klasifikimin gjuhësor të
+lajmeve në gjuhën shqipe. Sistemi merr titullin dhe përmbajtjen e një lajmi,
+llogarit probabilitetet `real/fake` dhe kthen një nga tri vendimet:
 
 - `likely_real` kur `P(fake) < 0.30`;
 - `uncertain` kur `0.30 <= P(fake) <= 0.70`;
 - `likely_fake` kur `P(fake) > 0.70`.
 
-> **Kujdes:** modeli analizon ngjashmëri dhe karakteristika gjuhësore. Ai nuk
-> kontrollon burime ose fakte dhe nuk zëvendëson fact-checking-un.
+> **Kufizim i rëndësishëm:** modeli analizon modele tekstuale dhe sinjale
+> gjuhësore. Ai nuk kontrollon burime ose fakte dhe nuk zëvendëson fact-checking-un.
+
+Për metodologjinë, krahasimin e eksperimenteve dhe përfundimet, shiko
+[`reports/final/FINAL_REPORT.md`](reports/final/FINAL_REPORT.md).
 
 ## Modeli Final
 
-Versioni klasik final është `v1.0.0`:
+Versioni final `v1.0.0` përdor:
 
-- Word TF-IDF me n-grams `(1, 2)`;
-- Character TF-IDF `char_wb` me n-grams `(3, 5)`;
-- Linear SVM (`LinearSVC`, `C=1.0`, class weights të balancuara);
-- sigmoid probability calibration me fold-e group-safe;
-- preprocessing Unicode NFC pa hequr pikësimin, kapitalizimin ose `ë/ç`;
-- linguistic features vetëm për shpjegim, jo si input i modelit final.
+- Word TF-IDF me n-grams `(1, 2)`, `min_df=2` dhe `max_features=30000`;
+- Character TF-IDF `char_wb` me n-grams `(3, 5)`, `min_df=2` dhe
+  `max_features=50000`;
+- `LinearSVC` me `C=1.0` dhe `class_weight="balanced"`;
+- sigmoid probability calibration me pesë fold-e group-safe;
+- pragjet e ngrira `0.30/0.70`;
+- Unicode NFC dhe normalizim hapësirash, pa hequr kapitalizimin, pikësimin ose
+  shkronjat `ë/ç`;
+- linguistic features vetëm për shpjegim në UI, jo si input të modelit final.
 
-Artefaktet runtime janë:
+Artefaktet aktive janë:
 
 ```text
 models/final_word_char_linear_svm_calibrated_v1.joblib
 models/final_model_v1_manifest.json
 ```
 
-## Pipeline-i
+SHA-256 i modelit final:
+
+```text
+52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5
+```
+
+## Arkitektura e Projektit
+
+Repository ndahet fizikisht në kod aktiv, artefakte finale dhe histori
+eksperimentale:
+
+```text
+albanian-fake-news-detector/
+├── app/                  # entrypoint, UI dhe stili i Streamlit
+├── src/
+│   ├── data/             # ngarkimi, validimi dhe ndërtimi i dataset-it
+│   ├── preprocessing/    # preprocessing-u determinist
+│   ├── features/         # linguistic features
+│   ├── models/           # model builders, contract dhe prediction final
+│   └── evaluation/       # folds, kontrolle të të dhënave dhe metrika
+├── data/
+│   ├── raw/              # corpus-i origjinal si Git submodule
+│   ├── processed/        # dataset-i i përpunuar dhe linguistic features
+│   ├── interim/          # clean dataset dhe split-et e ngrira
+│   └── external/         # benchmark-u pilot i jashtëm
+├── models/               # modeli final dhe manifesti i versionuar
+├── reports/final/        # raporti dhe rezultatet zyrtare
+├── notebooks/            # auditimi i dataset-it dhe walkthrough-u final
+├── tests/                # testet e të dhënave, modelit dhe aplikacionit
+├── archive/
+│   ├── experiments/      # eksperimentet që çuan te modeli final
+│   ├── models/           # modele historike lokale, të injoruara nga Git
+│   └── reports/          # artefakte minimale për reproducibility
+├── requirements.txt
+└── README.md
+```
+
+`app/` dhe prediction-i final nuk importojnë nga `archive/`. Arkiva ruan
+provat dhe vendimet eksperimentale, por nuk është pjesë e runtime-it.
+
+## Pipeline-i i të Dhënave dhe Modelit
 
 ```text
 Albanian Fake News Corpus
-        ↓
-ngarkim dhe validim
-        ↓
-preprocessing bazë + Unicode NFC
-        ↓
+        │
+        ▼
+src/data/load_dataset.py
+        │
+        ▼
+src/data/validate_dataset.py
+        │
+        ▼
+src/data/build_dataset.py
+        │
+        ├── data/processed/articles.csv
+        └── data/processed/articles.parquet
+        │
+        ▼
+src/preprocessing/clean_text.py
+        │
+        ▼
+data/interim/train.csv + data/interim/test.csv
+        │
+        ▼
 Word TF-IDF + Character TF-IDF
-        ↓
-Linear SVM + sigmoid calibration
-        ↓
-probabilitete + pragjet 0.30/0.70
-        ↓
-Streamlit + shpjegim i sinjaleve gjuhësore
+        │
+        ▼
+Linear SVM (C=1.0)
+        │
+        ▼
+sigmoid calibration + thresholds 0.30/0.70
+        │
+        ▼
+models/final_word_char_linear_svm_calibrated_v1.joblib
+        │
+        ▼
+src/models/predict_final.py
+        │
+        ▼
+app/streamlit_app.py
 ```
 
-Rrjedha e kodit runtime është po aq e drejtpërdrejtë:
+Split-et dhe modeli final janë të ngrirë. Nisja e aplikacionit nuk ndërton
+dataset-in dhe nuk ritrajnon modelin.
+
+## Rrjedha e Prediction-it Final
 
 ```text
-input i përdoruesit
-        ↓
+titulli + përmbajtja
+        │
+        ▼
 prepare_final_model_text()
-        ↓
-model.predict_proba()  # TF-IDF + SVM + calibration brenda artefaktit
-        ↓
-classify_probability() # pragjet 0.30/0.70
-        ↓
-rezultati + linguistic explanation
+        │
+        ▼
+model.predict_proba()
+        │
+        ▼
+classify_probability()
+        │
+        ├── likely_real
+        ├── uncertain
+        └── likely_fake
+        │
+        ▼
+probabilitetet + shpjegimi gjuhësor + paralajmërimi
 ```
 
-## Dataset-i
+TF-IDF, Linear SVM dhe calibration ndodhen brenda artefaktit `.joblib`.
+`build_linguistic_explanation()` nxjerr vetëm sinjale të lexueshme për UI-në
+dhe nuk ndryshon probabilitetin.
+
+## Përgjegjësia e Skedarëve Aktivë
+
+| Skedari | Përgjegjësia |
+|---|---|
+| `src/data/load_dataset.py` | Lexon artikujt raw dhe ndërton rreshtat e dataset-it. |
+| `src/data/validate_dataset.py` | Kontrollon skemën, mungesat, dublikatat dhe shpërndarjet. |
+| `src/data/build_dataset.py` | Orkestron loading, validation dhe eksportin CSV/Parquet. |
+| `src/preprocessing/clean_text.py` | Normalizon Unicode/hapësirat dhe ndërton `model_text`. |
+| `src/features/linguistic_features.py` | Nxjerr karakteristika gjuhësore për analizë dhe shpjegim. |
+| `src/features/build_linguistic_features.py` | Gjeneron tabelën e linguistic features për eksperimente. |
+| `src/evaluation/data_utils.py` | Menaxhon dublikatat, grupet leakage-safe, folds dhe grupet e gjatësisë. |
+| `src/evaluation/metrics.py` | Centralizon metrikat e klasifikimit dhe decision scores. |
+| `src/models/builders.py` | Përshkruan konfigurimin Word/Character TF-IDF dhe Linear SVM. |
+| `src/models/model_contract.py` | Verifikon konfigurimin, preprocessing-un dhe integritetin e modelit. |
+| `src/models/prediction_utils.py` | Zbaton thresholds dhe ndërton shpjegimet gjuhësore. |
+| `src/models/predict_final.py` | Ngarkon modelin final dhe ekspozon kontratën e vetme të prediction-it. |
+| `app/streamlit_app.py` | Orkestron aplikacionin dhe thërret prediction-in final. |
+| `app/streamlit_ui.py` | Validon input-in dhe paraqet rezultatin. |
+| `app/style.css` | Përmban stilin vizual të aplikacionit. |
+
+## Eksperimentet e Arkivuara
+
+`archive/experiments/` përmban kodin që dokumenton si u arrit konfigurimi
+final:
+
+| Eksperimenti | Skedari kryesor | Qëllimi |
+|---|---|---|
+| Baseline minimal | `baseline/dummy_baseline.py` | Jep një pikë reference pa sinjale informative. |
+| Baseline TF-IDF | `models/train_model.py` | Ndërton split-et dhe Logistic Regression fillestar. |
+| Analiza gjuhësore | `features/analyze_linguistic_features.py` | Mat dallimet e linguistic features ndërmjet klasave. |
+| Modeli hybrid | `models/train_hybrid_model.py` | Krahason TF-IDF me linguistic dhe hybrid features. |
+| Cilësia e baseline-it | `models/analyze_model_quality.py` | Analizon probabilitetet, calibration-in dhe thresholds fillestare. |
+| Testimi i sistemit | `models/evaluate_app_system.py` | Kontrollon kontratën e prediction-it dhe vendimet e aplikacionit. |
+| External benchmark | `data/validate_external_dataset.py`, `models/evaluate_external_dataset.py` | Validon dhe vlerëson dataset-in pilot të jashtëm. |
+| Length/domain shift | `models/analyze_length_domain_shift.py` | Mat varësinë nga gjatësia dhe ndryshimin e domain-it. |
+| Përfaqësimi TF-IDF | `models/compare_tfidf_representations.py` | Krahason Word, Character dhe Word+Character TF-IDF. |
+| Classifier-i | `models/compare_classifiers.py` | Krahason Logistic Regression, Linear SVM dhe ComplementNB. |
+| SVM tuning | `models/tune_linear_svm.py` | Zgjedh parametrin `C` me group-safe cross-validation. |
+| Calibration finale | `models/calibrate_linear_svm.py` | Zgjedh metodën e calibration-it dhe thresholds. |
+| Ngrirja e modelit | `models/finalize_model.py` | Verifikon dhe ngrin modelin final pa ritrajnim. |
+| Interpretueshmëria | `model_interpretability/linear_feature_coefficients.py` | Inspekton koeficientët globalë të modelit linear. |
+
+Skedarët në `experiment_support/` janë helper-a të këtyre eksperimenteve dhe
+nuk ekzekutohen si pipeline i pavarur.
+
+## Dataset-et
 
 Projekti përdor **Albanian Fake News Corpus**:
 
 - repository: <https://github.com/rexshijaku/alb-fake-news-corpus>;
-- artikulli ACM: <https://dl.acm.org/doi/10.1145/3487288>.
+- publikimi ACM: <https://dl.acm.org/doi/10.1145/3487288>.
 
-Dataset-i raw ruhet i pandryshuar te
-`data/raw/alb-fake-news-corpus/`. Dataset-et e përpunuara dhe ndarjet e ngrira
-ruhen te `data/processed/` dhe `data/interim/`. Dataset-i pilot i jashtëm ruhet
-te `data/external/external_news.csv`.
+Corpus-i raw ruhet i pandryshuar te `data/raw/alb-fake-news-corpus/` si Git
+submodule. Të dhënat e përpunuara ruhen te `data/processed/`, ndërsa split-et
+e ngrira te `data/interim/`.
+
+Benchmark-u i jashtëm `data/external/external_news.csv` përmban 40 raste të
+balancuara: 20 real dhe 20 fake, të shpërndara në politikë, shëndetësi,
+ekonomi, çështje sociale dhe teknologji. Tekstet janë përmbledhje manuale dhe
+benchmark-u përdoret vetëm për vlerësim pilot, jo për trajnim, tuning,
+calibration ose zgjedhje thresholds.
 
 ## Rezultatet Kryesore
 
-Test set-i i brendshëm ka 792 artikuj dhe nuk është përdorur për tuning.
+Test set-i zyrtar përmban 792 artikuj pas përjashtimit të shtatë dublikatave
+ekzakte me train set-in.
 
 | Metrika | Rezultati |
 |---|---:|
@@ -89,62 +225,25 @@ Test set-i i brendshëm ka 792 artikuj dhe nuk është përdorur për tuning.
 | Strong-decision coverage | 91.04% |
 | Strong-decision accuracy | 94.31% |
 
-Në dataset-in e jashtëm pilot me 40 përmbledhje të shkurtra, accuracy ishte
-60%. Ky rezultat dokumenton domain shift-in dhe nuk është përdorur për tuning
-ose ndryshim të modelit. Detajet finale janë te
-`reports/final/model.md`.
-
-## Struktura Kryesore
-
-```text
-albanian-fake-news-detector/
-├── app/                  # entrypoint, UI helpers dhe stylesheet i Streamlit
-├── data/
-│   ├── raw/              # corpus-i origjinal, i pandryshuar
-│   ├── interim/          # train/test i ngrirë dhe teksti i pastruar
-│   ├── processed/        # dataset-i dhe linguistic features
-│   └── external/         # benchmark-u pilot i jashtëm
-├── archive/
-│   ├── experiments/      # comparisons, tuning, calibration dhe analiza historike
-│   ├── models/           # modele historike lokale, të injoruara nga Git
-│   └── reports/          # raportet ditore dhe output-et diagnostike
-├── models/               # vetëm modeli final dhe manifesti
-├── notebooks/            # auditimi dhe walkthrough-u final
-├── reports/
-│   └── final/            # rezultatet, metrikat dhe figurat zyrtare
-├── src/
-│   ├── data/             # loader, validation dhe dataset build
-│   ├── evaluation/       # data checks, folds dhe metrika të ripërdorshme
-│   ├── preprocessing/    # pastrimi bazë dhe Unicode NFC
-│   ├── features/         # linguistic features
-│   └── models/           # konfigurimi, kontrata dhe prediction-i final
-├── tests/                # regression, data, model dhe Streamlit tests
-├── requirements.txt
-└── README.md
-```
-
-Kodi aktiv dhe arkiva nuk varen nga njëra-tjetra gjatë prediction-it.
-`src/models/builders.py` përshkruan konfigurimin e ngrirë Word+Char Linear SVM,
-ndërsa `src/models/model_contract.py` verifikon modelin, calibration-in,
-thresholds dhe SHA-256 pa e ritrajnuar. Skriptet e Ditëve 2–17 ruhen për
-riprodhueshmëri te `archive/experiments/` dhe nuk importohen nga Streamlit.
+Në benchmark-un e jashtëm modeli arriti accuracy 60%. Rezultati dokumenton
+domain shift dhe nuk është përdorur për të ndryshuar modelin.
 
 ## Instalimi
 
-Kërkohet Git dhe Python 3.11. Klono projektin bashkë me corpus-in:
+Kërkohet Git dhe Python 3.11. Klono repository-n bashkë me corpus-in:
 
 ```powershell
 git clone --recurse-submodules https://github.com/XhoniGjermeni1/albanian-fake-news-detector.git
 cd albanian-fake-news-detector
 ```
 
-Nëse projekti është klonuar pa submodule, ekzekuto:
+Nëse repository është klonuar pa submodule:
 
 ```powershell
 git submodule update --init --recursive
 ```
 
-Pastaj, në Windows PowerShell:
+Krijo environment-in dhe instalo varësitë:
 
 ```powershell
 py -3.11 -m venv .venv
@@ -153,7 +252,7 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-Në macOS/Linux, aktivizimi bëhet me:
+Në macOS/Linux:
 
 ```bash
 python3.11 -m venv .venv
@@ -162,19 +261,13 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-Versionet në `requirements.txt` përputhen me environment-in ku u ngrirë dhe u
-testua modeli final.
-
 ## Nisja e Aplikacionit
 
 ```powershell
 python -m streamlit run app\streamlit_app.py
 ```
 
-Streamlit ngarkon vetëm artefaktin final me cache. Nëse modeli ose manifesti
-mungon, aplikacioni shfaq një gabim të qartë dhe nuk tenton prediction.
-
-Prediction-i mund të përdoret edhe drejtpërdrejt nga Python:
+Prediction-i mund të përdoret edhe nga Python:
 
 ```python
 from src.models.predict_final import predict_final_news
@@ -186,68 +279,61 @@ result = predict_final_news(
 print(result["decision"], result["probability_fake"])
 ```
 
-## Notebook-u Walkthrough
-
-```powershell
-python -m jupyter lab notebooks\02_final_walkthrough.ipynb
-```
-
-Notebook-u ndjek rrjedhën nga dataset-i te prediction-i, lexon output-et e
-ngrira dhe nuk ritrajnon modelin. Rastet e demonstrimit ruhen te
-`reports/final/demo_cases.csv`, ndërsa skenari te
-`reports/final/demo_guide.md`.
-
 ## Testet
 
 ```powershell
 python -m pytest -q
 ```
 
-Testet mbulojnë loader-in, preprocessing-un, linguistic features, leakage
-checks, modelet historike, konfigurimin/hash-in e modelit final, probabilitetet,
-pragjet, Unicode NFC/NFD, Streamlit dhe walkthrough-un.
+Testet mbulojnë dataset-in, preprocessing-un, leakage checks, linguistic
+features, eksperimentet e modelit, probabilitetet, thresholds, prediction
+anchors, SHA-256 dhe Streamlit.
+
+## Notebook-et
+
+```powershell
+python -m jupyter lab notebooks\02_final_walkthrough.ipynb
+```
+
+`01_dataset_audit.ipynb` dokumenton dataset-in. `02_final_walkthrough.ipynb`
+ndjek pipeline-in final dhe lexon output-et e ngrira pa ritrajnuar modelin.
 
 ## Rindërtimi i Dataset-it
-
-Nëse corpus-i raw mungon:
 
 ```powershell
 git submodule update --init --recursive
 python src\data\build_dataset.py
 ```
 
-Kjo krijon `data/processed/articles.parquet` dhe preview-t përkatëse pa
-ndryshuar skedarët raw.
+Ky proces rindërton dataset-et e përpunuara, por nuk ritrajnon ose zëvendëson
+modelin final.
+
+## Artefaktet Finale
+
+| Artefakti | Përmbajtja |
+|---|---|
+| `reports/final/FINAL_REPORT.md` | Metodologjia dhe përfundimet e eksperimenteve. |
+| `reports/final/metrics.json` | Metrikat e plota dhe kontrollet e integritetit. |
+| `reports/final/model_comparison.csv` | Krahasimi baseline–model final. |
+| `reports/final/external_evaluation.csv` | Metrikat e benchmark-ut të jashtëm. |
+| `reports/final/external_predictions.csv` | Prediction-et e benchmark-ut të jashtëm. |
+| `reports/final/length_metrics.csv` | Rezultatet sipas gjatësisë. |
+| `reports/final/demo_cases.csv` | Rastet e ngrira për demonstrim. |
+| `reports/final/figures/` | Figurat e përdorura nga raporti final. |
 
 ## Kufizimet
 
-- modeli klasifikon stilin gjuhësor, jo vërtetësinë faktike;
-- ekziston bias i lidhur me gjatësinë e tekstit;
-- tekste shumë të shkurtra mund të japin prediction-e të paqëndrueshme;
-- performanca bie kur periudha, burimi, tema ose stili ndryshojnë nga corpus-i;
-- linguistic features janë për interpretim dhe nuk janë prova;
-- benchmark-u i jashtëm është pilot i vogël me përmbledhje manuale.
-
-## Skedarët Kryesorë për Mbrojtje
-
-| Roli | Skedari |
-|---|---|
-| Ngarkimi i dataset-it | `src/data/load_dataset.py` |
-| Preprocessing | `src/preprocessing/clean_text.py` |
-| Linguistic features | `src/features/linguistic_features.py` |
-| Konfigurimi Word+Char SVM | `src/models/builders.py` |
-| Verifikimi i modelit final | `src/models/model_contract.py` |
-| Vendimet dhe shpjegimi | `src/models/prediction_utils.py` |
-| Prediction final | `src/models/predict_final.py` |
-| Rrjedha e aplikacionit | `app/streamlit_app.py` |
-| Validimi dhe paraqitja UI | `app/streamlit_ui.py` |
-| Regression tests | `tests/test_final_model.py`, `tests/test_streamlit_app.py` |
-| Walkthrough | `notebooks/02_final_walkthrough.ipynb` |
+- Modeli klasifikon ngjashmëri gjuhësore, jo vërtetësinë faktike.
+- Corpus-i përmban lidhje ndërmjet label-it, gjatësisë dhe burimit.
+- Tekstet shumë të shkurtra dhe lajmet fake shumë të gjata janë më të
+  vështira.
+- Performanca bie kur periudha, burimi, tema ose stili ndryshojnë nga
+  training corpus.
+- Calibration nuk eliminon domain shift-in.
+- Linguistic features dhe koeficientët e modelit janë përshkrues, jo prova
+  shkakësore.
 
 ## Versioni
 
-`v1.0.0` përfaqëson modelin klasik final. BERT/XLM-RoBERTa, SHAP dhe deploy
-online mbeten zgjerime opsionale dhe nuk janë pjesë e këtij versioni.
-
-Rezultatet zyrtare indeksohen te `reports/final/README.md`. Historia e plotë
-eksperimentale dhe raportet teknike të mbylljes ruhen te `archive/`.
+`v1.0.0` është modeli klasik final dhe i ngrirë. BERT/XLM-RoBERTa, SHAP dhe
+deployment-i publik mbeten zgjerime jashtë këtij versioni.
