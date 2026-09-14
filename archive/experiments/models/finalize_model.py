@@ -279,7 +279,7 @@ def run_finalization() -> dict:
         "fact_checking": False,
         "streamlit_integration": "integrated_day18",
         "streamlit_runtime": {
-            "app_path": "app/streamlit_app.py",
+            "app_path": "app\\streamlit_app.py",
             "model_loader": "src.models.predict_final.load_final_model",
             "prediction_function": "src.models.predict_final.predict_final_news",
             "model_cache": "streamlit.cache_resource",
