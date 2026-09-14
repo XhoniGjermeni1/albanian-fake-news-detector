@@ -40,17 +40,31 @@ from src.models.builders import (
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 EXTERNAL_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
-DAY15_SELECTION_PATH = PROJECT_ROOT / "archive" / "reports" / "day15_selection.json"
-REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
-MODELS_DIR = PROJECT_ROOT / "archive" / "models"
+DAY15_SELECTION_PATH = (
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "12_svm_tuning"
+    / "selection.json"
+)
+REPORTS_DIR = (
+    PROJECT_ROOT / "reports" / "experiment_history" / "13_calibration_comparison"
+)
+MODELS_DIR = (
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "13_calibration_comparison"
+    / "artifacts"
+)
 
-CALIBRATION_FOLDS_PATH = REPORTS_DIR / "day16_calibration_fold_metrics.csv"
-SELECTION_PATH = REPORTS_DIR / "day16_selection.json"
-INTERNAL_PREDICTIONS_PATH = REPORTS_DIR / "day16_internal_predictions.csv"
-EXTERNAL_PREDICTIONS_PATH = REPORTS_DIR / "day16_external_predictions.csv"
-METRICS_PATH = REPORTS_DIR / "day16_metrics.json"
+CALIBRATION_FOLDS_PATH = REPORTS_DIR / "calibration_fold_metrics.csv"
+SELECTION_PATH = REPORTS_DIR / "selection.json"
+INTERNAL_PREDICTIONS_PATH = REPORTS_DIR / "internal_predictions.csv"
+EXTERNAL_PREDICTIONS_PATH = REPORTS_DIR / "external_predictions.csv"
+METRICS_PATH = REPORTS_DIR / "metrics.json"
 
-CALIBRATED_MODEL_PATH = MODELS_DIR / "day16_word_char_linear_svm_calibrated.joblib"
+CALIBRATED_MODEL_PATH = MODELS_DIR / "word_char_linear_svm_calibrated.joblib"
 
 CALIBRATION_METHODS = ["sigmoid", "isotonic"]
 THRESHOLD_VARIANTS = [

@@ -20,7 +20,13 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 INPUT_DATA_PATH = PROJECT_ROOT / "data" / "interim" / "articles_clean.csv"
 FALLBACK_DATA_PATH = PROJECT_ROOT / "data" / "processed" / "articles.csv"
 FEATURES_PATH = PROJECT_ROOT / "data" / "processed" / "linguistic_features.csv"
-SUMMARY_PATH = PROJECT_ROOT / "reports" / "day3_feature_summary.csv"
+SUMMARY_PATH = (
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "04_linguistic_features"
+    / "feature_summary.csv"
+)
 
 LOGGER = logging.getLogger(__name__)
 

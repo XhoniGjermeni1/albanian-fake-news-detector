@@ -42,10 +42,19 @@ EXTERNAL_DATASET_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
 EXPANSIONS_PATH = PROJECT_ROOT / "data" / "interim" / "day12_external_expansions.csv"
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
-MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
+MODEL_PATH = (
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "06_initial_probability_calibration"
+    / "artifacts"
+    / "calibrated_tfidf_logreg.joblib"
+)
 
-REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
-METRICS_PATH = REPORTS_DIR / "day12_metrics.json"
+REPORTS_DIR = (
+    PROJECT_ROOT / "reports" / "experiment_history" / "09_length_domain_shift"
+)
+METRICS_PATH = REPORTS_DIR / "metrics.json"
 
 VARIANT_ORDER = [
     "full",

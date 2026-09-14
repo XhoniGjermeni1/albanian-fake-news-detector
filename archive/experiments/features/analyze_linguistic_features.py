@@ -17,9 +17,11 @@ from scipy.stats import mannwhitneyu, ttest_ind
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 FEATURES_PATH = PROJECT_ROOT / "data" / "processed" / "linguistic_features.csv"
-REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
+REPORTS_DIR = (
+    PROJECT_ROOT / "reports" / "experiment_history" / "04_linguistic_features"
+)
 
-COMPARISON_PATH = REPORTS_DIR / "day4_feature_comparison.csv"
+COMPARISON_PATH = REPORTS_DIR / "feature_comparison.csv"
 
 KEY_FEATURES = [
     "word_count",

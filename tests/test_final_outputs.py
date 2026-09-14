@@ -6,52 +6,10 @@ import pandas as pd
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-NOTEBOOK_PATH = PROJECT_ROOT / "notebooks" / "02_final_walkthrough.ipynb"
 DEMO_CASES_PATH = PROJECT_ROOT / "reports" / "final" / "demo_cases.csv"
 REGRESSION_FIXTURE_PATH = (
     PROJECT_ROOT / "tests" / "fixtures" / "final_regression_cases.json"
 )
-
-
-def load_notebook() -> dict:
-    return json.loads(NOTEBOOK_PATH.read_text(encoding="utf-8"))
-
-
-def test_final_walkthrough_is_valid_and_uses_frozen_outputs() -> None:
-    notebook = load_notebook()
-    assert notebook["nbformat"] == 4
-    assert len(notebook["cells"]) >= 20
-
-    markdown = "\n".join(
-        "".join(cell["source"])
-        for cell in notebook["cells"]
-        if cell["cell_type"] == "markdown"
-    )
-    code = "\n".join(
-        "".join(cell["source"])
-        for cell in notebook["cells"]
-        if cell["cell_type"] == "code"
-    )
-
-    for section in [
-        "Ngarkimi dhe kontrolli bazë",
-        "Preprocessing bazë",
-        "Word + Character TF-IDF",
-        "Karakteristikat gjuhësore",
-        "Prediction-et e demonstrimit",
-        "Metrikat finale dhe confusion matrix",
-        "Vlerësimi i jashtëm pilot",
-        "Shembull error analysis",
-    ]:
-        assert section in markdown
-
-    assert "load_final_model" in code
-    assert "predict_final_news" in code
-    assert "metrics.json" in code
-    assert "external_predictions.csv" in code
-    assert ".fit(" not in code
-    assert "run_finalization(" not in code
-    assert "train_test_split(" not in code
 
 
 def test_final_demo_cases_are_complete_and_match_regression_anchors() -> None:
@@ -108,7 +66,7 @@ def test_clean_computer_instructions_include_final_runtime() -> None:
     assert "python -m pip install -r requirements.txt" in readme
     assert "python -m streamlit run app\\streamlit_app.py" in readme
     assert "python -m pytest -q" in readme
-    assert "02_final_walkthrough.ipynb" in readme
     assert "final_word_char_linear_svm_calibrated_v1.joblib" in readme
     assert "scikit-learn==1.8.0" in requirements
-    assert "jupyterlab" in requirements
+    assert "jupyterlab" not in requirements
+    assert "ipykernel" not in requirements

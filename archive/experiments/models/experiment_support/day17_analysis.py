@@ -49,19 +49,27 @@ TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 EXTERNAL_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
 SOURCE_MODEL_PATH = (
-    PROJECT_ROOT / "archive" / "models" / "day16_word_char_linear_svm_calibrated.joblib"
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "13_calibration_comparison"
+    / "artifacts"
+    / "word_char_linear_svm_calibrated.joblib"
 )
-DAY16_SELECTION_PATH = PROJECT_ROOT / "archive" / "reports" / "day16_selection.json"
-DAY16_METRICS_PATH = PROJECT_ROOT / "archive" / "reports" / "day16_metrics.json"
-DAY16_FOLDS_PATH = PROJECT_ROOT / "archive" / "reports" / "day16_calibration_fold_metrics.csv"
+DAY16_REPORTS_DIR = (
+    PROJECT_ROOT / "reports" / "experiment_history" / "13_calibration_comparison"
+)
+DAY16_SELECTION_PATH = DAY16_REPORTS_DIR / "selection.json"
+DAY16_METRICS_PATH = DAY16_REPORTS_DIR / "metrics.json"
+DAY16_FOLDS_PATH = DAY16_REPORTS_DIR / "calibration_fold_metrics.csv"
 DAY16_INTERNAL_PREDICTIONS_PATH = (
-    PROJECT_ROOT / "archive" / "reports" / "day16_internal_predictions.csv"
+    DAY16_REPORTS_DIR / "internal_predictions.csv"
 )
 DAY16_EXTERNAL_PREDICTIONS_PATH = (
-    PROJECT_ROOT / "archive" / "reports" / "day16_external_predictions.csv"
+    DAY16_REPORTS_DIR / "external_predictions.csv"
 )
-REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
-METRICS_PATH = REPORTS_DIR / "day17_final_metrics.json"
+REPORTS_DIR = PROJECT_ROOT / "reports" / "final"
+METRICS_PATH = REPORTS_DIR / "metrics.json"
 
 FINAL_MODEL_NAME = "final_word_char_svm"
 EXPECTED_TRAIN_ROWS = 3195

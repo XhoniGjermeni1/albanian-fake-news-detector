@@ -22,9 +22,9 @@ def test_gitignore_excludes_experiments_but_keeps_final_model() -> None:
 
     assert ".venv/" in gitignore
     assert "__pycache__/" in gitignore
-    assert "models/*.joblib" in gitignore
-    assert "!models/final_word_char_linear_svm_calibrated_v1.joblib" in gitignore
-    assert "archive/models/*.joblib" in gitignore
+    assert "final_model/*.joblib" in gitignore
+    assert "!final_model/final_word_char_linear_svm_calibrated_v1.joblib" in gitignore
+    assert "reports/experiment_history/**/artifacts/*.joblib" in gitignore
 
 
 def test_repository_separates_active_code_from_historical_experiments() -> None:
@@ -49,7 +49,6 @@ def test_final_documentation_and_dependencies_are_reproducible() -> None:
         "Rezultatet Kryesore",
         "Kufizimet",
         "python -m streamlit run app\\streamlit_app.py",
-        "python -m jupyter lab notebooks\\02_final_walkthrough.ipynb",
         "python -m pytest -q",
         "nuk zëvendëson fact-checking-un",
     ]:
@@ -64,8 +63,6 @@ def test_final_documentation_and_dependencies_are_reproducible() -> None:
         "joblib==1.5.3",
         "streamlit==1.60.0",
         "pytest==9.1.1",
-        "jupyterlab==4.6.2",
-        "ipykernel==7.2.0",
     ]:
         assert requirement in requirements
 
@@ -78,9 +75,8 @@ def test_project_has_one_readme_and_one_final_report() -> None:
         PROJECT_ROOT / "app",
         PROJECT_ROOT / "src",
         PROJECT_ROOT / "archive",
-        PROJECT_ROOT / "models",
+        PROJECT_ROOT / "final_model",
         PROJECT_ROOT / "reports",
-        PROJECT_ROOT / "notebooks",
         PROJECT_ROOT / "tests",
         PROJECT_ROOT / "data" / "external",
         PROJECT_ROOT / "data" / "interim",

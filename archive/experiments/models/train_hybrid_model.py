@@ -29,13 +29,28 @@ TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 FEATURES_PATH = PROJECT_ROOT / "data" / "processed" / "linguistic_features.csv"
 
-MODEL_DIR = PROJECT_ROOT / "archive" / "models"
-REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
+EXPERIMENT_HISTORY_DIR = PROJECT_ROOT / "reports" / "experiment_history"
+REPORTS_DIR = (
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "05_linguistic_hybrid_models"
+)
 
-BASELINE_MODEL_PATH = MODEL_DIR / "baseline_tfidf_logreg.joblib"
-HYBRID_MODEL_PATH = MODEL_DIR / "hybrid_tfidf_linguistic_logreg.joblib"
-METRICS_PATH = REPORTS_DIR / "day5_metrics.json"
-COMPARISON_PATH = REPORTS_DIR / "day5_model_comparison.csv"
+BASELINE_MODEL_PATH = (
+    EXPERIMENT_HISTORY_DIR
+    / "03_word_tfidf_logreg"
+    / "artifacts"
+    / "baseline_tfidf_logreg.joblib"
+)
+HYBRID_MODEL_PATH = (
+    EXPERIMENT_HISTORY_DIR
+    / "05_linguistic_hybrid_models"
+    / "artifacts"
+    / "hybrid_tfidf_linguistic_logreg.joblib"
+)
+METRICS_PATH = REPORTS_DIR / "metrics.json"
+COMPARISON_PATH = REPORTS_DIR / "model_comparison.csv"
 
 DIRECT_LENGTH_FEATURES = [
     "word_count",
@@ -325,7 +340,8 @@ def _relative_path(path: Path) -> str:
 
 
 def train_and_compare_models() -> dict:
-    MODEL_DIR.mkdir(parents=True, exist_ok=True)
+    BASELINE_MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
+    HYBRID_MODEL_PATH.parent.mkdir(parents=True, exist_ok=True)
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
 
     train_data, test_data, feature_columns, checks = load_and_check_data()

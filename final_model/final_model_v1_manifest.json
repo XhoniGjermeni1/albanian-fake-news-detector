@@ -4,8 +4,8 @@
   "model_id": "albanian_fake_news_word_char_svm_sigmoid_v1",
   "model_version": "1.0.0",
   "artifact": {
-    "source_path": "models\\day16_word_char_linear_svm_calibrated.joblib",
-    "final_path": "models\\final_word_char_linear_svm_calibrated_v1.joblib",
+    "source_path": "reports\\experiment_history\\13_calibration_comparison\\artifacts\\word_char_linear_svm_calibrated.joblib",
+    "final_path": "final_model\\final_word_char_linear_svm_calibrated_v1.joblib",
     "source_sha256": "52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5",
     "final_sha256": "52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5",
     "byte_identical": true,

@@ -250,7 +250,7 @@ pa ndryshim konfigurimi. U verifikuan:
 Artefakti final:
 
 ```text
-models/final_word_char_linear_svm_calibrated_v1.joblib
+final_model/final_word_char_linear_svm_calibrated_v1.joblib
 ```
 
 SHA-256:

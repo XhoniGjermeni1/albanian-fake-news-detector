@@ -18,9 +18,27 @@ from src.models.prediction_utils import (
 )
 from src.preprocessing.clean_text import combine_title_content
 
-DEFAULT_MODEL_PATH = Path("models/baseline_tfidf_logreg.joblib")
-DEFAULT_HYBRID_MODEL_PATH = Path("models/hybrid_tfidf_linguistic_logreg.joblib")
-DEFAULT_CALIBRATED_MODEL_PATH = Path("models/calibrated_tfidf_logreg.joblib")
+PROJECT_ROOT = Path(__file__).resolve().parents[3]
+EXPERIMENT_HISTORY_DIR = PROJECT_ROOT / "reports" / "experiment_history"
+
+DEFAULT_MODEL_PATH = (
+    EXPERIMENT_HISTORY_DIR
+    / "03_word_tfidf_logreg"
+    / "artifacts"
+    / "baseline_tfidf_logreg.joblib"
+)
+DEFAULT_HYBRID_MODEL_PATH = (
+    EXPERIMENT_HISTORY_DIR
+    / "05_linguistic_hybrid_models"
+    / "artifacts"
+    / "hybrid_tfidf_linguistic_logreg.joblib"
+)
+DEFAULT_CALIBRATED_MODEL_PATH = (
+    EXPERIMENT_HISTORY_DIR
+    / "06_initial_probability_calibration"
+    / "artifacts"
+    / "calibrated_tfidf_logreg.joblib"
+)
 
 
 def load_model(model_path: str | Path = DEFAULT_MODEL_PATH):

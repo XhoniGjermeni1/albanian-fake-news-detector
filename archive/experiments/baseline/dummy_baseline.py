@@ -25,7 +25,9 @@ TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
 FINAL_COMPARISON_PATH = (
     PROJECT_ROOT / "reports" / "final" / "model_comparison.csv"
 )
-OUTPUT_DIR = PROJECT_ROOT / "archive" / "reports" / "experiments" / "baseline"
+OUTPUT_DIR = (
+    PROJECT_ROOT / "reports" / "experiment_history" / "02_dummy_baseline"
+)
 METRICS_PATH = OUTPUT_DIR / "dummy_baseline_metrics.json"
 COMPARISON_PATH = OUTPUT_DIR / "dummy_baseline_comparison.csv"
 

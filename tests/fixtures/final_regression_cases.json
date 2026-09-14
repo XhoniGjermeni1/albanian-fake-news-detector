@@ -1,6 +1,6 @@
 {
   "purpose": "Immutable runtime snapshot captured before the readability refactor",
-  "model_path": "models/final_word_char_linear_svm_calibrated_v1.joblib",
+  "model_path": "final_model/final_word_char_linear_svm_calibrated_v1.joblib",
   "model_sha256": "52ccbc976b10b4a5749e9814d736661ec66c95e1218a19692bdb0ea53dab11d5",
   "model_size_bytes": 1416167,
   "test_suite": {

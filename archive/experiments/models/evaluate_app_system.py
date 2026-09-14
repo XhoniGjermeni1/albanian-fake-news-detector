@@ -28,10 +28,19 @@ from src.preprocessing.clean_text import combine_title_content
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
-MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
+MODEL_PATH = (
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "06_initial_probability_calibration"
+    / "artifacts"
+    / "calibrated_tfidf_logreg.joblib"
+)
 
-REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
-METRICS_PATH = REPORTS_DIR / "day9_system_test_metrics.json"
+REPORTS_DIR = (
+    PROJECT_ROOT / "reports" / "experiment_history" / "07_application_contract"
+)
+METRICS_PATH = REPORTS_DIR / "metrics.json"
 
 LOGGER = logging.getLogger(__name__)
 

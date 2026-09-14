@@ -27,14 +27,22 @@ from archive.experiments.models.predict import predict_news
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 INPUT_DATA_PATH = PROJECT_ROOT / "data" / "processed" / "articles.csv"
 INTERIM_DIR = PROJECT_ROOT / "data" / "interim"
-MODEL_DIR = PROJECT_ROOT / "archive" / "models"
-REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
+MODEL_DIR = (
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "03_word_tfidf_logreg"
+    / "artifacts"
+)
+REPORTS_DIR = (
+    PROJECT_ROOT / "reports" / "experiment_history" / "03_word_tfidf_logreg"
+)
 
 CLEAN_DATA_PATH = INTERIM_DIR / "articles_clean.csv"
 TRAIN_DATA_PATH = INTERIM_DIR / "train.csv"
 TEST_DATA_PATH = INTERIM_DIR / "test.csv"
 MODEL_PATH = MODEL_DIR / "baseline_tfidf_logreg.joblib"
-METRICS_PATH = REPORTS_DIR / "day2_metrics.json"
+METRICS_PATH = REPORTS_DIR / "metrics.json"
 
 LOGGER = logging.getLogger(__name__)
 

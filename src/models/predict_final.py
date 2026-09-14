@@ -22,9 +22,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 FINAL_MODEL_ID = "albanian_fake_news_word_char_svm_sigmoid_v1"
 FINAL_MODEL_VERSION = "1.0.0"
 FINAL_MODEL_PATH = (
-    PROJECT_ROOT / "models" / "final_word_char_linear_svm_calibrated_v1.joblib"
+    PROJECT_ROOT / "final_model" / "final_word_char_linear_svm_calibrated_v1.joblib"
 )
-FINAL_MANIFEST_PATH = PROJECT_ROOT / "models" / "final_model_v1_manifest.json"
+FINAL_MANIFEST_PATH = PROJECT_ROOT / "final_model" / "final_model_v1_manifest.json"
 FINAL_REAL_THRESHOLD = DEFAULT_REAL_THRESHOLD
 FINAL_FAKE_THRESHOLD = DEFAULT_FAKE_THRESHOLD
 FINAL_NOTICE = (

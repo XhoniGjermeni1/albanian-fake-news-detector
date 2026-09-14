@@ -33,13 +33,23 @@ from src.models.builders import (
 
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 DAY13_SELECTION_PATH = (
-    PROJECT_ROOT / "archive" / "reports" / "day13_internal_selection.json"
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "10_tfidf_representations"
+    / "selection.json"
 )
-DAY14_SELECTION_PATH = PROJECT_ROOT / "archive" / "reports" / "day14_selection.json"
+DAY14_SELECTION_PATH = (
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "11_classifier_comparison"
+    / "selection.json"
+)
 
-REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
-SELECTION_PATH = REPORTS_DIR / "day15_selection.json"
-METRICS_PATH = REPORTS_DIR / "day15_metrics.json"
+REPORTS_DIR = PROJECT_ROOT / "reports" / "experiment_history" / "12_svm_tuning"
+SELECTION_PATH = REPORTS_DIR / "selection.json"
+METRICS_PATH = REPORTS_DIR / "metrics.json"
 
 C_VALUES = [0.25, 0.5, 1.0, 2.0, 4.0]
 BASELINE_C = FINAL_SVM_C

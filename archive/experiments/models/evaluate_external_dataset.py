@@ -33,14 +33,23 @@ from src.features.linguistic_features import extract_linguistic_features
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 EXTERNAL_DATASET_PATH = PROJECT_ROOT / "data" / "external" / "external_news.csv"
-MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
+MODEL_PATH = (
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "06_initial_probability_calibration"
+    / "artifacts"
+    / "calibrated_tfidf_logreg.joblib"
+)
 RAW_METADATA_ROOT = (
     PROJECT_ROOT / "data" / "raw" / "alb-fake-news-corpus" / "full_texts"
 )
 
-REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
-PREDICTIONS_PATH = REPORTS_DIR / "day11_external_predictions.csv"
-METRICS_PATH = REPORTS_DIR / "day11_external_metrics.json"
+REPORTS_DIR = (
+    PROJECT_ROOT / "reports" / "experiment_history" / "08_external_evaluation"
+)
+PREDICTIONS_PATH = REPORTS_DIR / "historical_predictions.csv"
+METRICS_PATH = REPORTS_DIR / "historical_metrics.json"
 
 LOGGER = logging.getLogger(__name__)
 LABEL_TO_NUMBER = {"real": 0, "fake": 1}

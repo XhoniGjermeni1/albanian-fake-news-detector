@@ -24,8 +24,9 @@ DEFAULT_TRAINING_PATH = PROJECT_ROOT / "data" / "interim" / "articles_clean.csv"
 DEFAULT_METADATA_ROOT = (
     PROJECT_ROOT / "data" / "raw" / "alb-fake-news-corpus" / "full_texts"
 )
-DEFAULT_REPORT_PATH = PROJECT_ROOT / "archive" / "reports" / "day10_external_dataset_audit.json"
-DEFAULT_SIMILARITY_PATH = PROJECT_ROOT / "archive" / "reports" / "day10_external_similarity_review.csv"
+OUTPUT_DIR = PROJECT_ROOT / "reports" / "experiment_history" / "08_external_evaluation"
+DEFAULT_REPORT_PATH = OUTPUT_DIR / "dataset_audit.json"
+DEFAULT_SIMILARITY_PATH = OUTPUT_DIR / "similarity_review.csv"
 
 REQUIRED_COLUMNS = [
     "external_id",

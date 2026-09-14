@@ -22,11 +22,19 @@ from src.models.builders import FIXED_CHAR_CONFIG, build_fixed_features
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
-DAY13_SELECTION_PATH = PROJECT_ROOT / "archive" / "reports" / "day13_internal_selection.json"
+DAY13_SELECTION_PATH = (
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "10_tfidf_representations"
+    / "selection.json"
+)
 
-REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
-SELECTION_PATH = REPORTS_DIR / "day14_selection.json"
-METRICS_PATH = REPORTS_DIR / "day14_metrics.json"
+REPORTS_DIR = (
+    PROJECT_ROOT / "reports" / "experiment_history" / "11_classifier_comparison"
+)
+SELECTION_PATH = REPORTS_DIR / "selection.json"
+METRICS_PATH = REPORTS_DIR / "metrics.json"
 
 CLASSIFIER_DISPLAY = {
     "logistic_regression": "Logistic Regression",

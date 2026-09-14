@@ -13,6 +13,8 @@ llogarit probabilitetet `real/fake` dhe kthen një nga tri vendimet:
 
 Për metodologjinë, krahasimin e eksperimenteve dhe përfundimet, shiko
 [`reports/final/FINAL_REPORT.md`](reports/final/FINAL_REPORT.md).
+Historia kronologjike me një dosje të veçantë për çdo eksperiment ndodhet te
+[`reports/experiment_history/EXPERIMENT_HISTORY.md`](reports/experiment_history/EXPERIMENT_HISTORY.md).
 
 ## Modeli Final
 
@@ -31,8 +33,8 @@ Versioni final `v1.0.0` përdor:
 Artefaktet aktive janë:
 
 ```text
-models/final_word_char_linear_svm_calibrated_v1.joblib
-models/final_model_v1_manifest.json
+final_model/final_word_char_linear_svm_calibrated_v1.joblib
+final_model/final_model_v1_manifest.json
 ```
 
 SHA-256 i modelit final:
@@ -60,20 +62,23 @@ albanian-fake-news-detector/
 │   ├── processed/        # dataset-i i përpunuar dhe linguistic features
 │   ├── interim/          # clean dataset dhe split-et e ngrira
 │   └── external/         # benchmark-u pilot i jashtëm
-├── models/               # modeli final dhe manifesti i versionuar
-├── reports/final/        # raporti dhe rezultatet zyrtare
-├── notebooks/            # auditimi i dataset-it dhe walkthrough-u final
+├── final_model/
+│   ├── final_word_char_linear_svm_calibrated_v1.joblib
+│   └── final_model_v1_manifest.json
+├── reports/
+│   ├── final/            # raporti dhe rezultatet zyrtare
+│   └── experiment_history/ # rezultate dhe modele sipas eksperimentit
 ├── tests/                # testet e të dhënave, modelit dhe aplikacionit
 ├── archive/
-│   ├── experiments/      # eksperimentet që çuan te modeli final
-│   ├── models/           # modele historike lokale, të injoruara nga Git
-│   └── reports/          # artefakte minimale për reproducibility
+│   └── experiments/      # kodi i eksperimenteve që çoi te modeli final
 ├── requirements.txt
 └── README.md
 ```
 
-`app/` dhe prediction-i final nuk importojnë nga `archive/`. Arkiva ruan
-provat dhe vendimet eksperimentale, por nuk është pjesë e runtime-it.
+`app/` dhe prediction-i final nuk importojnë nga `archive/`. Arkiva ruan vetëm
+kodin historik; rezultatet dhe modelet eksperimentale ruhen pranë njëri-tjetrit
+në `reports/experiment_history/`. Dosja `final_model/` ruan vetëm modelin final dhe
+manifestin që përdor runtime-i.
 
 ## Pipeline-i i të Dhënave dhe Modelit
 
@@ -108,7 +113,7 @@ Linear SVM (C=1.0)
 sigmoid calibration + thresholds 0.30/0.70
         │
         ▼
-models/final_word_char_linear_svm_calibrated_v1.joblib
+final_model/final_word_char_linear_svm_calibrated_v1.joblib
         │
         ▼
 src/models/predict_final.py
@@ -289,15 +294,6 @@ Testet mbulojnë dataset-in, preprocessing-un, leakage checks, linguistic
 features, eksperimentet e modelit, probabilitetet, thresholds, prediction
 anchors, SHA-256 dhe Streamlit.
 
-## Notebook-et
-
-```powershell
-python -m jupyter lab notebooks\02_final_walkthrough.ipynb
-```
-
-`01_dataset_audit.ipynb` dokumenton dataset-in. `02_final_walkthrough.ipynb`
-ndjek pipeline-in final dhe lexon output-et e ngrira pa ritrajnuar modelin.
-
 ## Rindërtimi i Dataset-it
 
 ```powershell
@@ -313,6 +309,7 @@ modelin final.
 | Artefakti | Përmbajtja |
 |---|---|
 | `reports/final/FINAL_REPORT.md` | Metodologjia dhe përfundimet e eksperimenteve. |
+| `reports/experiment_history/EXPERIMENT_HISTORY.md` | Rrjedha kronologjike dhe artefaktet e çdo eksperimenti. |
 | `reports/final/metrics.json` | Metrikat e plota dhe kontrollet e integritetit. |
 | `reports/final/model_comparison.csv` | Krahasimi baseline–model final. |
 | `reports/final/external_evaluation.csv` | Metrikat e benchmark-ut të jashtëm. |

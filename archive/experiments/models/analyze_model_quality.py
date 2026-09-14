@@ -31,12 +31,28 @@ from archive.experiments.models.train_hybrid_model import build_tfidf_model
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 TRAIN_PATH = PROJECT_ROOT / "data" / "interim" / "train.csv"
 TEST_PATH = PROJECT_ROOT / "data" / "interim" / "test.csv"
-BASELINE_MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "baseline_tfidf_logreg.joblib"
-CALIBRATED_MODEL_PATH = PROJECT_ROOT / "archive" / "models" / "calibrated_tfidf_logreg.joblib"
+EXPERIMENT_HISTORY_DIR = PROJECT_ROOT / "reports" / "experiment_history"
+BASELINE_MODEL_PATH = (
+    EXPERIMENT_HISTORY_DIR
+    / "03_word_tfidf_logreg"
+    / "artifacts"
+    / "baseline_tfidf_logreg.joblib"
+)
+CALIBRATED_MODEL_PATH = (
+    EXPERIMENT_HISTORY_DIR
+    / "06_initial_probability_calibration"
+    / "artifacts"
+    / "calibrated_tfidf_logreg.joblib"
+)
 
-REPORTS_DIR = PROJECT_ROOT / "archive" / "reports"
-METRICS_PATH = REPORTS_DIR / "day6_metrics.json"
-THRESHOLD_PATH = REPORTS_DIR / "day6_threshold_comparison.csv"
+REPORTS_DIR = (
+    PROJECT_ROOT
+    / "reports"
+    / "experiment_history"
+    / "06_initial_probability_calibration"
+)
+METRICS_PATH = REPORTS_DIR / "metrics.json"
+THRESHOLD_PATH = REPORTS_DIR / "threshold_comparison.csv"
 
 THRESHOLD_VARIANTS = [
     ("35-65", 0.35, 0.65),

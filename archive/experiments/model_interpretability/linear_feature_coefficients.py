@@ -16,7 +16,9 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from src.models.predict_final import FINAL_MODEL_PATH  
 
-OUTPUT_DIR = PROJECT_ROOT / "archive" / "reports" / "experiments" / "interpretability"
+OUTPUT_DIR = (
+    PROJECT_ROOT / "reports" / "experiment_history" / "16_interpretability"
+)
 FEATURES_PATH = OUTPUT_DIR / "top_linear_features.csv"
 TOP_FEATURES_PER_DIRECTION = 25
 

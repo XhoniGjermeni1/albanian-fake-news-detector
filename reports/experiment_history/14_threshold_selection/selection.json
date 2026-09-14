@@ -1,0 +1,86 @@
+{
+  "selection_scope": "nested_group_safe_oof_train_only",
+  "fixed_configuration": {
+    "representation": "word_char_tfidf",
+    "classifier": "linear_svm",
+    "c_value": 1.0
+  },
+  "calibration": {
+    "selected_method": "sigmoid",
+    "method_selection_reason": "sigmoid_within_tolerance_and_lower_overfitting_risk",
+    "brier_tolerance": 0.002,
+    "log_loss_tolerance": 0.01,
+    "selected_brier_score": 0.06533808253624682,
+    "selected_log_loss": 0.2175249170490064,
+    "selected_ece": 0.01485606863345847,
+    "selected_std_brier_score": 0.004025278894834817
+  },
+  "thresholds": {
+    "threshold_name": "30_70",
+    "lower_threshold": 0.3,
+    "upper_threshold": 0.7,
+    "threshold_selection_rule": "Keep variants within 0.005 strong accuracy of the best, then prefer higher strong coverage, more captured errors, fewer strong FN/FP.",
+    "strong_accuracy_tolerance": 0.005,
+    "oof_strong_coverage": 0.8857589984350548,
+    "oof_strong_accuracy": 0.9487632508833922,
+    "oof_errors_in_uncertain": 132,
+    "oof_strong_false_positives": 54,
+    "oof_strong_false_negatives": 91
+  },
+  "internal_test_used": false,
+  "current_app_model_used": false,
+  "external_results_used": false,
+  "outer_fold_audit": [
+    {
+      "fold": 1,
+      "fit_rows": 2556,
+      "validation_rows": 639,
+      "fit_groups": 1267,
+      "validation_groups": 319,
+      "overlapping_groups": 0,
+      "validation_real": 320,
+      "validation_fake": 319
+    },
+    {
+      "fold": 2,
+      "fit_rows": 2556,
+      "validation_rows": 639,
+      "fit_groups": 1272,
+      "validation_groups": 314,
+      "overlapping_groups": 0,
+      "validation_real": 319,
+      "validation_fake": 320
+    },
+    {
+      "fold": 3,
+      "fit_rows": 2556,
+      "validation_rows": 639,
+      "fit_groups": 1267,
+      "validation_groups": 319,
+      "overlapping_groups": 0,
+      "validation_real": 320,
+      "validation_fake": 319
+    },
+    {
+      "fold": 4,
+      "fit_rows": 2556,
+      "validation_rows": 639,
+      "fit_groups": 1270,
+      "validation_groups": 316,
+      "overlapping_groups": 0,
+      "validation_real": 319,
+      "validation_fake": 320
+    },
+    {
+      "fold": 5,
+      "fit_rows": 2556,
+      "validation_rows": 639,
+      "fit_groups": 1268,
+      "validation_groups": 318,
+      "overlapping_groups": 0,
+      "validation_real": 320,
+      "validation_fake": 319
+    }
+  ],
+  "group_count": 1586
+}
