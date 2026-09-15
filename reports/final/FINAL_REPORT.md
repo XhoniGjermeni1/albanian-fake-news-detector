@@ -84,6 +84,10 @@ Shenjat e pikësimit u analizuan veçmas. Për 100 fjalë, lajmet real përdorin
 shumë presje dhe thonjëza, ndërsa lajmet fake përdorin më shumë pikëçuditëse,
 pikëpyetje dhe tri pika.
 
+U kontrollua edhe përdorimi i emoji-ve. Ato shfaqen vetëm në 26 nga 3,994
+artikuj: 14 real dhe 12 fake. Për shkak të përdorimit shumë të rrallë dhe
+shpërndarjes pothuajse të barabartë, emoji-t nuk u përdorën si sinjal i modelit.
+
 Modeli që përdori vetëm linguistic features arriti accuracy `0.8273` dhe F1
 fake `0.8249`.
 

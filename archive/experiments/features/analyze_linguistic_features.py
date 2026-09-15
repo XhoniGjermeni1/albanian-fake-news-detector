@@ -16,15 +16,19 @@ import pandas as pd
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from src.features.linguistic_features import count_emojis
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 FEATURES_PATH = PROJECT_ROOT / "data" / "processed" / "linguistic_features.csv"
+ARTICLES_PATH = PROJECT_ROOT / "data" / "processed" / "articles.csv"
 REPORTS_DIR = (
     PROJECT_ROOT / "reports" / "experiment_history" / "04_linguistic_features"
 )
 FIGURES_DIR = REPORTS_DIR / "figures"
 COMPARISON_PATH = REPORTS_DIR / "linguistic_comparison.csv"
 PUNCTUATION_PATH = REPORTS_DIR / "punctuation_comparison.csv"
+EMOJI_SUMMARY_PATH = REPORTS_DIR / "emoji_summary.csv"
 
 LABELS = ["real", "fake"]
 LABEL_NAMES = {"real": "Real", "fake": "Fake"}
@@ -74,6 +78,19 @@ def load_features() -> pd.DataFrame:
     return features
 
 
+def load_articles() -> pd.DataFrame:
+    articles = pd.read_csv(
+        ARTICLES_PATH,
+        encoding="utf-8-sig",
+        keep_default_na=False,
+    )
+    required_columns = {"title", "content", "label_name"}
+    missing_columns = sorted(required_columns.difference(articles.columns))
+    if missing_columns:
+        raise ValueError(f"Mungojnë kolonat për analizën e emoji-ve: {missing_columns}")
+    return articles
+
+
 def compare_features(
     features: pd.DataFrame,
     feature_names: list[str] = KEY_FEATURES,
@@ -119,6 +136,44 @@ def compare_punctuation(features: pd.DataFrame) -> pd.DataFrame:
                 "me_e_shpeshte_te": higher_class,
             }
         )
+    return pd.DataFrame(rows)
+
+
+def summarize_emojis(articles: pd.DataFrame) -> pd.DataFrame:
+    articles = articles.copy()
+    combined_text = articles["title"].astype(str) + " " + articles["content"].astype(str)
+    articles["emoji_count"] = combined_text.map(count_emojis)
+
+    rows = []
+    for label in LABELS:
+        subset = articles.loc[articles["label_name"].eq(label)]
+        articles_with_emoji = int(subset["emoji_count"].gt(0).sum())
+        rows.append(
+            {
+                "lloji_i_lajmit": label,
+                "artikuj_gjithsej": int(len(subset)),
+                "artikuj_me_emoji": articles_with_emoji,
+                "perqindja_e_artikujve_me_emoji": round(
+                    articles_with_emoji / len(subset) * 100,
+                    4,
+                ),
+                "numri_total_i_emojive": int(subset["emoji_count"].sum()),
+            }
+        )
+
+    total_with_emoji = int(articles["emoji_count"].gt(0).sum())
+    rows.append(
+        {
+            "lloji_i_lajmit": "gjithsej",
+            "artikuj_gjithsej": int(len(articles)),
+            "artikuj_me_emoji": total_with_emoji,
+            "perqindja_e_artikujve_me_emoji": round(
+                total_with_emoji / len(articles) * 100,
+                4,
+            ),
+            "numri_total_i_emojive": int(articles["emoji_count"].sum()),
+        }
+    )
     return pd.DataFrame(rows)
 
 
@@ -343,10 +398,13 @@ def create_figures(features: pd.DataFrame) -> None:
 def run_analysis() -> pd.DataFrame:
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     features = load_features()
+    articles = load_articles()
     comparison = compare_features(features)
     punctuation = compare_punctuation(features)
+    emoji_summary = summarize_emojis(articles)
     comparison.to_csv(COMPARISON_PATH, index=False, encoding="utf-8-sig")
     punctuation.to_csv(PUNCTUATION_PATH, index=False, encoding="utf-8-sig")
+    emoji_summary.to_csv(EMOJI_SUMMARY_PATH, index=False, encoding="utf-8-sig")
     create_figures(features)
     return comparison
 
@@ -358,6 +416,7 @@ def main() -> None:
     print(f"Karakteristika të krahasuara: {len(comparison)}")
     print(f"Tabela u ruajt te: {COMPARISON_PATH}")
     print(f"Krahasimi i pikësimit u ruajt te: {PUNCTUATION_PATH}")
+    print(f"Përmbledhja e emoji-ve u ruajt te: {EMOJI_SUMMARY_PATH}")
     print(f"Grafikët u ruajtën te: {FIGURES_DIR}")
 
 

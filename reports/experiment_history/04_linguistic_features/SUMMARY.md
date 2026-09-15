@@ -19,8 +19,9 @@ Analiza është përshkruese dhe nuk përdor teste statistikore. Ajo synon ta b�
 - Kur shenjat llogariten për 100 fjalë, lajmet real përdorin më shumë presje dhe thonjëza, ndërsa lajmet fake përdorin më shumë pikëçuditëse, pikëpyetje dhe tri pika.
 - Lajmet fake përdorin pak më shpesh kapitalizim dhe shprehje sensacionale.
 - Përdorimi i shkronjave `ë/ç` është mesatarisht më i lartë te lajmet real.
+- Emoji-t janë shumë të rralla: gjenden vetëm në 26 nga 3,994 artikuj. Prej tyre, 14 janë lajme real dhe 12 fake, prandaj nuk paraqesin dallim të dobishëm ndërmjet klasave.
 
-Tabela [linguistic_comparison.csv](linguistic_comparison.csv) ruan mesataren për lajmet real, mesataren për lajmet fake, diferencën dhe klasën ku secila karakteristikë është më e lartë. Tabela [punctuation_comparison.csv](punctuation_comparison.csv) paraqet veçmas çdo shenjë pikësimi për 100 fjalë.
+Tabela [linguistic_comparison.csv](linguistic_comparison.csv) ruan mesataren për lajmet real, mesataren për lajmet fake, diferencën dhe klasën ku secila karakteristikë është më e lartë. Tabela [punctuation_comparison.csv](punctuation_comparison.csv) paraqet veçmas çdo shenjë pikësimi për 100 fjalë. Tabela [emoji_summary.csv](emoji_summary.csv) dokumenton përdorimin e rrallë të emoji-ve pa i trajtuar ato si feature të modelit.
 
 ## 4. Përfundimi
 
@@ -34,6 +35,6 @@ Meqë karakteristikat gjuhësore dallojnë mes klasave, ato u testuan më pas si
 
 - Script-e: `src/features/linguistic_features.py`, `src/features/build_linguistic_features.py`, `archive/experiments/features/analyze_linguistic_features.py`.
 - Dataset: `data/processed/linguistic_features.csv`.
-- Tabela: [feature_summary.csv](feature_summary.csv), [linguistic_comparison.csv](linguistic_comparison.csv), [punctuation_comparison.csv](punctuation_comparison.csv).
+- Tabela: [feature_summary.csv](feature_summary.csv), [linguistic_comparison.csv](linguistic_comparison.csv), [punctuation_comparison.csv](punctuation_comparison.csv), [emoji_summary.csv](emoji_summary.csv).
 - Figura: [shpërndarja e lajmeve real dhe fake](figures/shperndarja_lajmeve_real_fake.png), [shpërndarja e gjatësisë së lajmeve](figures/shperndarja_gjatesise_lajmeve.png), [krahasimi i gjatësisë dhe strukturës](figures/krahasimi_gjatesise_dhe_struktures.png), [krahasimi i shenjave të pikësimit](figures/krahasimi_shenjave_te_pikesimit.png), [krahasimi i sinjaleve gjuhësore](figures/krahasimi_sinjaleve_gjuhesore.png), [krahasimi i kapitalizimit dhe diakritikave](figures/krahasimi_kapitalizimit_dhe_diacritikave.png).
 - Model: nuk prodhohet model në këtë fazë.

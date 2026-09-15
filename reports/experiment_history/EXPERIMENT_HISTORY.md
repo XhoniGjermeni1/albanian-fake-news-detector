@@ -86,7 +86,7 @@ Dataset i vlefshëm dhe split pa leakage
 
 **Eksperimenti →** U nxorën karakteristika numerike dhe u krahasuan mesataret dhe shpërndarjet e tyre. Marker-at gjuhësorë u krahasuan edhe për 100 fjalë, për të kontrolluar ndikimin e gjatësisë.
 
-**Rezultati →** Lajmet real janë mesatarisht më të gjata dhe përdorin më shumë tregues burimi, pasiguri, diakritika, presje dhe thonjëza; lajmet fake kanë tituj më të gjatë dhe përdorin pak më shumë kapitalizim, shprehje sensacionale, pikëçuditëse, pikëpyetje dhe tri pika. [linguistic_comparison.csv](04_linguistic_features/linguistic_comparison.csv) ruan krahasimin e plotë përshkrues.
+**Rezultati →** Lajmet real janë mesatarisht më të gjata dhe përdorin më shumë tregues burimi, pasiguri, diakritika, presje dhe thonjëza; lajmet fake kanë tituj më të gjatë dhe përdorin pak më shumë kapitalizim, shprehje sensacionale, pikëçuditëse, pikëpyetje dhe tri pika. Emoji-t u gjetën vetëm në 26 artikuj dhe ishin pothuajse të balancuara mes klasave. [linguistic_comparison.csv](04_linguistic_features/linguistic_comparison.csv) ruan krahasimin e plotë përshkrues.
 
 **Përfundimi →** Linguistic features kanë sinjal, por gjatësia dhe disa marker-a mund të jenë bias i corpus-it.
 
