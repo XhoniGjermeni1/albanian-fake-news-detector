@@ -1,6 +1,15 @@
 import pandas as pd
 
-from src.features.linguistic_features import extract_features_dataframe, extract_linguistic_features
+from src.features.linguistic_features import (
+    count_emojis,
+    extract_features_dataframe,
+    extract_linguistic_features,
+)
+
+
+def test_count_emojis_handles_flags_modifiers_and_joined_emoji() -> None:
+    assert count_emojis("Tekst pa emoji") == 0
+    assert count_emojis("😂 ❤️ 🇦🇱 🤦‍♂️ 👍🏽") == 5
 
 
 def test_extract_linguistic_features_counts_basic_structure() -> None:

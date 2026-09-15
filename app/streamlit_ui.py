@@ -210,6 +210,7 @@ def build_human_explanations(explanation: dict) -> list[str]:
     word_count = int(explanation["word_count"])
     text_length = int(explanation["text_length"])
     exclamation_count = int(explanation["exclamation_count"])
+    emoji_count = int(explanation.get("emoji_count", 0))
     uppercase_ratio = float(explanation["uppercase_ratio"])
     diacritic_ratio = float(explanation["diacritic_ratio"])
 
@@ -230,6 +231,13 @@ def build_human_explanations(explanation: dict) -> list[str]:
         exclamation_description = (
             f"U gjetën {exclamation_count} pikëçuditëse, pra teksti i përdor shpesh."
         )
+
+    if emoji_count == 0:
+        emoji_description = "Nuk u gjetën emoji në tekst."
+    elif emoji_count == 1:
+        emoji_description = "U gjet 1 emoji në tekst."
+    else:
+        emoji_description = f"U gjetën {emoji_count} emoji në tekst."
 
     if uppercase_ratio == 0:
         uppercase_description = "Nuk u gjetën shkronja të mëdha."
@@ -272,6 +280,7 @@ def build_human_explanations(explanation: dict) -> list[str]:
     return [
         f"Teksti ka {word_count} fjalë dhe {text_length} karaktere. {length_description}",
         exclamation_description,
+        emoji_description,
         uppercase_description,
         diacritic_description,
         sensational_description,
@@ -339,10 +348,15 @@ def render_result(result: dict, warnings: list[str]) -> None:
 
     explanation = result["linguistic_explanation"]
     st.subheader("Karakteristika të vëzhguara në tekst")
-    words_column, length_column, punctuation_column = st.columns(3)
+    words_column, length_column, punctuation_column, emoji_column = st.columns(4)
     words_column.metric("Fjalë", explanation["word_count"])
     length_column.metric("Gjatësia", explanation["text_length"], help="Numri i karaktereve")
     punctuation_column.metric("Pikëçuditëse", explanation["exclamation_count"])
+    emoji_column.metric(
+        "Emoji të gjetura",
+        explanation.get("emoji_count", 0),
+        help="Numri i emoji-ve në titull dhe përmbajtje.",
+    )
 
     uppercase_column, diacritic_column = st.columns(2)
     uppercase_column.metric("Shkronja të mëdha", f"{explanation['uppercase_ratio']:.2%}")

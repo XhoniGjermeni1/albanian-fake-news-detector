@@ -145,6 +145,7 @@ def test_human_explanation_interprets_language_signals() -> None:
             "word_count": 12,
             "text_length": 90,
             "exclamation_count": 4,
+            "emoji_count": 2,
             "uppercase_ratio": 0.20,
             "diacritic_ratio": 0.0,
             "sensational_words_found": ["skandal"],
@@ -156,6 +157,7 @@ def test_human_explanation_interprets_language_signals() -> None:
 
     assert "shumë i shkurtër" in explanation_text
     assert "4 pikëçuditëse" in explanation_text
+    assert "2 emoji" in explanation_text
     assert "shkronjave të mëdha duket i lartë" in explanation_text
     assert "Nuk u gjetën shkronjat shqipe ë/ç" in explanation_text
     assert "skandal" in explanation_text
@@ -262,7 +264,8 @@ def test_streamlit_examples_cover_all_decisions() -> None:
             f"`{expected_decision}`" in caption.value
             for caption in app.caption
         )
-        assert len(app.metric) == 7
+        assert len(app.metric) == 8
+        assert any(metric.label == "Emoji të gjetura" for metric in app.metric)
         assert any("karakteristika të vëzhguara" in info.value for info in app.info)
 
 
@@ -315,7 +318,11 @@ def test_streamlit_handles_unusual_unicode_and_language_markers() -> None:
     app.button[0].click().run()
 
     assert not app.exception
-    assert len(app.metric) == 7
+    assert len(app.metric) == 8
+    emoji_metric = next(
+        metric for metric in app.metric if metric.label == "Emoji të gjetura"
+    )
+    assert emoji_metric.value == "1"
     assert any("Rezultati teknik" in caption.value for caption in app.caption)
     assert any("sipas" in markdown.value.lower() for markdown in app.markdown)
     assert any(FACT_CHECK_WARNING in warning.value for warning in app.warning)

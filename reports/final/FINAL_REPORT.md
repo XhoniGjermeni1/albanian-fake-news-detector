@@ -75,8 +75,14 @@ strukturë ose ortografi të ndryshme.
 
 U nxorën karakteristika që përshkruajnë gjatësinë, strukturën e fjalive,
 kapitalizimin, pikësimin, fjalët sensacionale, treguesit e burimit, shprehjet e
-pasigurisë dhe përdorimin e diakritikave. Dallimet ndërmjet klasave u analizuan
-me Mann–Whitney U dhe Cohen's d.
+pasigurisë dhe përdorimin e diakritikave. Dataset-i u studiua me krahasime të
+drejtpërdrejta të mesatareve dhe shpërndarjeve për lajmet real dhe
+fake. Marker-at u krahasuan edhe për 100 fjalë, që gjatësia e ndryshme e
+artikujve të mos shtrembëronte interpretimin.
+
+Shenjat e pikësimit u analizuan veçmas. Për 100 fjalë, lajmet real përdorin më
+shumë presje dhe thonjëza, ndërsa lajmet fake përdorin më shumë pikëçuditëse,
+pikëpyetje dhe tri pika.
 
 Modeli që përdori vetëm linguistic features arriti accuracy `0.8273` dhe F1
 fake `0.8249`.

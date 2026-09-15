@@ -84,9 +84,9 @@ Dataset i vlefshëm dhe split pa leakage
 
 **Pyetja/Problemi →** A ndryshojnë klasat në gjatësi, pikësim, kapitalizim, fraza sensacionale, burime dhe diakritika?
 
-**Eksperimenti →** U nxorën features numerike dhe u krahasuan mesataret, Mann–Whitney U dhe Cohen's d.
+**Eksperimenti →** U nxorën karakteristika numerike dhe u krahasuan mesataret dhe shpërndarjet e tyre. Marker-at gjuhësorë u krahasuan edhe për 100 fjalë, për të kontrolluar ndikimin e gjatësisë.
 
-**Rezultati →** U gjetën dallime të matshme. [feature_summary.csv](04_linguistic_features/feature_summary.csv) ruan mesataret e verifikueshme; output-i i plotë i testeve statistikore nuk ekziston aktualisht.
+**Rezultati →** Lajmet real janë mesatarisht më të gjata dhe përdorin më shumë tregues burimi, pasiguri, diakritika, presje dhe thonjëza; lajmet fake kanë tituj më të gjatë dhe përdorin pak më shumë kapitalizim, shprehje sensacionale, pikëçuditëse, pikëpyetje dhe tri pika. [linguistic_comparison.csv](04_linguistic_features/linguistic_comparison.csv) ruan krahasimin e plotë përshkrues.
 
 **Përfundimi →** Linguistic features kanë sinjal, por gjatësia dhe disa marker-a mund të jenë bias i corpus-it.
 

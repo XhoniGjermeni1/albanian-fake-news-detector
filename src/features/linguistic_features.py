@@ -14,6 +14,24 @@ from src.preprocessing.clean_text import normalize_spaces
 WORD_PATTERN = re.compile(r"[^\W\d_]+(?:[-'][^\W\d_]+)?", re.UNICODE)
 SENTENCE_PATTERN = re.compile(r"[.!?]+")
 
+EMOJI_RANGES = (
+    (0x1F300, 0x1F5FF),
+    (0x1F600, 0x1F64F),
+    (0x1F680, 0x1F6FF),
+    (0x1F700, 0x1F77F),
+    (0x1F780, 0x1F7FF),
+    (0x1F800, 0x1F8FF),
+    (0x1F900, 0x1F9FF),
+    (0x1FA00, 0x1FAFF),
+    (0x2600, 0x26FF),
+    (0x2700, 0x27BF),
+)
+REGIONAL_INDICATOR_RANGE = (0x1F1E6, 0x1F1FF)
+EMOJI_MODIFIER_RANGE = (0x1F3FB, 0x1F3FF)
+VARIATION_SELECTORS = {0xFE0E, 0xFE0F}
+ZERO_WIDTH_JOINER = 0x200D
+COMBINING_KEYCAP = 0x20E3
+
 SENSATIONAL_PHRASES = [
     "tronditëse",
     "skandal",
@@ -85,6 +103,44 @@ def safe_ratio(numerator: int | float, denominator: int | float) -> float:
         return 0.0
 
     return round(float(numerator) / float(denominator), 6)
+
+
+# Numëron emoji-t si simbole të plota: një flamur ose një emoji e bashkuar llogaritet një herë.
+def count_emojis(text: str) -> int:
+    emoji_count = 0
+    open_flag = False
+    joined_emoji = False
+
+    for character in str(text):
+        codepoint = ord(character)
+        if REGIONAL_INDICATOR_RANGE[0] <= codepoint <= REGIONAL_INDICATOR_RANGE[1]:
+            if not open_flag:
+                emoji_count += 1
+                open_flag = True
+            else:
+                open_flag = False
+            joined_emoji = False
+            continue
+
+        open_flag = False
+        if codepoint == ZERO_WIDTH_JOINER:
+            joined_emoji = True
+            continue
+        if codepoint in VARIATION_SELECTORS or (
+            EMOJI_MODIFIER_RANGE[0] <= codepoint <= EMOJI_MODIFIER_RANGE[1]
+        ):
+            continue
+        if codepoint == COMBINING_KEYCAP:
+            emoji_count += 1
+            joined_emoji = False
+            continue
+
+        is_emoji = any(start <= codepoint <= end for start, end in EMOJI_RANGES)
+        if is_emoji and not joined_emoji:
+            emoji_count += 1
+        joined_emoji = False
+
+    return emoji_count
 
 # Merr tekstin dhe një listë frazash. Kthen cilat fraza janë gjetur.
 def find_phrases(text: str, phrases: list[str]) -> list[str]:

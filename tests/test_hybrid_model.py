@@ -81,6 +81,8 @@ def test_linguistic_explanation_contains_readable_signals() -> None:
     assert "lajm i fundit" in explanation["sensational_words_found"]
     assert "sipas" in explanation["source_markers_found"]
     assert explanation["exclamation_count"] == 3
+    assert explanation["has_emoji"] is False
+    assert explanation["emoji_count"] == 0
     assert explanation["word_count"] > 0
     assert explanation["text_length"] > 0
     assert 0 <= explanation["diacritic_ratio"] <= 1

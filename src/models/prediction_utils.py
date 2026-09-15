@@ -3,7 +3,7 @@
 
 from __future__ import annotations
 
-from src.features.linguistic_features import extract_linguistic_features
+from src.features.linguistic_features import count_emojis, extract_linguistic_features
 
 
 DEFAULT_REAL_THRESHOLD = 0.30
@@ -16,6 +16,7 @@ def _marker_list(value: str) -> list[str]:
 
 def build_linguistic_explanation(title: str, content: str) -> dict:
     features = extract_linguistic_features(title, content)
+    emoji_count = count_emojis(f"{title} {content}")
     return {
         "sensational_words_found": _marker_list(features["sensational_found"]),
         "source_markers_found": _marker_list(features["source_indicators_found"]),
@@ -25,6 +26,8 @@ def build_linguistic_explanation(title: str, content: str) -> dict:
         "text_length": int(features["character_count"]),
         "diacritic_ratio": float(features["diacritic_ratio"]),
         "uppercase_ratio": float(features["uppercase_char_ratio"]),
+        "has_emoji": emoji_count > 0,
+        "emoji_count": emoji_count,
     }
 
 
