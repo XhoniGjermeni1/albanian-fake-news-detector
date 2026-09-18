@@ -180,25 +180,41 @@ def render_sidebar(manifest: dict | None) -> None:
             st.rerun()
 
         st.divider()
-        st.subheader("Rreth modelit")
+        st.subheader("Si funksionon modeli")
         model_version = (
             manifest.get("model_version", FINAL_MODEL_VERSION)
             if manifest
             else FINAL_MODEL_VERSION
         )
-        st.markdown(
-            f"""
-            Modeli final është trajnuar mbi një korpus shqiptar me etiketa real/fake.
-
-            - Word + Character TF-IDF
-            - Linear SVM
-            - Kalibrim sigmoid
-            - versioni `{model_version}`
-            """
+        training_rows = (
+            manifest.get("training_data", {}).get("rows") if manifest else None
         )
+        training_note = (
+            f" · {training_rows:,} artikuj trajnimi" if training_rows else ""
+        )
+
+        st.write(
+            "Teksti krahasohet me modele gjuhësore të mësuara nga lajmet "
+            "real dhe fake të dataset-it."
+        )
+        with st.container(border=True, key="model_flow_card"):
+            st.markdown(
+                f"""
+                - **Përfaqësimi:** Word + Character TF-IDF
+                - **Klasifikuesi:** Linear SVM (`C=1.0`)
+                - **Probabiliteti:** Kalibrim sigmoid
+                - **Modeli aktiv:** versioni `{model_version}`{training_note}
+                """
+            )
+            st.markdown(
+                "**Vendimi:** nën 30% më afër *real* · 30%–70% *i pasigurt* · "
+                "mbi 70% më afër *fake*."
+            )
+
         st.caption(
-            "Zona `uncertain` është 30%-70%. Karakteristikat gjuhësore përdoren "
-            "vetëm për shpjegim; modeli nuk kontrollon burimet ose faktet."
+            "Modeli analizon gjuhën e tekstit; nuk kontrollon burimin, ngjarjen "
+            "ose vërtetësinë faktike të lajmit. Karakteristikat e shfaqura pas "
+            "analizës shërbejnë vetëm për shpjegim."
         )
 
 
@@ -326,44 +342,65 @@ def render_result(result: dict, warnings: list[str]) -> None:
         st.warning(warning)
 
     st.divider()
-    st.subheader("Rezultati")
-    st.caption(
-        f"Modeli `{result['model_id']}` · versioni `{result['model_version']}`"
-    )
-    render_decision(result)
+    with st.container(border=True, key="decision_card"):
+        st.subheader("Vendimi i modelit")
+        st.caption(
+            f"Modeli `{result['model_id']}` · versioni `{result['model_version']}`"
+        )
+        render_decision(result)
 
-    st.subheader("Probabilitetet")
-    real_column, fake_column = st.columns(2)
-    real_column.metric("Real sipas modelit", f"{result['probability_real']:.1%}")
-    fake_column.metric("Fake sipas modelit", f"{result['probability_fake']:.1%}")
-    real_column.progress(
-        result["probability_real"],
-        text=f"Real: {result['probability_real']:.1%}",
-    )
-    fake_column.progress(
-        result["probability_fake"],
-        text=f"Fake: {result['probability_fake']:.1%}",
-    )
-    st.caption("Përqindjet janë probabilitete të modelit, jo prova faktike.")
+    st.divider()
+    with st.container(border=True, key="probability_card"):
+        st.subheader("Probabilitetet")
+        real_column, fake_column = st.columns(2)
+        real_column.metric("Real sipas modelit", f"{result['probability_real']:.1%}")
+        fake_column.metric("Fake sipas modelit", f"{result['probability_fake']:.1%}")
+        real_column.progress(
+            result["probability_real"],
+            text=f"Real: {result['probability_real']:.1%}",
+        )
+        fake_column.progress(
+            result["probability_fake"],
+            text=f"Fake: {result['probability_fake']:.1%}",
+        )
+        st.caption("Përqindjet janë probabilitete të modelit, jo prova faktike.")
 
+    st.divider()
     explanation = result["linguistic_explanation"]
-    st.subheader("Karakteristika të vëzhguara në tekst")
-    words_column, length_column, punctuation_column, emoji_column = st.columns(4)
-    words_column.metric("Fjalë", explanation["word_count"])
-    length_column.metric("Gjatësia", explanation["text_length"], help="Numri i karaktereve")
-    punctuation_column.metric("Pikëçuditëse", explanation["exclamation_count"])
-    emoji_column.metric(
-        "Emoji të gjetura",
-        explanation.get("emoji_count", 0),
-        help="Numri i emoji-ve në titull dhe përmbajtje.",
-    )
+    with st.container(border=True, key="language_card"):
+        st.subheader("Analiza gjuhësore e tekstit")
+        st.caption(
+            "Matje përshkruese të tekstit të vendosur, të ndara nga vendimi i modelit."
+        )
 
-    uppercase_column, diacritic_column = st.columns(2)
-    uppercase_column.metric("Shkronja të mëdha", f"{explanation['uppercase_ratio']:.2%}")
-    diacritic_column.metric("Shkronja ë/ç", f"{explanation['diacritic_ratio']:.2%}")
+        words_column, length_column, punctuation_column, emoji_column = st.columns(4)
+        words_column.metric("Fjalë", explanation["word_count"])
+        length_column.metric(
+            "Gjatësia",
+            explanation["text_length"],
+            help="Numri i karaktereve në titull dhe përmbajtje.",
+        )
+        punctuation_column.metric(
+            "Pikëçuditëse", explanation["exclamation_count"]
+        )
+        emoji_column.metric(
+            "Emoji të gjetura",
+            explanation.get("emoji_count", 0),
+            help="Numri i emoji-ve në titull dhe përmbajtje.",
+        )
 
-    observations = build_human_explanations(explanation)
-    st.markdown("\n".join(f"- {observation}" for observation in observations))
-    st.info(
-        "Këto janë karakteristika të vëzhguara në tekst. Asnjëra prej tyre nuk provon vetë nëse lajmi është real ose fake."
-    )
+        uppercase_column, diacritic_column = st.columns(2)
+        uppercase_column.metric(
+            "Shkronja të mëdha", f"{explanation['uppercase_ratio']:.2%}"
+        )
+        diacritic_column.metric(
+            "Shkronja ë/ç", f"{explanation['diacritic_ratio']:.2%}"
+        )
+
+        st.markdown("#### Çfarë u vëzhgua")
+        observations = build_human_explanations(explanation)
+        st.markdown("\n".join(f"- {observation}" for observation in observations))
+        st.info(
+            "Këto janë karakteristika të vëzhguara në tekst. Asnjëra prej tyre "
+            "nuk provon vetë nëse lajmi është real ose fake."
+        )

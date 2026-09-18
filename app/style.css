@@ -1,30 +1,81 @@
 /* Përcakton ngjyrat, hapësirat dhe përshtatjen responsive të ndërfaqes Streamlit. */
 :root {
-  --app-ink: #17211f;
-  --app-muted: #56635f;
-  --app-surface: #ffffff;
-  --app-border: #d8dfdc;
-  --app-accent: #176b62;
+  --app-ink: var(--text-color);
+  --app-muted: color-mix(in srgb, var(--text-color) 68%, transparent);
+  --app-surface: var(--secondary-background-color);
+  --app-border: color-mix(in srgb, var(--text-color) 16%, transparent);
+  --app-accent: var(--primary-color);
 }
 
 .stApp {
-  background: #f5f7f5;
+  background: color-mix(in srgb, var(--background-color) 97%, #0f766e 3%);
   color: var(--app-ink);
 }
 
 [data-testid="stHeader"] {
-  background: rgba(245, 247, 245, 0.94);
+  background: color-mix(in srgb, var(--background-color) 95%, transparent);
 }
 
 [data-testid="stSidebar"] {
-  background: #e9eeec;
-  border-right: 1px solid var(--app-border);
+  background: color-mix(
+    in srgb,
+    var(--secondary-background-color) 94%,
+    #0f766e 6%
+  );
+  border-right: 1px solid color-mix(in srgb, #0f766e 18%, var(--app-border));
+  box-shadow:
+    6px 0 18px color-mix(in srgb, #000000 8%, transparent),
+    inset -1px 0 0 color-mix(in srgb, #ffffff 7%, transparent);
+}
+
+[data-testid="stSidebarContent"] {
+  padding-right: 0.2rem;
+}
+
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+  color: var(--app-ink);
+  font-weight: 750;
+}
+
+/* Butoni i platformës nuk është pjesë e ndërfaqes së aplikacionit. */
+[data-testid="stAppDeployButton"],
+.stAppDeployButton,
+[data-testid="stDeployButton"],
+.stDeployButton {
+  display: none !important;
 }
 
 .block-container {
   max-width: 980px;
   padding-top: 2.25rem;
   padding-bottom: 3rem;
+}
+
+/* Seksionet kryesore dallohen qartë si në light, ashtu edhe në dark mode. */
+.st-key-decision_card,
+.st-key-probability_card,
+.st-key-language_card {
+  background: color-mix(
+    in srgb,
+    var(--secondary-background-color) 82%,
+    var(--background-color)
+  );
+  border: 2px solid color-mix(in srgb, #0f766e 30%, var(--app-border)) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 8px 24px color-mix(in srgb, #000000 10%, transparent);
+}
+
+[data-testid="stForm"] {
+  background: color-mix(
+    in srgb,
+    var(--background-color) 94%,
+    var(--secondary-background-color)
+  );
+  border: 1px solid color-mix(in srgb, #0f766e 14%, var(--app-border));
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: 0 8px 24px color-mix(in srgb, #000000 6%, transparent);
 }
 
 h1,
@@ -37,31 +88,104 @@ button {
 }
 
 h1 {
-  color: #173c37;
+  color: var(--app-ink);
 }
 
 [data-testid="stMetric"] {
-  background: var(--app-surface);
-  border: 1px solid var(--app-border);
-  border-radius: 6px;
-  padding: 0.85rem 1rem;
+  background: color-mix(
+    in srgb,
+    var(--background-color) 72%,
+    var(--secondary-background-color)
+  );
+  border: 1px solid color-mix(in srgb, #0f766e 30%, var(--app-border));
+  border-radius: 12px;
+  box-shadow: 0 4px 14px color-mix(in srgb, #000000 9%, transparent);
+  padding: 1rem;
   min-height: 108px;
+}
+
+[data-testid="stMetricLabel"] p {
+  color: var(--app-muted);
+  font-weight: 650;
+}
+
+[data-testid="stMetricValue"] {
+  color: var(--app-ink);
+  font-weight: 750;
 }
 
 .stButton button,
 .stFormSubmitButton button {
-  border-radius: 6px;
-  min-height: 2.7rem;
+  border-radius: 10px;
+  min-height: 3rem;
 }
 
 .stFormSubmitButton button {
-  background: var(--app-accent);
-  border-color: var(--app-accent);
+  background: #0f766e !important;
+  border: 2px solid #14b8a6 !important;
+  box-shadow: 0 6px 18px rgba(15, 118, 110, 0.28);
+  color: #ffffff !important;
+  font-size: 1rem;
+  font-weight: 750;
+}
+
+.stFormSubmitButton button:hover {
+  background: #115e59 !important;
+  border-color: #2dd4bf !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.stFormSubmitButton button:focus {
+  border-color: #5eead4 !important;
+  box-shadow: 0 0 0 0.2rem rgba(45, 212, 191, 0.25);
+  color: #ffffff !important;
+}
+
+.stFormSubmitButton button:disabled {
+  background: color-mix(in srgb, #0f766e 55%, #6b7280) !important;
+  border-color: color-mix(in srgb, #14b8a6 45%, #6b7280) !important;
+  color: #ffffff !important;
+  opacity: 0.72;
+}
+
+.st-key-model_flow_card {
+  background: color-mix(
+    in srgb,
+    var(--background-color) 95%,
+    #0f766e 5%
+  );
+  border: 1px solid color-mix(in srgb, #0f766e 16%, var(--app-border)) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 12px color-mix(in srgb, #000000 5%, transparent);
+}
+
+[data-testid="stSidebar"] [data-testid="stAlert"] {
+  border-radius: 10px;
+  box-shadow: 0 4px 14px color-mix(in srgb, #000000 7%, transparent);
+}
+
+[data-testid="stSidebar"] [data-testid="stSelectbox"] > div > div {
+  border-color: color-mix(in srgb, #0f766e 20%, var(--app-border));
+  box-shadow: 0 3px 10px color-mix(in srgb, #000000 6%, transparent);
+}
+
+[data-testid="stSidebar"] .stButton button {
+  border-color: color-mix(in srgb, #0f766e 24%, var(--app-border));
+  box-shadow: 0 3px 10px color-mix(in srgb, #000000 6%, transparent);
+}
+
+hr {
+  border: 0;
+  border-top: 2px solid color-mix(in srgb, #0f766e 28%, var(--app-border));
+  margin: 1.75rem 0;
+  opacity: 1;
 }
 
 textarea,
 input {
   border-radius: 6px !important;
+  color: var(--app-ink) !important;
 }
 
 [data-testid="stCaptionContainer"] {
