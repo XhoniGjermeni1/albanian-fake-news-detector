@@ -334,7 +334,6 @@ def render_decision(result: dict) -> None:
         )
 
     st.caption(f"Rezultati teknik: `{decision}`")
-    st.warning(FACT_CHECK_WARNING)
 
 
 def render_result(result: dict, warnings: list[str]) -> None:

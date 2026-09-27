@@ -81,7 +81,7 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     result = build_linguistic_features()
 
-    print("=== Day 3 linguistic features ===")
+    print("=== linguistic features ===")
     print(f"Input rows: {result['input_rows']}")
     print(f"Feature rows: {result['feature_rows']}")
     print(f"Feature columns: {result['feature_columns']}")

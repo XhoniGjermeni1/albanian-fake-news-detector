@@ -280,7 +280,7 @@ def test_streamlit_explains_uncertain_result_and_fact_check_limit() -> None:
     assert not app.exception
     assert any("zonës së pasigurt" in info.value for info in app.info)
     assert any("nuk do të thotë" in info.value.lower() for info in app.info)
-    assert sum(FACT_CHECK_WARNING in warning.value for warning in app.warning) >= 2
+    assert sum(FACT_CHECK_WARNING in warning.value for warning in app.warning) == 1
 
 
 @pytest.mark.skipif(not MODEL_PATH.exists(), reason="Run Day 17 to freeze the final model.")
